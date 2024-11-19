@@ -143,7 +143,7 @@ function Products() {
               <Link to="/cart">
                 <FaCartPlus />
               </Link>
-              {token ? (<div onClick={()=>dispatch(addToWhishList(id))}>
+              {token ? (<div onClick={()=>dispatch(addToWhishList({id:id}))}>
                 <CiHeart />
               </div>): <div onClick={handelwhishToast}>
                 <CiHeart />

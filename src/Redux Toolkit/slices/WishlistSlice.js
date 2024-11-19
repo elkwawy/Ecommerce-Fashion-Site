@@ -5,15 +5,15 @@ import toast from 'react-hot-toast';
 
 
 
+
 export const addToWhishList = createAsyncThunk(
   "wishlist/addToWhishList", 
   async ({ id }, { rejectWithValue }) => {
     let toastid;
-  
     try {
       const options = {
         method: "POST",
-        url: "https://ecommerce-dot-code.vercel.app/api/wishlist",
+        url: `https://ecommerce-dot-code.vercel.app/api/wishlist`,
         data: {
           productId: id,
         },
@@ -25,10 +25,7 @@ export const addToWhishList = createAsyncThunk(
       toastid = toast.loading("waiting...");
       const { data } = await axios.request(options);
       toast.dismiss(toastid)
-
-        toast.success('Product added to wishlist')
-        
-        
+      toast.success('Product added to wishlist')  
       console.log(data);
       return data;
     } catch (error) {
@@ -39,27 +36,28 @@ export const addToWhishList = createAsyncThunk(
 
 
 export const getUserWhishList = createAsyncThunk(
-    "userwhishlist/getUserWhishList", 
-    async () => {
-      try {
-        const options = {
-          method: "GET",
-          url: "https://ecommerce-dot-code.vercel.app/api/user/getMe",
-          headers: {
-              authorization: Cookies.get("token")
-          }
-          
-        };
+  "userwhishlist/getUserWhishList", 
+  async () => {
+    try {
+      const options = {
+        method: "GET",
+        url: "https://ecommerce-dot-code.vercel.app/api/wishlist",
+        headers: {
+            authorization: Cookies.get("token")
+        }
         
-        const { data } = await axios.request(options);
-        console.log(data);
-        return data;
+      };
+      
+      const { data } = await axios.request(options);
+      console.log(data);
+      return data;
 
-      } catch (error) {
-        return (error.response?.data || "Request failed");
-      }
+    } catch (error) {
+      return (error.response?.data || "Request failed");
     }
-  );
+  }
+);
+
 
 
   
@@ -68,9 +66,10 @@ export const getUserWhishList = createAsyncThunk(
 
 
 const wishListSlice = createSlice({
+  
   name: "wishlist", 
   initialState: {
-    whishListItems: [],
+    wishListItems: [],
     isLoading: false, 
     isError: false,
     error: null,
@@ -85,7 +84,8 @@ const wishListSlice = createSlice({
       })
       .addCase(addToWhishList.fulfilled, (state, action) => {
         state.isLoading = false;
-
+        state.wishListItems.push(action.payload);
+        
       })
       .addCase(addToWhishList.rejected, (state, action) => {
         state.isLoading = false;
@@ -98,11 +98,11 @@ const wishListSlice = createSlice({
           state.isLoading = true;
           state.isError = false;
           state.error = null;
+
         })
        .addCase(getUserWhishList.fulfilled, (state, action) => {
           state.isLoading = false;
-         
-          state.whishListItems = action.payload;  
+          state.wishListItems = action.payload.data || []
         })
        .addCase(getUserWhishList.rejected, (state, action) => {
           state.isLoading = false;
