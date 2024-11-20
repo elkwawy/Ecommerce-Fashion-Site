@@ -37,7 +37,7 @@ export default function Signin() {
     const validationSchema =  yup.object({
       name: yup.string().required("name is required").min(3,'min name mast be 3 letters').max(15,'max name mast be 15 letter'),
         email: yup.string().email("write avalid email").required("email is required"),
-        password: yup.string().required("password is required").matches(/^[A-Z][A-Za-z\d]{7,}$/,'Min 8 chars, starting with a capital letter'),
+        password: yup.string().required("password is required").matches(/^(?=.*[A-Z])[A-Za-z]{8,}$/,'Min 8 chars, Contains a capital letter'),
         passwordConfirm: yup.string().required("repassword is required").oneOf([yup.ref("password")],"password and repassword mast be same")
     })
 
@@ -100,32 +100,34 @@ export default function Signin() {
  <h3 className='text-2xl font-bold '>Create an Account</h3>
  <p className='my-2 text-sm'>Create a account to continue</p>
  <div className='my-4'>
-<input onChange={formik.handleChange} value={formik.values.name} onBlur={formik.handleBlur} type="text" placeholder='Name' name='name' className='w-full border-2 p-2 rounded'/>
-{formik.errors.name && formik.touched.name ? (<div className='text-red-600 my-2 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.name}</div>):('')}
+  <label for="name" className='flex justify-between items-center mb-2'><span className='text-gray-600'>Name :</span> <span>{formik.errors.name && formik.touched.name ? (<div className='text-red-600  font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.name}</div>):('')}</span></label>
+<input onChange={formik.handleChange} value={formik.values.name} onBlur={formik.handleBlur} type="text" placeholder='Enter Your Name' name='name' className='w-full border-2 p-2 rounded'/>
+
 </div>
 <div className='my-4'>
-<input onChange={formik.handleChange} value={formik.values.email}onBlur={formik.handleBlur}  type="email" placeholder='Email' name='email' className='w-full border-2 p-2 rounded'/>
-{formik.errors.email && formik.touched.email ? (<div className='text-red-600 my-2 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.email}</div>):('')}
+
+<label for="email" className='flex justify-between items-center mb-2'> <span className='text-gray-600'>Email :</span> <span>{formik.errors.email && formik.touched.email ? (<div className='text-red-600  font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.email}</div>):('')}</span></label>
+<input onChange={formik.handleChange} value={formik.values.email}onBlur={formik.handleBlur}  type="email" placeholder='Enter Your Email' name='email' className='w-full border-2 p-2 rounded'/>
 </div>
  <div className='mb-2 mt-4 relative'>
- <input onChange={formik.handleChange} value={formik.values.password} onBlur={formik.handleBlur} type={passType} placeholder='Password' name='password' className=' w-full border-2 p-2 rounded' />
- <button type="button" onClick={handelPassword} className='absolute top-1/2 right-2 -translate-y-1/2'>
+
+<label for="password" className='flex justify-between items-center mb-2'><span className='text-gray-600'>Password :</span> <span>{formik.errors.password && formik.touched.password ? (<div className='text-red-600  font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.password}</div>):('')}</span></label>
+ <input onChange={formik.handleChange} value={formik.values.password} onBlur={formik.handleBlur} type={passType} placeholder='Enter Password' name='password' className=' w-full border-2 p-2 rounded' />
+ <button type="button" onClick={handelPassword} className='absolute top-[70%] right-2 -translate-y-1/2'>
         {passType === "password" ? <FaEye className='text-gray-500' /> : <FaEyeSlash  className='text-gray-500'/>}
       </button>
-
- 
  </div>
 <div className='my-2'>
-{formik.errors.password && formik.touched.password ? (<div className='text-red-600 my-2 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.password}</div>):('')}
 </div>
 
  <div className='mb-2 mt-4 relative'>
- <input onChange={formik.handleChange} value={formik.values.passwordConfirm} onBlur={formik.handleBlur} type={confirmPasswordType} placeholder='Re-Password' name='passwordConfirm' className='w-full border-2 p-2 rounded' />
- <button type="button" onClick={toggleConfirmPasswordVisibility} className='absolute top-1/2 right-2  -translate-y-1/2'>
+  <label for="passwordConfirm" className='flex justify-between items-center mb-2'><span className='text-gray-600'>Rewrite password :</span><span>{formik.errors.passwordConfirm && formik.touched.passwordConfirm ? (<div className='text-red-600  font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.passwordConfirm}</div>):('')}</span></label>
+ <input onChange={formik.handleChange} value={formik.values.passwordConfirm} onBlur={formik.handleBlur} type={confirmPasswordType} placeholder='Rewrite the password' name='passwordConfirm' className='w-full border-2 p-2 rounded' />
+ <button type="button" onClick={toggleConfirmPasswordVisibility} className='absolute top-[70%] right-2  -translate-y-1/2'>
         {confirmPasswordType === "password" ? <FaEye className='text-gray-500'/> : <FaEyeSlash  className='text-gray-500'/>}
       </button>
  </div>
- {formik.errors.passwordConfirm && formik.touched.passwordConfirm ? (<div className='text-red-600 my-2 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.passwordConfirm}</div>):('')}
+ 
   {errorMsg && <p className='text-red-600 font-semibold my-1'>{errorMsg}</p>}
  <div className=''>
 

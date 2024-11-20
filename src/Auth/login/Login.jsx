@@ -44,7 +44,7 @@ export default function Login() {
 
     const validationSchema = yup.object({
           email: yup.string().email("write avalid email").required("email is required"),
-          password: yup.string().required("password is required").matches(/^[A-Z][A-Za-z\d]{7,}$/,'Min 8 chars, starting with a capital letter'),
+          password: yup.string().required("password is required").matches(/^(?=.*[A-Z])[A-Za-z]{8,}$/,'Min 8 chars, Contains a capital letter'),
       })
       async function sendDataregastir(values){
         let id;
@@ -104,16 +104,19 @@ export default function Login() {
                         <h3 className='text-2xl font-bold '>Login to Account</h3>
                         <p className='my-4'>Please enter your email and password</p>
                         <div className='my-4'>
-                            <input value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} type="email" name='email' placeholder='Email' className='w-full border-2 p-2 rounded' />
-                            {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.email}</div>):('')}
+                          <label for ="email" className='flex justify-between items-center mb-2'><span className='text-gray-600'>Email :</span> <span> {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.email}</div>):('')}</span></label>
+                            <input value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} type="email" name='email' placeholder='Enter Your Email' className='w-full border-2 p-2 rounded' />
+                           
                         </div>
                         <div className='mb-2 relative'>
-                            <input value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} type={passType} name='password' placeholder='Password' className=' w-full border-2 p-2 rounded' />
-                            <button type="button" onClick={handelPassword} className='absolute top-1/2 right-2 -translate-y-1/2'>
-        {passType === "password" ? <FaEye className='text-gray-500' /> : <FaEyeSlash  className='text-gray-500'/>}
-      </button>
+                          <label for="password" className='flex justify-between items-center mb-2  text-gray-600'><span>Password :</span> <span> {formik.errors.password && formik.touched.password ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.password}</div>):('')}</span></label>
+                            <input value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} type={passType} name='password' placeholder='Password..' className=' w-full border-2 p-2 rounded' />
+                            
+                            <button type="button" onClick={handelPassword} className='absolute top-[70%] right-2 -translate-y-1/2'>
+                            {passType === "password" ? <FaEye className='text-gray-500' /> : <FaEyeSlash  className='text-gray-500'/>}
+                           </button>
                          </div>
-             {formik.errors.password && formik.touched.password ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.password}</div>):('')}
+            
                         
 
                         {errorMsg && <div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded mb-2'> {errorMsg}</div>}
