@@ -51,7 +51,7 @@ const HeroSlider = () => {
                 <Img
                     src={'/heroSlider/women.webp'}
                     alt={`Slide ${"image2"}`}
-                    className={`h-full object-cover w-full`}
+                    className={`h-full object-cover sm:object-top  w-full`}
                     loader={<div className="bg-gray-300 flex items-center justify-center w-full h-full"><LoadingSpinner /></div>}
                     />
             </div>

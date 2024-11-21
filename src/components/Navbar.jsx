@@ -22,16 +22,17 @@ import Cookies from "js-cookie";
 
 
 const Navbar = memo(() => {
-   
 
-
-  const [showLogin, setShowLogin] = useState(false);
-  
+  const [showLogin, setShowLogin] = useState(false);  
   const token = Cookies.get('token');
 
-  const toggelelogin = () => {
-    setShowLogin(!showLogin);
+  const openLogin = () => {
+    setShowLogin(true);
   };
+  const closeLogin = () => {
+    setShowLogin(false);
+  };
+
   const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
@@ -46,10 +47,11 @@ const Navbar = memo(() => {
   };
 
 
-    const logout = ()=>{
-      Cookies.remove('token')
-      window.location.reload()
-    }
+  const logout = ()=>{
+    Cookies.remove('token')
+    window.location.reload()
+  }
+
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
 
@@ -87,6 +89,7 @@ const Navbar = memo(() => {
   }, []);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchCategories())
       .unwrap()
@@ -173,41 +176,43 @@ const Navbar = memo(() => {
               </NavLink>
             </ul>
 
-            <ul className="gap-6 items-center hidden sm:flex">
-              <IoIosSearch
-                onClick={toggleShowSearch}
-                size={22}
-                className={`cursor-pointer`}
-              />
+            {<ul className=" gap-6 items-center hidden sm:flex">
+                    <IoIosSearch
+                      onClick={toggleShowSearch}
+                      size={22}
+                      className={`cursor-pointer`}
+                    />
 
-              <NavLink to={"/cart"}>
-                {" "}
-                <PiShoppingCart size={22} className="cursor-pointer" />
-              </NavLink>
+                    <NavLink to={"/cart"}>
+                      {" "}
+                      <PiShoppingCart size={22} className="cursor-pointer" />
+                    </NavLink>
 
-              <NavLink
-                to={"/wishlist"}
-                className={({ isActive }) =>
-                  ` ${
-                    isActive && !showCategory
-                      ? "font-bold"
-                      : "font-normal text-gray-700 hover:text-black"
-                  } trans  `
-                }
-              >
-                <CiHeart size={22} className="cursor-pointer"  />
-              </NavLink>
-              {token ? (
-  <div onClick={logout} >
-    <FiLogOut size={22} className="cursor-pointer" />
-  </div>
-) : (
-  <div onClick={toggelelogin} >
-    <GoPerson size={22} className="cursor-pointer" />
-  </div>
-)}              
-              {showLogin && <Login />}
-            </ul>
+                    <NavLink
+                      to={"/wishlist"}
+                      className={({ isActive }) =>
+                        ` ${
+                          isActive && !showCategory
+                            ? "font-bold"
+                            : "font-normal text-gray-700 hover:text-black"
+                        } trans  `
+                      }
+                    >
+                      <CiHeart size={22} className="cursor-pointer"  />
+                    </NavLink>
+                    {token ? (
+                      <div onClick={logout} >
+                        <FiLogOut size={22} className="cursor-pointer" />
+                      </div>
+                    ) : (
+                      <div onClick={openLogin} >
+                        <GoPerson size={22} className="cursor-pointer" />
+                      </div>
+                    )}              
+              
+            </ul>}
+            
+            
             <div className="flex gap-6 items-center  md:hidden">
               <IoIosSearch
                 onClick={toggleShowSearch}
@@ -241,6 +246,8 @@ const Navbar = memo(() => {
         )}
       </div>
 
+        {showLogin && <Login closeLogin={closeLogin}/>}
+
       <div ref={categoryDivRef} className="hidden sm:block">
         {isScreenSmall && (
           <Category
@@ -254,6 +261,7 @@ const Navbar = memo(() => {
         <PhoneMenu
           showPhoneMenu={showPhoneMenu}
           toggleShowPhoneMenu={toggleShowPhoneMenu}
+          openLogin={openLogin}
         />
       )}
     </>

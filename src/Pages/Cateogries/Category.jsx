@@ -15,6 +15,7 @@ const Category = memo(() => {
     const categorySubcategories = useSelector((state) => state.subcategories.allSubcategories[categoryName] || {});
     const dispatch = useDispatch();
     const subcategories = useRef(null);
+    const products  = useSelector((state) => state.subcategory.products);
 
     // API calls
     useEffect(() => {
@@ -24,7 +25,7 @@ const Category = memo(() => {
         } else if (
             subcategoryID === "all" &&
             status === "succeeded" &&
-            categorySubcategories?.subcategories
+            categorySubcategories?.subcategories && products.length
         ) {
             const categoryId = categorySubcategories.subcategories[0]?.category?._id;
             if (categoryId) dispatch(getAllProducts(categoryId));
