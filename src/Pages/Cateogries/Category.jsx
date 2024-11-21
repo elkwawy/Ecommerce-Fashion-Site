@@ -25,7 +25,7 @@ const Category = memo(() => {
         } else if (
             subcategoryID === "all" &&
             status === "succeeded" &&
-            categorySubcategories?.subcategories && products.length
+            categorySubcategories?.subcategories 
         ) {
             const categoryId = categorySubcategories.subcategories[0]?.category?._id;
             if (categoryId) dispatch(getAllProducts(categoryId));
