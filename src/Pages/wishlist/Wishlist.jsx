@@ -46,31 +46,30 @@ export default function Wishlist() {
   <button className='texl-sm text-nowrap border-2 rounded px-4 py-2 md:px-6 '>sort by <span className='font-bold'> newest <IoIosArrowDown className='inline' /></span></button>
   </div>
  
-  <div className='grid grid-cols-12 my-14 gap-4'>
+  <div className='grid grid-cols-12 my-12 gap-4'>
    {wishListItems.map((item)=> (
      <div className='col-span-12 md:col-span-4 xl:col-span-4 2xl:col-span-3 bg-white shadow-md'  key={item._id}>
     <div>
-     <div className='relative  overflow-hidden'>
+     <div className='relative'>
      <div className='absolute top-2 right-2 p-2 w-[50px] h-[50px] bg-white rounded-full flex justify-center items-center'>
          <FaHeart className=''/>
          </div>
          <img src={item.image} 
-         alt={item.name}  className='w-full '/>
+         alt={item.name}  className='w-full'/>
      </div>
     <div className='py-2 px-4'>
     <div className='my-2 font-bold'>
      <h3 className=''>{item.name}</h3>
-     <p className='my-2'><span className='font-bold'>Price :</span> {item.price}</p>
+     <p className='my-2'><span className='font-bold'>Price :</span> ${item.price}</p>
      </div>
     
-      <div className='flex gap-2  flex-wrap'>
-        <p className='font-bold'>Colors :</p>
+      <div className='flex gap-2  justify-start'>
         {item.colors && item.colors.length > 0 ? (
   item.colors.map((color, index) => (
-    <p key={index}>{color}</p>
+    <div className='w-8 h-8 rounded-full border-2' style={{ backgroundColor: item.colors[index] }} key={index}></div>
            ))
 ) : (
-  <p>No colors available</p>
+  <p className='font-bold'>No colors available</p>
 )}
       </div>
      <div className='flex justify-between  items-center'>
@@ -109,10 +108,6 @@ export default function Wishlist() {
      </div>
    
      </section>)}
- 
-  
-  
- 
   
    </>
 }
