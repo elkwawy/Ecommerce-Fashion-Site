@@ -50,3 +50,11 @@ a {
     @apply mt-20;
   }
 }
+
+
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+

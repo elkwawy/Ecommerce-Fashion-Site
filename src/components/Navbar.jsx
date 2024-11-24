@@ -26,12 +26,7 @@ const Navbar = memo(() => {
   const [showLogin, setShowLogin] = useState(false);  
   const token = Cookies.get('token');
 
-  const openLogin = () => {
-    setShowLogin(true);
-  };
-  const closeLogin = () => {
-    setShowLogin(false);
-  };
+  
 
   const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
@@ -51,6 +46,10 @@ const Navbar = memo(() => {
     Cookies.remove('token')
     window.location.reload()
   }
+  
+  const toggelelogin = () => {
+    setShowLogin(!showLogin);
+  };
 
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
@@ -205,7 +204,7 @@ const Navbar = memo(() => {
                         <FiLogOut size={22} className="cursor-pointer" />
                       </div>
                     ) : (
-                      <div onClick={openLogin} >
+                      <div onClick={toggelelogin} >
                         <GoPerson size={22} className="cursor-pointer" />
                       </div>
                     )}              
@@ -246,7 +245,7 @@ const Navbar = memo(() => {
         )}
       </div>
 
-        {showLogin && <Login closeLogin={closeLogin}/>}
+        {showLogin && <Login  />}
 
       <div ref={categoryDivRef} className="hidden sm:block">
         {isScreenSmall && (
@@ -261,7 +260,7 @@ const Navbar = memo(() => {
         <PhoneMenu
           showPhoneMenu={showPhoneMenu}
           toggleShowPhoneMenu={toggleShowPhoneMenu}
-          openLogin={openLogin}
+         
         />
       )}
     </>
