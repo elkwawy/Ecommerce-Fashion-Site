@@ -8,17 +8,14 @@ import { FaAngleDown } from "react-icons/fa6";
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import LoadingSpinner from '../utilities/LoadingSpinner'
+import Login from '../Auth/login/Login';
 
 
-const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu}) => {
+const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu, openLogin}) => {
     
     const [showCategory, setShowCategory] = useState(false)
-
-    const [showWomens, setShowWomens] = useState(false)
-    const [showMens, setShowMens] = useState(false)
-    const [showChildren, setShowChildren] = useState(false);
-
     const [categoryHeight, setCategoryHeight] = useState(0)
+    const [showLogin, setShowLogin] = useState(false);
     const {allSubcategories, status, error} = useSelector((state) => state.subcategories);
     const [categoriesState, setCategoriesState] = useState([]);    
     useLayoutEffect(() => {
@@ -66,6 +63,9 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu}) => {
     const toggleShowCatgeroy = () => { 
         setShowCategory(prev => !prev);
     }
+    const toggelelogin = () => {
+        setShowLogin(!showLogin);
+      };
 
     const toggleCategoryState = (index) => {
         setCategoriesState(prevState => {
@@ -75,10 +75,13 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu}) => {
     };
     
     return (
-        <div className={`trans flex overflow-auto flex-col gap-16 fixed top-[74px] py-10 px-6 z-[100] bg-gray-200 ${showPhoneMenu ? "left-0" : "left-[200%]"} w-full flex flex-col items-center h-[calc(100vh-74px)] `}>
+        <div className={`trans flex overflow-auto flex-col gap-16 fixed top-[74px] py-10 px-6 z-40 bg-gray-200 ${showPhoneMenu ? "left-0" : "left-[200%]"} w-full flex flex-col items-center h-[calc(100vh-74px)] `}>
             <ul className="flex gap-8 sm:hidden items-center">
                 <CiHeart size={30} className="cursor-pointer" />
-                <GoPerson size={30} className="cursor-pointer" />
+                <button onClick={toggelelogin}>
+                    <GoPerson  size={30} className="cursor-pointer" />
+                </button>
+                {showLogin && <Login  />}
                 <PiShoppingCart size={30} className="cursor-pointer" />
             </ul>
             <ul className='flex flex-col gap-6 w-full'>
