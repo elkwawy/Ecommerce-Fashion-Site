@@ -63,7 +63,7 @@ const formik = useFormik({
     return<>
  
   {visible ? (
-   <section className='fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-10 min-h-screen text-center'>
+   <section className='fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-[500] min-h-screen text-center'>
    <form onSubmit={formik.handleSubmit} className='w-[90%] md:w-[70%] lg:w-[40%] xl:w-1/3 bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg'>
    <h3 className='text-2xl font-bold '>Forget Password</h3>
    

@@ -15,8 +15,8 @@ const Category = memo(({ showCategory, toggleShowCategory}) => {
                     Object.keys(allSubcategories).map((mainCategory) => {
                         const category = allSubcategories[mainCategory];
                         return(
-                            <div key={category.category} className="flex w-1/3 flex-col gap-8">
-                                <h2 className="font-bold text-2xl">{category.category}</h2>
+                            <div  key={category.category} className="flex w-1/3 flex-col gap-8">
+                                <Link  onClick={toggleShowCategory} to={`/${category.slug}/all`} className="font-bold text-2xl cursor-pointer trans hover:scale-105">{category.category}</Link>
                                 <ul className="flex flex-col gap-6">
                                     {
                                         category.subcategories.map( subcategory => (
