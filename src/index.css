@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -38,15 +37,15 @@ a {
   width: 90%;
 }
 
-@layer base { 
+@layer base {
   /* Transition smoothly class */
-  .trans { 
-    @apply transition-all duration-300 ;
+  .trans {
+    @apply transition-all duration-300;
   }
-  .spaceX { 
+  .spaceX {
     @apply mx-0 sm:mx-10 md:mx-20;
   }
-  .spaceT { 
+  .spaceT {
     @apply mt-20;
-  }
+  }  
 }

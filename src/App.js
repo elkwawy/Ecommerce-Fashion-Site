@@ -12,7 +12,7 @@ import ChangePassword from "./Auth/ChangePassword/ChangePassword"
 
 
 const Home = React.lazy(() => import("./Pages/Home"));
-const ContactUs = React.lazy(() => import("./Pages/ContactUs"));
+const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
 const Cart = React.lazy(() => import("./Pages/Cart/Cart"));
 const Checkout = React.lazy(() => import("./Pages/Checkout/Checkout"));
 const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
