@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import LazyImage from '../utilities/LazyImage';
-import LoadingSpinner from '../utilities/LoadingSpinner';
+import LazyImage from '../../../utilities/LazyImage';
+import LoadingSpinner from "../../../utilities/LoadingSpinner";
 
 const SeasonCollection = () => {
     const {categories, status, error} = useSelector((state) => state.categories);

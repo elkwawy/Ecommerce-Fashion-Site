@@ -1,8 +1,8 @@
-import brand1 from "../assets/images/brand1.svg";
-import brand2 from "../assets/images/brand2.svg";
-import brand3 from "../assets/images/brand3.svg";
-import brand4 from "../assets/images/brand4.svg";
-import brand5 from "../assets/images/brand5.svg";
+import brand1 from "../../../assets/images/brand1.svg";
+import brand2 from "../../../assets/images/brand2.svg";
+import brand3 from "../../../assets/images/brand3.svg";
+import brand4 from "../../../assets/images/brand4.svg";
+import brand5 from "../../../assets/images/brand5.svg";
 function Brands() {
   return (
     <div className="brands container pb-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2  md:gap-4  lg:gap-6 max-sm:m-[30px] ">

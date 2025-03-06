@@ -15,11 +15,13 @@ const PasswordForm = ({
     setShowPassword((prev) => !prev);
   };
   return (
-    <div className="w-full">
-      <div className="flex w-full items-center justify-between gap-1 text-sm font-medium text-gray-700">
-        <p className="mb-2">{labelName}</p>
+    <div className="w-full mb-4">
+      <div className="flex items-center justify-between gap-1 text-sm font-medium">
+        <label htmlFor={name} className="block font-semibold mb-2">
+          {labelName}
+        </label>
         {condition && (
-          <p className="py-0.5 px-4 mb-1 bg-red-100 text-red-500 rounded-sm">
+          <p className="text-red-500 bg-red-200 px-2 rounded text-sm">
             {errorMessage}
           </p>
         )}
@@ -28,13 +30,16 @@ const PasswordForm = ({
         <input
           type={showPassword ? "text" : "password"}
           placeholder="• • • • • • • • •"
+          id={name}
           name={name}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className={`inputD ${
-            condition ? "errorD" : "focus:outline-gray-400"
-          } `}
+          className={`w-full border border-gray-300 trans p-2 rounded ${
+            condition
+              ? "border-red-600 focus:border-red-600"
+              : "focus:border-gray-600"
+          }`}
         />
         {PasswordLight > 0 && (
           <button

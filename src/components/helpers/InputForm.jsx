@@ -30,7 +30,7 @@ const InputForm = ({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className={`w-full border border-gray-300 trans p-2 rounded h-32  ${
+          className={`w-full border border-gray-300 trans p-2 rounded h-32 resize-none ${
             condition
               ? "border-red-600 focus:border-red-600"
               : "focus:border-gray-600"

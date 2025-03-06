@@ -1,13 +1,14 @@
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import contactUsHook from "../contactUsHook";
-import LoaderW from "../../../utilities/LoaderW";
 import InputForm from "../../../components/helpers/InputForm";
-
+import ButtonForm from "../../../components/helpers/ButtonForm";
+import { FiSend } from "react-icons/fi";
+import PasswordForm from "../../../components/helpers/PasswordForm";
 const SendQuestion = () => {
   const { loading, sendMessage } = contactUsHook();
 
-  // ✅ التحقق من صحة البيانات باستخدام Yup
+
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     email: Yup.string()
@@ -65,14 +66,20 @@ const SendQuestion = () => {
               errorMessage={errors.message}
               istextarea={true}
             />
+            <PasswordForm
+              labelName="Password"
+              name="password"
+              value={values.password}
+              onChange={handleChange} 
+              onBlur={handleBlur}
+              condition={touched.password && !!errors.password}
+              errorMessage={errors.password}
+              PasswordLight={values.password.length}
+            />
 
-            <button
-              type="submit"
-              className="bg-black w-[85px] trans hover:opacity-85 text-white px-6 py-2 rounded"
-              disabled={loading}
-            >
-              {loading ? <LoaderW className="w-6 mx-auto" /> : "Send"}
-            </button>
+            <ButtonForm loading={!loading}>
+              send <FiSend size={15} className="ml-1 mt-0.5" />
+            </ButtonForm>
           </Form>
         )}
       </Formik>

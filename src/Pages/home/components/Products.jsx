@@ -1,12 +1,12 @@
 // import "./Products.css";
-import product from "../assets/images/product.png";
+import product from "../../../assets/images/product.png";
 import { CiHeart } from "react-icons/ci";
 import { FaCartPlus } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import LazyImage from "../utilities/LazyImage";
-import LoadingSpinner from "../utilities/LoadingSpinner";
-import { addToWhishList } from "../Redux Toolkit/slices/WishlistSlice";
+import LazyImage from "../../../utilities/LazyImage";
+import LoadingSpinner from "../../../utilities/LoadingSpinner";
+import { addToWhishList } from "../../../Redux Toolkit/slices/WishlistSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import toast from "react-hot-toast";
@@ -32,10 +32,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
@@ -46,10 +46,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
@@ -59,10 +59,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
@@ -72,10 +72,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
@@ -85,10 +85,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
@@ -98,10 +98,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
@@ -111,10 +111,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],
@@ -124,10 +124,10 @@ function Products() {
       title: "BDG Joey Full Length",
       price: "$79.00",
       colors: [
-        require("../assets/images/color1.png"),
-        require("../assets/images/color2.png"),
-        require("../assets/images/color3.png"),
-        require("../assets/images/color4.png"),
+        require("../../../assets/images/color1.png"),
+        require("../../../assets/images/color2.png"),
+        require("../../../assets/images/color3.png"),
+        require("../../../assets/images/color4.png"),
       ],
       category: "women's",
       size: ["S", "M", "L", "XL", "XXL"],

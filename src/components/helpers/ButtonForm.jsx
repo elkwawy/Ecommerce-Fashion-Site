@@ -1,16 +1,26 @@
-import Loader from "../../utils/LoaderW";
-import { FaArrowRight } from "react-icons/fa";
-const ButtonForm = ({ title, loading }) => {
-  return loading ? (
-    <div className="flex items-center justify-center gap-2 w-full bg-sec-color text-white border-[1px] py-3 rounded-md hover:opacity-85 trans ">
-      <Loader className="w-[24px]" />
-    </div>
-  ) : (
+const ButtonForm = ({
+  children,
+  loading,
+  onClick,
+  className = "",
+  type = "submit",
+}) => {
+  return (
     <button
-      type="submit"
-      className={` flex items-center justify-center gap-2 w-full bg-sec-color text-white border-[1px] py-3 rounded-md hover:opacity-85 trans `}
+      type={type}
+      onClick={onClick}
+      disabled={loading}
+      className={`relative flex justify-center items-center bg-black h-[40px] px-5 rounded text-white hover:opacity-85 transition disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
-      {title} <FaArrowRight size={16} />
+      <span className={`flex items-center ${loading ? "invisible" : "visible"}`}>
+        {children}
+      </span>
+
+      {loading && (
+        <span className="absolute">
+          <img src="/loadingSpinnerW.svg" alt="Loading..." className="w-[26px]" />
+        </span>
+      )}
     </button>
   );
 };
