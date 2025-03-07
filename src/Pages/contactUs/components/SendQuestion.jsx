@@ -4,10 +4,8 @@ import contactUsHook from "../contactUsHook";
 import InputForm from "../../../components/helpers/InputForm";
 import ButtonForm from "../../../components/helpers/ButtonForm";
 import { FiSend } from "react-icons/fi";
-import PasswordForm from "../../../components/helpers/PasswordForm";
 const SendQuestion = () => {
   const { loading, sendMessage } = contactUsHook();
-
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -66,18 +64,8 @@ const SendQuestion = () => {
               errorMessage={errors.message}
               istextarea={true}
             />
-            <PasswordForm
-              labelName="Password"
-              name="password"
-              value={values.password}
-              onChange={handleChange} 
-              onBlur={handleBlur}
-              condition={touched.password && !!errors.password}
-              errorMessage={errors.password}
-              PasswordLight={values.password.length}
-            />
 
-            <ButtonForm loading={!loading}>
+            <ButtonForm loading={loading}>
               send <FiSend size={15} className="ml-1 mt-0.5" />
             </ButtonForm>
           </Form>
