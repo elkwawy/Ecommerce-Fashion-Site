@@ -1,5 +1,5 @@
 import aboutUS from "../../assets/images//About US/AboutUS.jpg";
-import Brands from "../../components/Brands";
+import Brands from "../home/components/Brands";
 
 const AboutUS = () => {
   return (
