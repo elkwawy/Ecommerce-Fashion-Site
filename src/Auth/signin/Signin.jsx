@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
+
 import { Link } from "react-router-dom";
 import Login from "../login/Login";
 import { API, Api } from "../../Api/Api";
@@ -8,6 +9,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+
 
 export default function Signin() {
   const [visible, setVisible] = useState(true);
@@ -55,8 +57,17 @@ export default function Signin() {
       .oneOf([yup.ref("password")], "password and repassword mast be same"),
   });
 
+
+    const validationSchema =  yup.object({
+      name: yup.string().required("name is required").min(3,'min name mast be 3 letters').max(15,'max name mast be 15 letter'),
+        email: yup.string().email("write avalid email").required("email is required"),
+        password: yup.string().required("password is required").matches(/^(?=.*[A-Z]).{8,}$/,'Min 8 chars,with capital letter'),
+        passwordConfirm: yup.string().required("repassword is required").oneOf([yup.ref("password")],"Passwords must match")
+    })
+
   async function sendDataTORegister(values) {
     let id;
+
 
     try {
       const options = {
@@ -94,9 +105,11 @@ export default function Signin() {
       role: "user",
     },
 
+
     validationSchema,
     onSubmit: sendDataTORegister,
   });
+
 
   return (
     <>

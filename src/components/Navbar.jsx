@@ -22,9 +22,11 @@ const Navbar = memo(() => {
 
   const token = Cookies.get("token");
 
+
   const toggelelogin = () => {
     setShowLogin(!showLogin);
   };
+
   const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
@@ -38,10 +40,13 @@ const Navbar = memo(() => {
     setShownMenuMark(false);
   };
 
-  const logout = () => {
-    Cookies.remove("token");
-    window.location.reload();
-  };
+
+  const logout = ()=>{
+    Cookies.remove('token')
+    window.location.reload()
+  }
+  
+
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
 
@@ -177,6 +182,7 @@ const Navbar = memo(() => {
                 <PiShoppingCart size={22} className="cursor-pointer" />
               </NavLink>
 
+
               <NavLink
                 to={"/wishlist"}
                 className={({ isActive }) =>
@@ -200,6 +206,7 @@ const Navbar = memo(() => {
               )}
               {showLogin && <Login />}
             </ul>
+
             <div className="flex gap-6 items-center  md:hidden">
               <IoIosSearch
                 onClick={toggleShowSearch}
@@ -231,6 +238,10 @@ const Navbar = memo(() => {
         )}
       </div>
 
+
+        {showLogin && <Login  />}
+
+
       <div ref={categoryDivRef} className="hidden sm:block">
         {isScreenSmall && (
           <Category
@@ -244,6 +255,7 @@ const Navbar = memo(() => {
         <PhoneMenu
           showPhoneMenu={showPhoneMenu}
           toggleShowPhoneMenu={toggleShowPhoneMenu}
+
         />
       )}
     </>
