@@ -96,7 +96,7 @@ const Category = memo(() => {
     }
 
     return (
-        <div className="container py-20 min-h-screen">
+        <div className="container py-10 min-h-screen">
             {status === "succeeded" && categorySubcategories.subcategories && <div className="flex flex-col gap-10">
                 <div className="w-full flex justify-between">
                     <h1 className="capitalize font-bold text-3xl">{categoryName}</h1>

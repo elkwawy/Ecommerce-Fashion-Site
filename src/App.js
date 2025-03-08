@@ -7,6 +7,8 @@ import LoadingSpinner from "./utilities/LoadingSpinner";
 import Popup from "./utilities/PopUp";
 import { Toaster } from "react-hot-toast";
 import ChangePassword from "./Auth/ChangePassword/ChangePassword";
+import "react-loading-skeleton/dist/skeleton.css";
+
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
