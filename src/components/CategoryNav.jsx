@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../utilities/LoadingSpinner";
+import CustomSkeleton from "../utilities/CustomSkeleton";
 
 const Category = memo(({ showCategory, toggleShowCategory}) => {
     
@@ -33,18 +34,27 @@ const Category = memo(({ showCategory, toggleShowCategory}) => {
                 
             </div>
 
+            {status === 'loading' && (
+                <div className="w-full grid grid-cols-3 gap-4">
+                    {[6, 5, 4].map((subcats, index) => (
+                        <div key={index} className="flex flex-col gap-6">
+                            <CustomSkeleton width="100px" height={12} />
+                            <div className="flex flex-col gap-2">
+                                {[...Array(subcats)].map((_, i) => (
+                                    <CustomSkeleton key={i} width="70px" height={9} />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
             {
-                    status === 'loading' &&
-                    <div className="flex justify-center mx-auto items-center h-full w-full">
-                        <LoadingSpinner />
-                    </div>
-                }
-                {
-                    status === 'failed' &&
-                    <div className="flex justify-center items-center h-full w-full">
-                        {error}
-                    </div>
-                }
+                status === 'failed' &&
+                <div className="flex justify-center items-center h-full w-full">
+                    {error}
+                </div>
+            }
         </div>
         
     );

@@ -15,6 +15,8 @@ export const API = {
 
   /* ======= Category ======= */
   getAllCategories: `${BASE_URL}/category/`,
+  /* ======= Product ======= */
+  getProductData : (id) => `${BASE_URL}/product/${id}`,
   /* ======= subcategory ======= */
   getAllSubcategories: `${BASE_URL}/subcategory/`,
   getSpecificSubcategory: (subcategoryId) => `${BASE_URL}/subcategory/${subcategoryId}`,
