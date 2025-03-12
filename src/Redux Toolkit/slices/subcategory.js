@@ -18,17 +18,18 @@ export const getSubcategoryProducts = createAsyncThunk(
 
 export const getAllProducts = createAsyncThunk(
     'subcategory/getAllProducts',
-    async (categoryID) => {
+    async ({categoryID, page}) => {
 
-        
-
+        console.log("page L", page);
         const response = await axios.get(API.getAllSubcategoriesForSpecificCategory(categoryID),{
             params:{
-                limit: 10, 
+                limit: 3, 
+                page,
             }
         })
 
-
+        console.log(response);
+        
         if (response && response.data && response.data.data) { 
             const products = response.data.data.reduce((allProducts, subcat) => {
                 if (subcat.SubCategoryProducts) {
@@ -36,7 +37,10 @@ export const getAllProducts = createAsyncThunk(
                 }
                 return allProducts;
             }, []);
-            return products;
+            if (Math.ceil(response.data.totalDocuments / 3) <= page) { 
+                return {products : products, hasMore: false}
+            }
+            return {products : products, hasMore: true}
         }
         return [] ;
     }
@@ -48,7 +52,7 @@ const getSubcatProducts = createAsyncThunk(
         const response = await axios.get(API.getSpecificSubcategory(subcatId), {
             params:{
                 limit: 3, // 3 products for each subcategory
-                page: page,
+                page: 2,
             }
         });
 
@@ -61,6 +65,8 @@ const subcategorySlice = createSlice({
     initialState: {
         products: [], 
         status: 'idle',
+        showMoreLoading : false,
+        hasMore : true,
         error: null,
     },
     reducers: {},
@@ -78,16 +84,26 @@ const subcategorySlice = createSlice({
             state.status = 'failed';
             state.error = action.error.message || "An error occurred";
         })
-        .addCase(getAllProducts.pending, (state) => {
-            state.status = 'loading';
+        .addCase(getAllProducts.pending, (state, action) => {
+            if (action.meta.arg.page === 1)
+                state.status = 'loading';
+            else 
+                state.showMoreLoading = true;
             state.error = null;
         })
         .addCase(getAllProducts.fulfilled, (state, action) => {
-            state.status = 'succeeded';
-            state.products = action.payload;
+            if (action.meta.arg.page === 1) {
+                state.products = action.payload.products; // Replace only on first page
+            } else {
+                state.products = [...state.products, ...action.payload.products]; // Append new products
+            }
+            state.hasMore = action.payload.hasMore;
+            state.status = "succeeded";
+            state.showMoreLoading = false;
         })
         .addCase(getAllProducts.rejected, (state, action) => {
             state.status = 'failed';
+            state.showMoreLoading = false;
             state.error = action.error.message || "An error occurred";
         });
     },

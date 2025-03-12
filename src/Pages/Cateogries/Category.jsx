@@ -9,17 +9,18 @@ import { debounce } from "lodash";
 
 const Category = memo(() => {
     const [canScrollRight, setCanScrollRight] = useState(false);
+    const [newestSort, setNewestSort] = useState(false);
+    const [page, setPage] = useState(1);
 
     const { categoryName, subcategoryID } = useParams();
     const { status, error } = useSelector((state) => state.subcategories);
     const categorySubcategories = useSelector((state) => state.subcategories.allSubcategories[categoryName] || {});
     const dispatch = useDispatch();
     const subcategories = useRef(null);
-    const products  = useSelector((state) => state.subcategory.products);
+    const hasMore = useSelector((state) => state.subcategory.hasMore);
 
     // API calls
     useEffect(() => {
-        window.scrollTo(0, 0);
         if (subcategoryID && subcategoryID !== "all") {
             dispatch(getSubcategoryProducts(subcategoryID));
         } else if (
@@ -27,10 +28,21 @@ const Category = memo(() => {
             status === "succeeded" &&
             categorySubcategories?.subcategories 
         ) {
+            console.log("calling");
+            
             const categoryId = categorySubcategories.subcategories[0]?.category?._id;
-            if (categoryId) dispatch(getAllProducts(categoryId));
+            if (categoryId) dispatch(getAllProducts({categoryID : categoryId, page: page}));
         }
-    }, [categoryName, subcategoryID, status]);
+    }, [categoryName, subcategoryID, status, page]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [subcategoryID]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [categoryName, subcategoryID]);
+    
 
     // Scroll reset
     useEffect(() => {
@@ -63,7 +75,7 @@ const Category = memo(() => {
     }, []);
 
     const getAllBtnClass = useMemo(() => {
-        return `${subcategoryID === "all" ? "bg-black text-white" : "hover:bg-gray-200"} rounded-sm text-sm trans border-[1px] px-3 py-1 border-black`;
+        return `${subcategoryID === "all" ? "bg-black text-white" : "hover:bg-gray-100"} rounded-sm text-sm trans border-[1px] px-3 py-1 border-black`;
     }, [subcategoryID]);
 
     const getSubcategoryLinks = useMemo(() => {
@@ -72,12 +84,16 @@ const Category = memo(() => {
             <Link
                 key={subcategory._id}
                 to={`/${categoryName}/${subcategory._id}`}
-                className={`${subcategoryID === subcategory._id ? "bg-black text-white" : "hover:bg-gray-200"} min-w-fit text-sm rounded-sm trans border-[1px] px-3 py-1 border-black`}
+                className={`${subcategoryID === subcategory._id ? "bg-black text-white" : "hover:bg-gray-100"} min-w-fit text-sm rounded-sm trans border-[1px] px-3 py-1 border-black`}
             >
                 {subcategory.name}
             </Link>
         ));
     }, [categoryName, categorySubcategories.subcategories, subcategoryID]);
+
+    const handleNewestSort = () => { 
+        setNewestSort(prev => !prev);
+    }
 
     if (status === "failed") {
         return (
@@ -100,7 +116,7 @@ const Category = memo(() => {
             {status === "succeeded" && categorySubcategories.subcategories && <div className="flex flex-col gap-10">
                 <div className="w-full flex justify-between">
                     <h1 className="capitalize font-bold text-3xl">{categoryName}</h1>
-                    <button className="px-5 py-1 border-2 border-black trans hover:bg-black hover:text-white rounded-sm">Filter</button>
+                    <button onClick={handleNewestSort} className={`px-5 py-1 border-2 ${newestSort ? "bg-black text-white" : "hover:bg-gray-100"} border-black trans  rounded-sm`}>Sort By Newest</button>
                 </div>
                 <div className="relative">
                     {(
@@ -127,6 +143,12 @@ const Category = memo(() => {
                 </div>
             </div>}
             {status === "succeeded" && <SubcategoryProducts />}
+            {
+                subcategoryID && subcategoryID == "all" && hasMore && 
+                <div className='w-full text-center mt-8'>
+                    <button className='mx-auto bg-black px-3 py-2 text-white ' onClick={() => setPage(page => page + 1)}>Show more</button>
+                </div>
+            }
         </div>
     );
 });
