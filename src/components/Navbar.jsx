@@ -16,6 +16,7 @@ import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
 import Logo from "../assets/icons/logo.png";
 import Cookies from "js-cookie";
+import { IoBagOutline } from "react-icons/io5";
 
 const Navbar = memo(() => {
   const [showLogin, setShowLogin] = useState(false);
@@ -179,7 +180,7 @@ const Navbar = memo(() => {
 
               <NavLink to={"/cart"}>
                 {" "}
-                <PiShoppingCart size={22} className="cursor-pointer" />
+                <IoBagOutline size={22} className="cursor-pointer" />
               </NavLink>
 
 

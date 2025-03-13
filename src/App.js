@@ -7,6 +7,10 @@ import LoadingSpinner from "./utilities/LoadingSpinner";
 import Popup from "./utilities/PopUp";
 import { Toaster } from "react-hot-toast";
 import ChangePassword from "./Auth/ChangePassword/ChangePassword";
+import "react-loading-skeleton/dist/skeleton.css";
+import Category from "./Pages/Cateogries/Category";
+import ProductPage from "./Pages/ProductPage/ProductPage";
+
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
@@ -15,7 +19,7 @@ const Checkout = React.lazy(() => import("./Pages/Checkout/Checkout"));
 const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
 const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
-const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
+// const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
 const AboutUS = React.lazy(() => import("./Pages/About US/AboutUS"));
 
 function App() {
@@ -46,6 +50,7 @@ function App() {
         <Route path="/changepassword" element={<ChangePassword />} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />
+        <Route path="/:productName" element={<ProductPage />} />
       </Routes>
     ),
     []
