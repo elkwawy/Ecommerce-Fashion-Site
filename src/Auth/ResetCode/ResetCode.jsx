@@ -6,16 +6,10 @@ import { HiOutlineXMark } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup'
 
-export default function ForgetPass() {
-    const [visible, setVisible] = useState(true);
+export default function ResetCode({setShowModel}) {
     const [errorMsg,seterrorMsg]= useState(null)
     const navigate = useNavigate()
 
-    const toggleVisible = () => {
-        setVisible(!visible)
-     }
-     
-    
  const validationSchema = yup.object({
   resetCode: yup.string().required("code is required").min(6).max(6),
  })
@@ -38,7 +32,7 @@ async function resetCode(values){
   toast.dismiss(id)
   toast.success('password reset successful')
   navigate("/resetpassword")
-  setVisible(false)
+  
 
      }catch(error){
         toast.dismiss(id)
@@ -55,11 +49,8 @@ const formik = useFormik({
     onSubmit:resetCode,
   })
   
-
-
     return<>
  
-  {visible ? (
    <section className='fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-10 min-h-screen text-center'>
    <form onSubmit={formik.handleSubmit} className='w-[90%] md:w-[70%] lg:w-[40%] xl:w-1/3 bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg'>
    <h3 className='text-2xl font-bold '>Enter Your Code</h3>
@@ -72,14 +63,12 @@ const formik = useFormik({
    {errorMsg && <div className='text-red-600 my-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded mb-2'> {errorMsg}</div>}
 
    <button type='submit'  className='bg-black text-white py-2 px-4 w-full mb-4 rounded mt-4'>Send</button>
-   <div className=' absolute top-[10%] left-[90%] -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg' onClick={toggleVisible}>
+   <div className=' absolute top-[10%] left-[90%] -translate-x-1/2 -translate-y-1/2 p-2 rounded-full w-fit hover:bg-gray-100 hover:text-black hover:shadow-lg transition-all  duration-300' onClick={()=>{setShowModel(null)}}>
    <HiOutlineXMark className='text-2xl font-bold cursor-pointer'/>
    </div>
    </form>
    
   </section>
-  
-  ): ""}
    
     </>
 }

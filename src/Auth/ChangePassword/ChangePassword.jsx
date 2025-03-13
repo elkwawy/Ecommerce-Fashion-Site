@@ -10,8 +10,6 @@ export default function ResetPassword() {
     const [errorMsg,seterrorMsg]= useState(null)
     const navigate = useNavigate()
 
-  
-
     const validationSchema = yup.object({
         email: yup.string().email("write avalid email").required("email is required"),
         newPassword: yup.string().required("newPassword is required").matches(/^[A-Z][A-Za-z\d]{7,}$/,'Min 8 chars, starting with a capital letter'),
@@ -48,10 +46,6 @@ export default function ResetPassword() {
              seterrorMsg(error.response.data.message)
       }
     }
-
-
-    
-    
     
     const formik = useFormik({
       initialValues:{

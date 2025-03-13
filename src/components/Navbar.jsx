@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { IoIosSearch } from "react-icons/io";
-import { FiLogOut } from "react-icons/fi"
+import { FiLogOut } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
@@ -16,24 +16,27 @@ import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
 import Logo from "../assets/icons/logo.png";
 import Cookies from "js-cookie";
-
+import useVisible from "../Auth/hooks/usevisable";
+import Signin from "../Auth/signin/Signin";
+import ForgetPass from "../Auth/ForgetPass/ForgetPass";
+import ResetCode from "../Auth/ResetCode/ResetCode";
 
 
 
 
 const Navbar = memo(() => {
-
-  const [showLogin, setShowLogin] = useState(false);  
-  const token = Cookies.get('token');
-
   
-
+  const [showModel, setShowModel] = useVisible();
+ 
+ 
   const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [shownMenuMark, setShownMenuMark] = useState(false); // the mark that will be shown ( X || menu bar )
   const [isScreenSmall, setIsScreenSmall] = useState(false);
   const location = useLocation();
+  const [token, setToken] = useState(Cookies.get("token") || null);
+    
 
   const toggleShowSearch = () => {
     setShowSearch(!showSearch);
@@ -41,14 +44,9 @@ const Navbar = memo(() => {
     setShownMenuMark(false);
   };
 
-
-  const logout = ()=>{
-    Cookies.remove('token')
-    window.location.reload()
-  }
-  
-  const toggelelogin = () => {
-    setShowLogin(!showLogin);
+  const logout = () => {
+    Cookies.remove("token");
+    setToken(null);
   };
 
   const categoryBtnRef = useRef(null);
@@ -78,8 +76,8 @@ const Navbar = memo(() => {
   }, [setShowCategory, categoryBtnRef, categoryDivRef]);
 
   useEffect(() => {
-      const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 768);
-      checkScreenSize();
+    const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 768);
+    checkScreenSize();
 
     window.addEventListener("resize", checkScreenSize);
     return () => {
@@ -88,14 +86,13 @@ const Navbar = memo(() => {
   }, []);
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchCategories())
       .unwrap()
       .then(() => dispatch(fetchAllSubcategories()));
   }, [dispatch]);
 
-  const {isLoading ,isError} = useSelector((state) => state.wishListSlice)
+  const { isLoading, isError } = useSelector((state) => state.wishListSlice);
 
   const toggleShowPhoneMenu = () => {
     setShowPhoneMenu(!showPhoneMenu);
@@ -175,43 +172,44 @@ const Navbar = memo(() => {
               </NavLink>
             </ul>
 
-            {<ul className=" gap-6 items-center hidden sm:flex">
-                    <IoIosSearch
-                      onClick={toggleShowSearch}
-                      size={22}
-                      className={`cursor-pointer`}
-                    />
+            <ul className="gap-6 items-center hidden sm:flex">
+              <IoIosSearch
+                onClick={toggleShowSearch}
+                size={22}
+                className={`cursor-pointer`}
+              />
 
-                    <NavLink to={"/cart"}>
-                      {" "}
-                      <PiShoppingCart size={22} className="cursor-pointer" />
-                    </NavLink>
+              <NavLink to={"/cart"}>
+                {" "}
+                <PiShoppingCart size={22} className="cursor-pointer" />
+              </NavLink>
 
-                    <NavLink
-                      to={"/wishlist"}
-                      className={({ isActive }) =>
-                        ` ${
-                          isActive && !showCategory
-                            ? "font-bold"
-                            : "font-normal text-gray-700 hover:text-black"
-                        } trans  `
-                      }
-                    >
-                      <CiHeart size={22} className="cursor-pointer"  />
-                    </NavLink>
-                    {token ? (
-                      <div onClick={logout} >
-                        <FiLogOut size={22} className="cursor-pointer" />
-                      </div>
-                    ) : (
-                      <div onClick={toggelelogin} >
-                        <GoPerson size={22} className="cursor-pointer" />
-                      </div>
-                    )}              
-              
-            </ul>}
-            
-            
+              <NavLink
+                to={"/wishlist"}
+                className={({ isActive }) =>
+                  ` ${
+                    isActive && !showCategory
+                      ? "font-bold"
+                      : "font-normal text-gray-700 hover:text-black"
+                  } trans  `
+                }
+              >
+                <CiHeart size={22} className="cursor-pointer" />
+              </NavLink>
+              {token ? (
+                <div onClick={logout}>
+                  <FiLogOut size={22} className="cursor-pointer" />
+                </div>
+              ) : (
+                <div >
+                  <GoPerson size={22} className="cursor-pointer" onClick={() => setShowModel('login')} />
+                </div>
+              )}
+             {showModel === "login" ? <Login    setShowModel ={ setShowModel } setToken={setToken}/> : null}
+             {showModel === "signup" && <Signin setShowModel={setShowModel} />}
+             {showModel === "forgetPass" && <ForgetPass setShowModel={setShowModel} />}
+             {showModel === "resetcode" && <ResetCode setShowModel={setShowModel} />}
+            </ul>
             <div className="flex gap-6 items-center  md:hidden">
               <IoIosSearch
                 onClick={toggleShowSearch}
@@ -220,19 +218,17 @@ const Navbar = memo(() => {
               />
               {!shownMenuMark && (
                 <button onClick={toggleShowPhoneMenu}>
-                    <VscMenu
-                      
-                      size={22}
-                      className={`cursor-pointer trans ${
-                        showPhoneMenu ? "rotate-180 duration-700" : "rotate-0"
-                      }`}
-                    />
+                  <VscMenu
+                    size={22}
+                    className={`cursor-pointer trans ${
+                      showPhoneMenu ? "rotate-180 duration-700" : "rotate-0"
+                    }`}
+                  />
                 </button>
               )}
               {shownMenuMark && (
                 <button onClick={toggleShowPhoneMenu}>
                   <MdClose
-                    
                     size={22}
                     className={`cursor-pointer trans ${
                       showPhoneMenu ? "rotate-0" : "-rotate-180 duration-700"
@@ -244,8 +240,6 @@ const Navbar = memo(() => {
           </>
         )}
       </div>
-
-        {showLogin && <Login  />}
 
       <div ref={categoryDivRef} className="hidden sm:block">
         {isScreenSmall && (
@@ -260,7 +254,6 @@ const Navbar = memo(() => {
         <PhoneMenu
           showPhoneMenu={showPhoneMenu}
           toggleShowPhoneMenu={toggleShowPhoneMenu}
-         
         />
       )}
     </>

@@ -9,22 +9,32 @@ import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import LoadingSpinner from '../utilities/LoadingSpinner'
 import Login from '../Auth/login/Login';
+import useVisible from '../Auth/hooks/usevisable';
+import Signin from '../Auth/signin/Signin';
+import ForgetPass from '../Auth/ForgetPass/ForgetPass';
+import ResetCode from '../Auth/ResetCode/ResetCode';
+import Cookies from "js-cookie";
+import { FiLogOut } from 'react-icons/fi';
 
 
 const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu, openLogin}) => {
     
     const [showCategory, setShowCategory] = useState(false)
     const [categoryHeight, setCategoryHeight] = useState(0)
-    const [showLogin, setShowLogin] = useState(false);
     const {allSubcategories, status, error} = useSelector((state) => state.subcategories);
     const [categoriesState, setCategoriesState] = useState([]);    
+     const [showModel, setShowModel] = useVisible();
+     const [token, setToken] = useState(Cookies.get("token") || null);
     useLayoutEffect(() => {
             if (status === 'succeeded') {
                 setCategoriesState(Object.keys(allSubcategories).map(() => false));
             }
     }, [status, allSubcategories]);
 
-
+ const logout = () => {
+    Cookies.remove("token");
+    setToken(null);
+  };
     useEffect(() => {
         // Disable page scroll when PhoneMenu is open
         const handleScroll = (e) => {
@@ -63,9 +73,7 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu, openLogin}) => {
     const toggleShowCatgeroy = () => { 
         setShowCategory(prev => !prev);
     }
-    const toggelelogin = () => {
-        setShowLogin(!showLogin);
-      };
+   
 
     const toggleCategoryState = (index) => {
         setCategoriesState(prevState => {
@@ -78,10 +86,20 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu, openLogin}) => {
         <div className={`trans flex overflow-auto flex-col gap-16 fixed top-[74px] py-10 px-6 z-40 bg-gray-200 ${showPhoneMenu ? "left-0" : "left-[200%]"} w-full flex flex-col items-center h-[calc(100vh-74px)] `}>
             <ul className="flex gap-8 sm:hidden items-center">
                 <CiHeart size={30} className="cursor-pointer" />
-                <button onClick={toggelelogin}>
-                    <GoPerson  size={30} className="cursor-pointer" />
-                </button>
-                {showLogin && <Login  />}
+                {token ? (
+                                <div onClick={logout}>
+                                  <FiLogOut size={22} className="cursor-pointer" />
+                                </div>
+                              ) : (
+                                <div >
+                                  <GoPerson size={22} className="cursor-pointer" onClick={() => setShowModel('login')} />
+                                </div>
+                              )}
+                  {showModel === "login" ? <Login    setShowModel ={ setShowModel } setToken={setToken}/> : null}
+                             {showModel === "signup" && <Signin setShowModel={setShowModel} />}
+                             {showModel === "forgetPass" && <ForgetPass setShowModel={setShowModel} />}
+                             {showModel === "resetcode" && <ResetCode setShowModel={setShowModel} />}
+               
                 <PiShoppingCart size={30} className="cursor-pointer" />
             </ul>
             <ul className='flex flex-col gap-6 w-full'>
