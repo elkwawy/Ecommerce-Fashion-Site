@@ -4,23 +4,23 @@ import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import LoadingSpinner from "./utilities/LoadingSpinner";
-import Popup from './utilities/PopUp';
+import Popup from "./utilities/PopUp";
 import { Toaster } from "react-hot-toast";
-import ChangePassword from "./Auth/ChangePassword/ChangePassword"
+import ChangePassword from "./Auth/ChangePassword/ChangePassword";
+import "react-loading-skeleton/dist/skeleton.css";
+import Category from "./Pages/Cateogries/Category";
+import ProductPage from "./Pages/ProductPage/ProductPage";
 
 
-
-
-const Home = React.lazy(() => import("./Pages/Home"));
-const ContactUs = React.lazy(() => import("./Pages/ContactUs"));
+const Home = React.lazy(() => import("./Pages/home/Home"));
+const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
 const Cart = React.lazy(() => import("./Pages/Cart/Cart"));
 const Checkout = React.lazy(() => import("./Pages/Checkout/Checkout"));
 const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
 const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
-const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
+// const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
 const AboutUS = React.lazy(() => import("./Pages/About US/AboutUS"));
-
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -31,13 +31,14 @@ function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowPopup(true);
+      // setShowPopup(true);
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
-  const RoutesMemoized = React.useMemo(() => (
-    <Routes>
+  const RoutesMemoized = React.useMemo(
+    () => (
+      <Routes>
         <Route path="/aboutUs" element={<AboutUS />} />
         <Route path="/" element={<Home />} />
         <Route path="/contactUs" element={<ContactUs />} />
@@ -49,12 +50,15 @@ function App() {
         <Route path="/changepassword" element={<ChangePassword />} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />
-    </Routes>
-  ), []);
+        <Route path="/:productName" element={<ProductPage />} />
+      </Routes>
+    ),
+    []
+  );
 
   return (
     <div className="App">
-      <Toaster/>
+      <Toaster />
       <Suspense
         fallback={
           <div className="w-full h-screen flex items-center justify-center">

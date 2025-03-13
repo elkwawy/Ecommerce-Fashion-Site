@@ -3,17 +3,17 @@ function Offers() {
     {
       sale: "Discount 20%",
       title: "All Items",
-      img: require("../assets/images/offer1.png"),
+      img: require("../../../assets/images/offer1.png"),
     },
     {
       sale: "Relaxed fit",
       title: "Overshirt",
-      img: require("../assets/images/offer2.png"),
+      img: require("../../../assets/images/offer2.png"),
     },
     {
       sale: "Discount 50%",
       title: "All Shoes",
-      img: require("../assets/images/offer3.png"),
+      img: require("../../../assets/images/offer3.png"),
     },
   ];
   return (

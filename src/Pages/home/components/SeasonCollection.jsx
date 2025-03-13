@@ -1,7 +1,7 @@
+import { Img } from 'react-image';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import LazyImage from '../utilities/LazyImage';
-import LoadingSpinner from '../utilities/LoadingSpinner';
+import CustomSkeleton from '../../../utilities/CustomSkeleton';
 
 const SeasonCollection = () => {
     const {categories, status, error} = useSelector((state) => state.categories);
@@ -10,7 +10,6 @@ const SeasonCollection = () => {
             <div className='spaceX bg-[#f8f8f8] p-0 sm:p-3 lg:p-6 sm:rounded-md flex flex-col gap-5'>
                 <div className='w-full px-2 sm:px-0 flex justify-between items-center'>
                     <h2 className='text-[16px] sm:text-xl font-semibold'>Season Collection</h2>
-                    <span className='text-sm sm:text-[16px] underline trans cursor-pointer hover:no-underline'>View all categories</span>
                 </div>
 
                 {/* DIV OF API DATA */}
@@ -18,7 +17,7 @@ const SeasonCollection = () => {
                     {
                         categories && categories.map((coll) => (
                             <Link state={{categoryId: coll._id}} to={`${coll.slug}/all`} key={coll._id} className='min-w-[120px] md:w-fit trans hover:scale-105 py-2 rounded-md cursor-pointer flex flex-col items-center justify-center gap-2 sm:gap-4'>
-                                <LazyImage src={coll.image} alt={`${coll.name} Category`} loader={<div className='w-[100px] sm:w-[120px] md:w-[200px] relative h-[100px] sm:h-[120px] md:h-[200px] rounded-full flex items-center justify-center bg-[#ddd]'><LoadingSpinner  /></div>} className={'rounded-full w-[100px] sm:w-[120px] md:w-[200px] trans'} />
+                                <Img src={coll.image} className={'rounded-full max-w-[100px] sm:max-w-[120px] md:max-w-[200px] h-[100px] sm:h-[120px] md:h-[200px] trans'} alt={`${coll.name} Category`} loader={<CustomSkeleton className='w-[100px] sm:w-[120px] md:w-[200px] relative h-[100px] sm:h-[120px] md:h-[200px] rounded-full flex items-center justify-center ' />}  />
                                 <div className='flex flex-col gap-0.5 items-center'>
                                     <h2 className='text-[16px] sm:text-lg font-semibold'>{coll.name}</h2>
                                 </div>
@@ -30,7 +29,20 @@ const SeasonCollection = () => {
                 {
                     status === "failed" && <p>{error}</p>
                 }
-                {status === "loading" && <div className="w-full h-44 bg-[#f8f8f8] flex items-center justify-center"> <LoadingSpinner /> </div>}
+                {status === "loading" && (
+                    <div className="flex justify-center items-center gap-0 sm:gap-14 md:gap-10 lg:gap-44 w-full">
+                        {[0, 1, 2].map((_, index) => (
+                            <div key={index} className="flex flex-col items-center gap-2">
+                                {/* Image Skeleton */}
+                                <div className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] md:w-[200px] md:h-[200px] rounded-full">
+                                    <CustomSkeleton borderRadius="100%" width="100%" height="100%"  />
+                                </div>
+                                {/* Text Skeletons */}
+                                <CustomSkeleton width="70px" height={7} />
+                            </div>
+                        ))}
+                    </div>
+                )}
 
             </div>
         </div>
