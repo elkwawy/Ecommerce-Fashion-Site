@@ -9,7 +9,7 @@ const SubcategoryProducts = () => {
     return (
         <>
         
-            {status == 'succeeded' && products &&<div className="products pt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 smXl:grid-cols-5  gap-1  max-sm:gap-4 max-sm:flex max-sm:flex-col max-sm:items-center">
+            {status == 'succeeded' && products &&<div className="products pt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 smXl:grid-cols-5  gap-2  max-sm:gap-4 max-sm:flex max-sm:flex-col max-sm:items-center">
                 { products.map((product) => (
                     <CategoryProduct key={product._id} product={product}  />
                 ))}
