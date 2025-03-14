@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../../utilities/LoadingSpinner';
+import { FaCartPlus } from 'react-icons/fa6';
 
 export default function Wishlist() {
 
@@ -46,37 +47,39 @@ export default function Wishlist() {
   <button className='texl-sm text-nowrap border-2 rounded px-4 py-2 md:px-6 '>sort by <span className='font-bold'> newest <IoIosArrowDown className='inline' /></span></button>
   </div>
  
-  <div className='grid grid-cols-12 my-14 gap-4'>
+  <div className='grid grid-cols-12 md:grid-cols-3 lg:grid-cols-5 my-12 gap-4'>
    {wishListItems.map((item)=> (
-     <div className='col-span-12 md:col-span-4 xl:col-span-4 2xl:col-span-3 bg-white shadow-md'  key={item._id}>
+     <div className=' bg-white '  key={item._id}>
     <div>
-     <div className='relative  overflow-hidden'>
-     <div className='absolute top-2 right-2 p-2 w-[50px] h-[50px] bg-white rounded-full flex justify-center items-center'>
+     <div className='relative'>
+     <div className='absolute top-2 right-2 p-2 w-[40px] h-[40px] bg-white rounded-full flex justify-center items-center'>
          <FaHeart className=''/>
          </div>
-         <img src={item.image} 
-         alt={item.name}  className='w-full '/>
+       <div className='relative'>
+       <img src={item.image} 
+         alt={item.name}  className='w-full'/>
+          <div className='w-full h-full flex justify-center gap-4 items-end absolute bottom-2   opacity-0 hover:opacity-100 transtion-all duration-200'>
+     <button className='bg-white text-black text-xl rounded py-2 px-3  h-[40px] '><FaCartPlus /> </button>
+     <button className='bg-white  text-xl rounded py-2  h-[40px] px-3 ' onClick={()=>{removeItemsFromWishlist({id:item._id})}}><RiDeleteBin6Line className='text-2xl text-red-700'/></button>
      </div>
-    <div className='py-2 px-4'>
+       </div>
+     </div>
+    <div className='py-2 '>
     <div className='my-2 font-bold'>
      <h3 className=''>{item.name}</h3>
-     <p className='my-2'><span className='font-bold'>Price :</span> {item.price}</p>
+     <p className='my-2'><span className='font-bold'>Price :</span> ${item.price}</p>
      </div>
     
-      <div className='flex gap-2  flex-wrap'>
-        <p className='font-bold'>Colors :</p>
+      <div className='flex gap-2  justify-start'>
         {item.colors && item.colors.length > 0 ? (
   item.colors.map((color, index) => (
-    <p key={index}>{color}</p>
+    <div className='w-8 h-8 rounded-full border-2' style={{ backgroundColor: item.colors[index] }} key={index}></div>
            ))
 ) : (
-  <p>No colors available</p>
+  <p className='font-bold'>No colors available</p>
 )}
       </div>
-     <div className='flex justify-between  items-center'>
-     <button className='bg-black text-white py-2 px-4 rounded my-2'>Add to cart</button>
-     <button className='' onClick={()=>{removeItemsFromWishlist({id:item._id})}}><RiDeleteBin6Line className='text-2xl text-red-700'/></button>
-     </div>
+    
     </div>
 
    </div>
@@ -109,10 +112,6 @@ export default function Wishlist() {
      </div>
    
      </section>)}
- 
-  
-  
- 
   
    </>
 }

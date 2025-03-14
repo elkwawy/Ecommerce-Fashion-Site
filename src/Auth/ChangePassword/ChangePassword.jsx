@@ -1,16 +1,16 @@
 import axios from 'axios';
-import { useFormik } from 'formik';
+import { Form, Formik , useFormik } from 'formik';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup'
+import InputForm from "../../components/helpers/InputForm";
+import ButtonForm from "../../components/helpers/ButtonForm";
 
 export default function ResetPassword() {
     const [errorMsg,seterrorMsg]= useState(null)
     const navigate = useNavigate()
-
-  
 
     const validationSchema = yup.object({
         email: yup.string().email("write avalid email").required("email is required"),
@@ -48,40 +48,58 @@ export default function ResetPassword() {
              seterrorMsg(error.response.data.message)
       }
     }
-
-
     
-    
-    
-    const formik = useFormik({
-      initialValues:{
-        email:"",
-        newPassword:"",
-      },
-      validationSchema,
-      onSubmit:newPassword,
-    })
+   
   return <>
    <section className='min-h-screen text-center '>
-                    <form onSubmit={formik.handleSubmit} className='w-[90%] md:w-[70%] lg:w-[40%] xl:w-1/3 bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg'>
+    <Formik
+                        initialValues={{ email:"",  newPassword:""}}
+                        validationSchema={validationSchema }
+                        onSubmit={(values, { resetForm }) => {
+                          newPassword(values)
+                          
+                      }}
+                      >
+                        {({ handleChange, handleBlur, values, errors, touched }) => (
+                    <Form className='w-[90%] md:w-[70%] lg:w-[40%] xl:w-1/3 bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg'>
                         <h3 className='text-2xl font-bold '>change password</h3>
                         <div className='my-4'>
-                            <input value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} type="email" name='email' placeholder='Email' className='w-full border-2 p-2 rounded' />
-                            {formik.errors.email && formik.touched.email ? (<div className='text-red-600 mt-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'> {formik.errors.email}</div>):('')}
+                        <InputForm 
+                    labelName="Email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+               type="email" 
+               name='email' 
+               placeholder='Enter Your Email' 
+               condition={touched.email && !!errors.email}
+               errorMessage={errors.email}
+               className='w-full border-2 p-2 rounded focus:border-black focus:border-1' />
+                          
                         </div>
                         <div className='mb-4'>
-                            <input value={formik.values.newPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} type="password" name='newPassword' placeholder='newPassword' className='w-full border-2 p-2 rounded' />
-                            {formik.errors.newPassword && formik.touched.newPassword ? (<div className='text-red-600 mt-1 font-semibold'>* {formik.errors.newPassword}</div>):('')}
+                            <InputForm
+                            labelName="new Password"
+                            value={values.newPassword}
+                            onChange={handleChange}
+                            onBlur={handleBlur} type="password"
+                             name='newPassword' placeholder='newPassword' 
+                             condition={touched.newPassword && !!errors.newPassword}
+                             errorMessage={errors.newPassword}
+                             className='w-full border-2 p-2 rounded' />
+                           
                         </div>
 
-                        {errorMsg && <div className='text-red-600 my-1 font-semibold text-sm  bg-red-200 w-fit px-3 ml-auto rounded'>* {errorMsg}</div>}
+                     
 
                       
                         <div>
-                            <button type='submit' className='bg-black text-white py-2 px-4 w-full mb-4 rounded'>change password</button>
+                            <ButtonForm type='submit' className='bg-black text-white py-2 px-4 w-full mb-4 rounded'>change password</ButtonForm>
                         </div>
                         
-                    </form>
+                   </Form>
+                               )}
+                                    </Formik>
                 </section>
   </>
 }
