@@ -47,7 +47,7 @@ function App() {
         <Route path="/cart/checkout" element={<Checkout />} />
         <Route path="/cart/checkout/payment" element={<Payment />} />
         <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/changepassword" element={<ChangePassword />} />
+        <Route path="/changepassword" element={<ChangePassword/>} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />
         <Route path="/:productName" element={<ProductPage />} />

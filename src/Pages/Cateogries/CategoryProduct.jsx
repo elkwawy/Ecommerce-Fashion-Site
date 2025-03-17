@@ -4,10 +4,26 @@ import { memo } from "react";
 import CustomSkeleton from "../../utilities/CustomSkeleton";
 import { Img } from "react-image";
 import { BsBagPlus } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWhishList, getUserWhishList } from "../../Redux Toolkit/slices/WishlistSlice";
+import { showToast } from "../../utilities/showToast";
 
 
 const CategoryProduct = memo(({product}) => {
     const {price,slug, priceAfterDiscount, image, name, colors} = product;
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+    const dispatch =useDispatch()
+
+
+
+    const handleAddToWishlist = async (id) => {
+       if(isAuthenticated) {
+        await dispatch(addToWhishList({ id }));
+        dispatch(getUserWhishList()); 
+      }else{
+        showToast("error","Please login first");
+      }
+    }
     return (
         <Link to={`/${slug}`}
             state={{productId : product._id}}
@@ -21,9 +37,9 @@ const CategoryProduct = memo(({product}) => {
                     <Link title="Add to cart" to="/cart" className="top-2 left-2 absolute">
                         <BsBagPlus className="text-xl font-semibold" />
                     </Link>
-                    <Link title="Add to wishlist" to="/wishlist" className="top-2 right-2 absolute">
+                    <div title="Add to wishlist" onClick={() => {handleAddToWishlist(product._id)}}  className="top-2 right-2 absolute">
                         <CiHeart className="text-xl font-semibold" />
-                    </Link>
+                    </div>
                 </div>
             </div>
 

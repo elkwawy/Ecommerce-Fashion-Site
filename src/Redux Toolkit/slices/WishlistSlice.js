@@ -1,35 +1,26 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
-import toast from 'react-hot-toast';
-
-
+import { showToast } from "../../utilities/showToast";
+import { API,BASE_URL } from "../../Api/Api";
 
 
 export const addToWhishList = createAsyncThunk(
   "wishlist/addToWhishList", 
   async ({ id }, { rejectWithValue }) => {
-    let toastid;
     try {
       const options = {
         method: "POST",
-        url: `https://ecommerce-dot-code.vercel.app/api/wishlist`,
-        data: {
-          productId: id,
-        },
-        headers: {
-            authorization: Cookies.get("token")
-        }
+        url: `${BASE_URL}/wishlist`,
+        data: { productId: id },
+        headers: Cookies.get("token") ? { authorization: Cookies.get("token") } : {},
       };
-      
-      toastid = toast.loading("waiting...");
+
       const { data } = await axios.request(options);
-      toast.dismiss(toastid)
-      toast.success('Product added to wishlist')  
-      console.log(data);
+      showToast("success", "Product added to wishlist");
       return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Request failed");
+      return  rejectWithValue(error.response?.data || "Request failed");
     }
   }
 );
@@ -37,36 +28,22 @@ export const addToWhishList = createAsyncThunk(
 
 export const getUserWhishList = createAsyncThunk(
   "userwhishlist/getUserWhishList", 
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
       const options = {
         method: "GET",
-        url: "https://ecommerce-dot-code.vercel.app/api/wishlist",
-        headers: {
-            authorization: Cookies.get("token")
-        }
-        
+        url: (API.getWishlist),
+        headers: Cookies.get("token") ? { authorization: Cookies.get("token") } : {},
       };
-      
       const { data } = await axios.request(options);
-      console.log(data);
       return data;
-
     } catch (error) {
-      return (error.response?.data || "Request failed");
+      return rejectWithValue(error.response?.data || "Request failed");
     }
   }
 );
 
-
-
-  
-
-
-
-
 const wishListSlice = createSlice({
-  
   name: "wishlist", 
   initialState: {
     wishListItems: [],
@@ -77,6 +54,7 @@ const wishListSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+    
       .addCase(addToWhishList.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
@@ -85,33 +63,28 @@ const wishListSlice = createSlice({
       .addCase(addToWhishList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.wishListItems.push(action.payload);
-        
       })
       .addCase(addToWhishList.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.error = action.payload || "Something went wrong";
+      })
+
+     
+      .addCase(getUserWhishList.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.error = null;
+      })
+      .addCase(getUserWhishList.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.wishListItems = action.payload?.data || action.payload || []
+      })
+      .addCase(getUserWhishList.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.payload || "Something went wrong";
       });
-
-      builder
-       .addCase(getUserWhishList.pending, (state) => {
-          state.isLoading = true;
-          state.isError = false;
-          state.error = null;
-
-        })
-       .addCase(getUserWhishList.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.wishListItems = action.payload.data || []
-        })
-       .addCase(getUserWhishList.rejected, (state, action) => {
-          state.isLoading = false;
-          state.isError = true;
-          state.error = action.payload || "Something went wrong";
-        });
-
-        
-       
   },
 });
 
