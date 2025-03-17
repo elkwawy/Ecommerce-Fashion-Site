@@ -15,7 +15,7 @@ import Category from "./CategoryNav";
 import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
 import Logo from "../assets/icons/logo.png";
-import useVisible from "../Auth/hooks/usevisable";
+import useVisible from "../Auth/utils/usevisable";
 import Signin from "../Auth/signin/Signin";
 import ForgetPass from "../Auth/ForgetPass/ForgetPass";
 import ResetCode from "../Auth/ResetCode/ResetCode";

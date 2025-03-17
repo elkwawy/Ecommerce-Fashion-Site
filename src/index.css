@@ -39,7 +39,7 @@ a {
 
 @layer components {
   .auth-form {
-    @apply mt-8 w-[85%] max-[350px]:w-[90%] max-[350px]:top-[48%] md:w-[70%] lg:w-[50%] xl:w-[50%] 2xl:w-[40%] max-[425px]:my-10 bg-white absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg;
+    @apply mt-8 w-[85%] max-[350px]:w-[90%] max-[350px]:top-[48%] md:w-[70%] lg:w-[50%] xl:w-[40%] 2xl:w-[40%] max-[425px]:my-10 bg-white absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg;
   }
 }
 @layer components {

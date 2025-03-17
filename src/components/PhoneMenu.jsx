@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import LoadingSpinner from '../utilities/LoadingSpinner'
 import Login from '../Auth/login/Login';
-import useVisible from '../Auth/hooks/usevisable';
+import useVisible from '../Auth/utils/usevisable';
 import Signin from '../Auth/signin/Signin';
 import ForgetPass from '../Auth/ForgetPass/ForgetPass';
 import ResetCode from '../Auth/ResetCode/ResetCode';
