@@ -2,11 +2,14 @@ export const BASE_URL = `https://ecommerce-dot-code.vercel.app/api`;
 
 export const API = {
   /* ======= Authentication ======= */
-  register: `${BASE_URL}/auth/register`,
+  register: `${BASE_URL}/auth/signup`,
   login: `${BASE_URL}/auth/login`,
   forgotPassword: `${BASE_URL}/auth/forgotPassword`,
-  verifyResetCode: `${BASE_URL}/auth/verifyResetCode`,
+  ResetCode: `${BASE_URL}/auth/verifyResetCode`,
   resetPassword: `${BASE_URL}/auth/resetPassword`,
+  
+  /* ======= wishlist======= */
+  getWishlist: `${BASE_URL}/wishlist`,
 
   /* ======= Contact Us ======= */
   contactUs: `${BASE_URL}/contact`,

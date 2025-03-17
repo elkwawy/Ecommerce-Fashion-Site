@@ -2,6 +2,9 @@ import {  useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoIosHeart } from "react-icons/io";
 import { FaStar, FaRegStar } from "react-icons/fa"; 
+import { useDispatch, useSelector } from "react-redux";
+import { addToWhishList, getUserWhishList } from "../../../Redux Toolkit/slices/WishlistSlice";
+import { showToast } from "../../../utilities/showToast";
 const ProductInfo = ({ product }) => {
     const { name, price, priceAfterDiscount, size, colors, desc, stock } = product;
     const [addToCart, setAddToCart] = useState("Add to cart")
@@ -12,9 +15,19 @@ const ProductInfo = ({ product }) => {
         size: null, // No size selected initially
     });
 
-    const addToWishList = () => { 
-        setIsFav(fav => !fav);
-    }
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+
+    const dispatch = useDispatch()
+
+    const addToWishList = async (id) => {
+           if(isAuthenticated) {
+            setIsFav(fav => !fav);
+            await dispatch(addToWhishList({ id }));
+            dispatch(getUserWhishList()); 
+          }else{
+            showToast("error","Please login first");
+          }
+        }
 
     const updateOpts = (key, value) => { 
         setOpts((prev) => ({
@@ -102,7 +115,8 @@ const ProductInfo = ({ product }) => {
                 <button onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} className="bg-black min-w-[170px] text-white  trans hover:opacity-80 py-2">
                     {addToCart}
                 </button>
-                <button onClick={addToWishList} className={` border border-black trans hover:bg-gray-100 h-full px-3`}>
+               
+                <button  onClick={()=>{addToWishList(product._id)}}  className={` border border-black trans hover:bg-gray-100 h-full px-3`}>
                     {!isFav && <IoIosHeartEmpty className="text-lg" />}
                     {isFav && <IoIosHeart className="text-lg" />}
                 </button>

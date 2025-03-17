@@ -15,11 +15,11 @@ import Category from "./CategoryNav";
 import PhoneMenu from "./PhoneMenu";
 import Search from "./Search";
 import Logo from "../assets/icons/logo.png";
-import Cookies from "js-cookie";
 import useVisible from "../Auth/hooks/usevisable";
 import Signin from "../Auth/signin/Signin";
 import ForgetPass from "../Auth/ForgetPass/ForgetPass";
 import ResetCode from "../Auth/ResetCode/ResetCode";
+import { handleLogout } from "../Redux Toolkit/slices/auth";
 
 
 
@@ -28,14 +28,14 @@ const Navbar = memo(() => {
   
   const [showModel, setShowModel] = useVisible();
  
- 
   const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [shownMenuMark, setShownMenuMark] = useState(false); // the mark that will be shown ( X || menu bar )
   const [isScreenSmall, setIsScreenSmall] = useState(false);
   const location = useLocation();
-  const [token, setToken] = useState(Cookies.get("token") || null);
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
     
 
   const toggleShowSearch = () => {
@@ -44,10 +44,10 @@ const Navbar = memo(() => {
     setShownMenuMark(false);
   };
 
-  const logout = () => {
-    Cookies.remove("token");
-    setToken(null);
-  };
+  // const logout = () => {
+  //   Cookies.remove("token");
+  //   setToken(null);
+  // };
 
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
@@ -85,7 +85,6 @@ const Navbar = memo(() => {
     };
   }, []);
 
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategories())
       .unwrap()
@@ -196,8 +195,8 @@ const Navbar = memo(() => {
               >
                 <CiHeart size={22} className="cursor-pointer" />
               </NavLink>
-              {token ? (
-                <div onClick={logout}>
+              {isAuthenticated ? (
+                <div onClick={()=>{dispatch(handleLogout())}}>
                   <FiLogOut size={22} className="cursor-pointer" />
                 </div>
               ) : (
@@ -205,7 +204,7 @@ const Navbar = memo(() => {
                   <GoPerson size={22} className="cursor-pointer" onClick={() => setShowModel('login')} />
                 </div>
               )}
-             {showModel === "login" ? <Login    setShowModel ={ setShowModel } setToken={setToken}/> : null}
+             {showModel === "login" ? <Login    setShowModel ={ setShowModel } /> : null}
              {showModel === "signup" && <Signin setShowModel={setShowModel} />}
              {showModel === "forgetPass" && <ForgetPass setShowModel={setShowModel} />}
              {showModel === "resetcode" && <ResetCode setShowModel={setShowModel} />}
