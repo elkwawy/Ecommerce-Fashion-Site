@@ -84,15 +84,30 @@ const PhoneMenu = memo(({showPhoneMenu, toggleShowPhoneMenu, openLogin}) => {
         <div className={`trans flex overflow-auto flex-col gap-16 fixed top-[74px] py-10 px-6 z-40 bg-gray-200 ${showPhoneMenu ? "left-0" : "left-[200%]"} w-full flex flex-col items-center h-[calc(100vh-74px)] `}>
             <ul className="flex gap-8 sm:hidden items-center">
                 <CiHeart size={30} className="cursor-pointer" />
-                {isAuthenticated ? (
-                                <div onClick={()=>{dispatch(handleLogout())}}>
-                                  <FiLogOut size={22} className="cursor-pointer" />
-                                </div>
-                              ) : (
+              
+                             
                                 <div >
                                   <GoPerson size={22} className="cursor-pointer" onClick={() => setShowModel('login')} />
                                 </div>
-                              )}
+                           
+
+{isAuthenticated ? (
+                <button
+                  className="cursor-pointer bg-gray-100 shadow-xl py-2 px-3  rounded-xl "
+                  onClick={() => {
+                    dispatch(handleLogout());
+                  }}
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  className="cursor-pointer bg-gray-100 shadow-xl py-2 px-3 rounded-xl "
+                  onClick={() => setShowModel("login")}
+                >
+                  Login
+                </button>
+              )}
                   {showModel === "login" ? <Login    setShowModel ={ setShowModel } /> : null}
                              {showModel === "signup" && <Signin setShowModel={setShowModel} />}
                              {showModel === "forgetPass" && <ForgetPass setShowModel={setShowModel} />}

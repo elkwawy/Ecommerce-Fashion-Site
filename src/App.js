@@ -10,6 +10,7 @@ import ChangePassword from "./Auth/ChangePassword/ChangePassword";
 import "react-loading-skeleton/dist/skeleton.css";
 import Category from "./Pages/Cateogries/Category";
 import ProductPage from "./Pages/ProductPage/ProductPage";
+import Profile from "./Pages/Profile/Profile";
 
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
@@ -47,6 +48,7 @@ function App() {
         <Route path="/cart/checkout" element={<Checkout />} />
         <Route path="/cart/checkout/payment" element={<Payment />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/changepassword" element={<ChangePassword/>} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />

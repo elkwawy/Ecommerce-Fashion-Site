@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import * as yup from "yup";
 import InputForm from "../../components/helpers/InputForm";
@@ -13,20 +13,7 @@ export default function Login({ setShowModel }) {
   const { loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const formRef = useRef(null);
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (formRef.current && !formRef.current.contains(event.target)) {
-        setShowModel(null);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setShowModel]);
+ 
 
   const validationSchema = yup.object({
     email: yup
@@ -41,9 +28,12 @@ export default function Login({ setShowModel }) {
 
   return (
     <>
-      <section className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-[66] min-h-screen text-center ">
+      <section
+        className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-[66] min-h-screen text-center "
+        onClick={() => setShowModel(null)}
+      >
         <Formik
-          initialValues={{ email: "", password: "" }}
+           initialValues={{ email: "", password: "" }}
           validationSchema={validationSchema}
           onSubmit={(values, { resetForm }) => {
             dispatch(handleLogin(values))
@@ -51,11 +41,11 @@ export default function Login({ setShowModel }) {
               .then(() => {
                 navigate("/");
                 setShowModel(null);
-              })
+              });
           }}
         >
           {({ handleChange, handleBlur, values, errors, touched }) => (
-            <Form ref={formRef} className="auth-form">
+            <Form className="auth-form" onClick={(e) => e.stopPropagation()}>
               <h3 className="text-2xl font-bold ">Login to Account</h3>
               <p className="my-4">Please enter your email and password</p>
               <InputForm

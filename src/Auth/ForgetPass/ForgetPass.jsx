@@ -17,7 +17,7 @@ export default function ForgetPass({ setShowModel, setToken }) {
 
   return (
     <>
-      <section className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-[500] min-h-screen text-center">
+      <section className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-[500] min-h-screen text-center" onClick={() => setShowModel(null)}>
         <Formik
           initialValues={{ email: "" }}
           validationSchema={validationSchema}
@@ -26,7 +26,7 @@ export default function ForgetPass({ setShowModel, setToken }) {
           }}
         >
           {({ handleChange, handleBlur, values, errors, touched }) => (
-            <Form className="auth-form">
+            <Form className="auth-form" onClick={(e) => e.stopPropagation()}>
               <h3 className="text-2xl font-bold ">Forget Password</h3>
               <InputForm
                 labelName="email"

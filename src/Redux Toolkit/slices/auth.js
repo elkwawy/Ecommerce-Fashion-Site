@@ -24,6 +24,7 @@ export const handleLogin = createAsyncThunk(
 
 export const handleLogout = () => (dispatch) => {
   Cookies.remove("token");
+  Cookies.remove("user");
   dispatch(logout());
   showToast("success", "Logged out successfully");
 };
@@ -52,6 +53,9 @@ const AuthSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         state.user = action.payload;
+        Cookies.set("user", JSON.stringify(action.payload), { expires: 7 });
+        console.log(state.user);
+        
       })
       .addCase(handleLogin.rejected, (state, action) => {
         state.loading = false;
