@@ -2,12 +2,11 @@ import { memo, useEffect, useRef, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
 import { IoIosSearch } from "react-icons/io";
-import { FiLogOut } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Login from "../Auth/login/Login";
 import { fetchCategories } from "../Redux Toolkit/slices/categoriesSlice";
 import { fetchAllSubcategories } from "../Redux Toolkit/slices/subcategoriesForEachCategory";
@@ -20,34 +19,25 @@ import Signin from "../Auth/signin/Signin";
 import ForgetPass from "../Auth/ForgetPass/ForgetPass";
 import ResetCode from "../Auth/ResetCode/ResetCode";
 import { handleLogout } from "../Redux Toolkit/slices/auth";
-
-
-
+import { showToast } from "../utilities/showToast";
 
 const Navbar = memo(() => {
-  
   const [showModel, setShowModel] = useVisible();
- 
+
   const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [shownMenuMark, setShownMenuMark] = useState(false); // the mark that will be shown ( X || menu bar )
   const [isScreenSmall, setIsScreenSmall] = useState(false);
   const location = useLocation();
-  const dispatch = useDispatch()
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
-    
-
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+ const navigate = useNavigate()
   const toggleShowSearch = () => {
     setShowSearch(!showSearch);
     setShowPhoneMenu(false);
     setShownMenuMark(false);
   };
-
-  // const logout = () => {
-  //   Cookies.remove("token");
-  //   setToken(null);
-  // };
 
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
@@ -104,6 +94,14 @@ const Navbar = memo(() => {
   const toggleShowCategory = () => {
     setShowCategory(!showCategory);
   };
+
+  const handelNvigateProfile =()=>{
+    if(isAuthenticated){
+      navigate("/profile")
+    }else{
+      showToast("error","please login first")
+    }
+  }
 
   return (
     <>
@@ -195,19 +193,38 @@ const Navbar = memo(() => {
               >
                 <CiHeart size={22} className="cursor-pointer" />
               </NavLink>
+
+              <div onClick={handelNvigateProfile} title="profile">
+                <GoPerson size={22} className="cursor-pointer" />
+              </div>
+
               {isAuthenticated ? (
-                <div onClick={()=>{dispatch(handleLogout())}}>
-                  <FiLogOut size={22} className="cursor-pointer" />
-                </div>
+                <button
+                  className="cursor-pointer bg-gray-100 shadow-xl py-2 px-3  rounded-xl "
+                  onClick={() => {
+                    dispatch(handleLogout());
+                  }}
+                >
+                  Logout
+                </button>
               ) : (
-                <div >
-                  <GoPerson size={22} className="cursor-pointer" onClick={() => setShowModel('login')} />
-                </div>
+                <button
+                  className="cursor-pointer bg-gray-100 shadow-xl py-2 px-3 rounded-xl "
+                  onClick={() => setShowModel("login")}
+                >
+                  Login
+                </button>
               )}
-             {showModel === "login" ? <Login    setShowModel ={ setShowModel } /> : null}
-             {showModel === "signup" && <Signin setShowModel={setShowModel} />}
-             {showModel === "forgetPass" && <ForgetPass setShowModel={setShowModel} />}
-             {showModel === "resetcode" && <ResetCode setShowModel={setShowModel} />}
+              {showModel === "login" ? (
+                <Login setShowModel={setShowModel} />
+              ) : null}
+              {showModel === "signup" && <Signin setShowModel={setShowModel} />}
+              {showModel === "forgetPass" && (
+                <ForgetPass setShowModel={setShowModel} />
+              )}
+              {showModel === "resetcode" && (
+                <ResetCode setShowModel={setShowModel} />
+              )}
             </ul>
             <div className="flex gap-6 items-center  md:hidden">
               <IoIosSearch
