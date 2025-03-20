@@ -19,6 +19,7 @@ export const API = {
   /* ======= Category ======= */
   getAllCategories: `${BASE_URL}/category/`,
   /* ======= Product ======= */
+  product : `${BASE_URL}/product/`,
   getProductData : (id) => `${BASE_URL}/product/${id}`,
   /* ======= subcategory ======= */
   getAllSubcategories: `${BASE_URL}/subcategory/`,

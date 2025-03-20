@@ -11,6 +11,7 @@ const Category = memo(() => {
     const [canScrollRight, setCanScrollRight] = useState(false);
     const [newestSort, setNewestSort] = useState(false);
     const [page, setPage] = useState(1);
+    
 
     const { categoryName, subcategoryID } = useParams();
     const { status, error } = useSelector((state) => state.subcategories);

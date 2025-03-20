@@ -4,9 +4,9 @@ import { CiHeart } from "react-icons/ci";
 import { FaCartPlus } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import LazyImage from "../../../utilities/LazyImage";
-import LoadingSpinner from "../../../utilities/LoadingSpinner";
-import { addToWhishList } from "../../../Redux Toolkit/slices/WishlistSlice";
+import LazyImage from "../utilities/LazyImage";
+import LoadingSpinner from "../utilities/LoadingSpinner";
+import { addToWhishList } from "../Redux Toolkit/slices/WishlistSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import toast from "react-hot-toast";

@@ -9,11 +9,10 @@ import useAuthHook from "../hooks/useAuthHook";
 export default function ResetCode({ setShowModel }) {
   const { resetCode, loading } = useAuthHook({ setShowModel });
   const validationSchema = yup.object({
-    resetCode: yup.string().required("code is required").min(6).max(6),
+    resetCode: yup.string().required("Code is required").min(6).max(6),
   });
 
   return (
-    <>
       <section className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-10 min-h-screen text-center" onClick={() => setShowModel(null)}>
         <Formik
           initialValues={{ resetCode: "" }}
@@ -32,7 +31,7 @@ export default function ResetCode({ setShowModel }) {
                 type="text"
                 condition={touched.resetCode && !!errors.resetCode}
                 errorMessage={errors.resetCode}
-                placeholder="Enter Your code"
+                placeholder="Enter your code"
                 name="resetCode"
               />
               <ButtonForm
@@ -42,18 +41,15 @@ export default function ResetCode({ setShowModel }) {
               >
                 Send
               </ButtonForm>
-              <div
-                className="close-btn"
-                onClick={() => {
-                  setShowModel(null);
-                }}
+             <div
+                className="close-btn cursor-pointer"
+                onClick={() => setShowModel(null)}
               >
-                <HiOutlineXMark className="text-2xl font-bold cursor-pointer" />
+                <HiOutlineXMark className="text-2xl font-bold" />
               </div>
             </Form>
           )}
         </Formik>
       </section>
-    </>
   );
 }

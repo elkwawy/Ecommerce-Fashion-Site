@@ -1,8 +1,8 @@
 import { default as React, Suspense, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
+import Footer from "./layouts/Footer";
+import Navbar from "./layouts/Navbar/Navbar";
 import LoadingSpinner from "./utilities/LoadingSpinner";
 import Popup from "./utilities/PopUp";
 import { Toaster } from "react-hot-toast";
@@ -11,7 +11,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Category from "./Pages/Cateogries/Category";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 import Profile from "./Pages/Profile/Profile";
-
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
@@ -49,7 +48,7 @@ function App() {
         <Route path="/cart/checkout/payment" element={<Payment />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/changepassword" element={<ChangePassword/>} />
+        <Route path="/changepassword" element={<ChangePassword />} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />
         <Route path="/:productName" element={<ProductPage />} />
@@ -63,7 +62,7 @@ function App() {
       <Toaster />
       <Suspense
         fallback={
-          <div className="w-full h-screen flex items-center justify-center">
+          <div className="flex h-screen justify-center w-full items-center">
             <LoadingSpinner />
           </div>
         }

@@ -4,12 +4,15 @@ import subcategoriesSlice from "./slices/subcategoriesForEachCategory";
 import wishListSlice from "./slices/WishlistSlice";
 import subcategory from "./slices/subcategory";
 import authReducer from "./slices/auth";
+import productSlice from "./slices/productSlice";
+
 export const store = configureStore({
   reducer: {
     categories: categoriesSlice,
     subcategories: subcategoriesSlice,
     wishListSlice,
     subcategory: subcategory,
-    auth: authReducer
+    auth: authReducer,
+    products: productSlice,
   },
 });

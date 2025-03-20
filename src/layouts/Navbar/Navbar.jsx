@@ -7,19 +7,19 @@ import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import Login from "../Auth/login/Login";
-import { fetchCategories } from "../Redux Toolkit/slices/categoriesSlice";
-import { fetchAllSubcategories } from "../Redux Toolkit/slices/subcategoriesForEachCategory";
-import Category from "./CategoryNav";
-import PhoneMenu from "./PhoneMenu";
-import Search from "./Search";
-import Logo from "../assets/icons/logo.png";
-import useVisible from "../Auth/utils/usevisable";
-import Signin from "../Auth/signin/Signin";
-import ForgetPass from "../Auth/ForgetPass/ForgetPass";
-import ResetCode from "../Auth/ResetCode/ResetCode";
-import { handleLogout } from "../Redux Toolkit/slices/auth";
-import { showToast } from "../utilities/showToast";
+import Login from "../../Auth/login/Login";
+import { fetchCategories } from "../../Redux Toolkit/slices/categoriesSlice";
+import { fetchAllSubcategories } from "../../Redux Toolkit/slices/subcategoriesForEachCategory";
+import Category from "./components/CategoryNav";
+import PhoneMenu from "./components/PhoneMenu";
+import Search from "./components/Search";
+import Logo from "../../assets/icons/logo.png";
+import useVisible from "../../Auth/utils/usevisable";
+import Signin from "../../Auth/signin/Signin";
+import ForgetPass from "../../Auth/ForgetPass/ForgetPass";
+import ResetCode from "../../Auth/ResetCode/ResetCode";
+import { handleLogout } from "../../Redux Toolkit/slices/auth";
+import { showToast } from "../../utilities/showToast";
 
 const Navbar = memo(() => {
   const [showModel, setShowModel] = useVisible();
@@ -32,7 +32,7 @@ const Navbar = memo(() => {
   const location = useLocation();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
- const navigate = useNavigate()
+  const navigate = useNavigate();
   const toggleShowSearch = () => {
     setShowSearch(!showSearch);
     setShowPhoneMenu(false);
@@ -95,28 +95,28 @@ const Navbar = memo(() => {
     setShowCategory(!showCategory);
   };
 
-  const handelNvigateProfile =()=>{
-    if(isAuthenticated){
-      navigate("/profile")
-    }else{
-      showToast("error","please login first")
+  const handelNvigateProfile = () => {
+    if (isAuthenticated) {
+      navigate("/profile");
+    } else {
+      showToast("error", "please login first");
     }
-  }
+  };
 
   return (
     <>
-      <div className="flex sticky top-0 shadow-sm  z-[100] bg-[#F8F8F8] items-center w-full px-6 py-2 md:px-10 md:py-[20px] h-[74px] md:h-[74px] justify-between">
+      <div className="flex bg-[#F8F8F8] h-[74px] justify-between shadow-sm w-full items-center md:h-[74px] md:px-10 md:py-[20px] px-6 py-2 sticky top-0 z-[100]">
         {showSearch ? (
           <Search toggleShowSearch={toggleShowSearch} />
         ) : (
           <>
             <NavLink
               to={"/"}
-              className="font-bold relative text-2xl cursor-pointer"
+              className="text-2xl cursor-pointer font-bold relative"
             >
               <img src={Logo} className="w-[60px]" alt="" />
             </NavLink>
-            <ul className="hidden md:flex gap-6 items-center">
+            <ul className="gap-6 hidden items-center md:flex">
               <NavLink
                 to={"/"}
                 className={({ isActive }) =>
@@ -169,7 +169,7 @@ const Navbar = memo(() => {
               </NavLink>
             </ul>
 
-            <ul className="gap-6 items-center hidden sm:flex">
+            <ul className="gap-6 hidden items-center sm:flex">
               <IoIosSearch
                 onClick={toggleShowSearch}
                 size={22}
@@ -200,7 +200,7 @@ const Navbar = memo(() => {
 
               {isAuthenticated ? (
                 <button
-                  className="cursor-pointer bg-gray-100 shadow-xl py-2 px-3  rounded-xl "
+                  className="bg-gray-100 rounded-xl shadow-xl cursor-pointer px-3 py-2"
                   onClick={() => {
                     dispatch(handleLogout());
                   }}
@@ -209,7 +209,7 @@ const Navbar = memo(() => {
                 </button>
               ) : (
                 <button
-                  className="cursor-pointer bg-gray-100 shadow-xl py-2 px-3 rounded-xl "
+                  className="bg-gray-100 rounded-xl shadow-xl cursor-pointer px-3 py-2"
                   onClick={() => setShowModel("login")}
                 >
                   Login
@@ -226,7 +226,7 @@ const Navbar = memo(() => {
                 <ResetCode setShowModel={setShowModel} />
               )}
             </ul>
-            <div className="flex gap-6 items-center  md:hidden">
+            <div className="flex gap-6 items-center md:hidden">
               <IoIosSearch
                 onClick={toggleShowSearch}
                 size={22}

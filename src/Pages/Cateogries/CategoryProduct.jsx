@@ -1,5 +1,5 @@
 import { CiHeart } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { memo } from "react";
 import CustomSkeleton from "../../utilities/CustomSkeleton";
 import { Img } from "react-image";
@@ -11,7 +11,8 @@ import {
 } from "../../Redux Toolkit/slices/WishlistSlice";
 import { showToast } from "../../utilities/showToast";
 
-const CategoryProduct = memo(({ product }) => {
+const CategoryProduct = memo(({ product, showDiscount = true }) => {
+  const navigate = useNavigate();
   const { price, slug, priceAfterDiscount, image, name, colors } = product;
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
@@ -24,41 +25,48 @@ const CategoryProduct = memo(({ product }) => {
       showToast("error", "Please login first");
     }
   };
+
+  const handleNavigate = () => {
+    navigate(`/${slug}`, { state: { productId: product._id } });
+  };
+
   return (
-    <Link
-      to={`/${slug}`}
-      state={{ productId: product._id }}
-      className="product pb-2 trans xl:w-[275px] border-white border hover:border-black hover:z-40  cursor-pointer"
+    <div
+      onClick={handleNavigate}
+      className="product pb-2 trans xl:w-[275px] border-white border hover:border-black hover:z-40 cursor-pointer"
     >
       <div className="image-container relative">
-        {/* h-[397px] */}
         <div className="relative">
           <Img
             src={image}
-            alt="name"
-            className="w-full "
+            alt={name}
+            className="w-full"
             loader={<CustomSkeleton width="100%" height="397px" />}
           />
           {price && priceAfterDiscount && priceAfterDiscount < price && (
-            <p className="bg-white text-xs absolute top-[94%] left-2  px-1 text-center">
+            <p className="bg-white text-xs absolute top-[94%] left-2 px-1 text-center">
               -{Math.round(((price - priceAfterDiscount) / price) * 100)}%
             </p>
           )}
+
           <Link
             title="Add to cart"
             to="/cart"
             className="top-2 left-2 absolute"
+            onClick={(e) => e.stopPropagation()}
           >
-            <BsBagPlus className="text-xl font-semibold" />
+            <BsBagPlus className="text-[20px] font-semibold" />
           </Link>
+
           <div
             title="Add to wishlist"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               handleAddToWishlist(product._id);
             }}
             className="top-2 right-2 absolute"
           >
-            <CiHeart className="text-xl font-semibold" />
+            <CiHeart className="text-[24px] font-semibold" />
           </div>
         </div>
       </div>
@@ -70,18 +78,17 @@ const CategoryProduct = memo(({ product }) => {
           </p>
         )}
         <div className="w-full flex justify-between items-center">
-          {priceAfterDiscount && price && priceAfterDiscount < price ? (
+          {showDiscount &&
+          priceAfterDiscount &&
+          price &&
+          priceAfterDiscount < price ? (
             <div className="flex items-center gap-2">
-              {
-                <p className="price text-gray-700 text-sm font-semibold">
-                  {priceAfterDiscount}$
-                </p>
-              }
-              {
-                <p className="price text-gray-400 line-through decoration-black  text-sm ">
-                  {price}$
-                </p>
-              }
+              <p className="price text-gray-700 text-sm font-semibold">
+                {priceAfterDiscount}$
+              </p>
+              <p className="price text-gray-400 line-through decoration-black text-sm">
+                {price}$
+              </p>
             </div>
           ) : (
             <p className="price text-gray-700 text-sm font-semibold">
@@ -91,12 +98,12 @@ const CategoryProduct = memo(({ product }) => {
 
           {colors && colors.length && (
             <div className="colors text-sm text-gray-500 font-semibold">
-              {colors?.length} {colors.length > 1 ? "colors" : "color"}
+              {colors.length} {colors.length > 1 ? "colors" : "color"}
             </div>
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 });
 

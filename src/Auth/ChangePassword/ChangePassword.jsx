@@ -54,7 +54,7 @@ export default function ResetPassword() {
           }}
         >
           {({ handleChange, handleBlur, values, errors, touched }) => (
-            <Form className="w-[90%] md:w-[70%] lg:w-[40%] xl:w-1/3 bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg">
+            <Form className="auth-form">
               <h3 className="text-2xl font-bold ">change password</h3>
 
               <InputForm
@@ -70,7 +70,7 @@ export default function ResetPassword() {
               />
 
               <PasswordForm
-                labelName="newPassword"
+                labelName="New Password"
                 value={values.newPassword}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -80,7 +80,7 @@ export default function ResetPassword() {
                 errorMessage={errors.newPassword}
               />
               <ButtonForm type="submit" className="w-full">
-                change password
+                Change password
               </ButtonForm>
             </Form>
           )}
