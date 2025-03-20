@@ -1,19 +1,17 @@
-import { CiHeart } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import { memo } from "react";
-import CustomSkeleton from "../../utilities/CustomSkeleton";
+import CustomSkeleton from "../utilities/CustomSkeleton";
 import { Img } from "react-image";
-import { BsBagPlus } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToWhishList,
   getUserWhishList,
-} from "../../Redux Toolkit/slices/WishlistSlice";
-import { showToast } from "../../utilities/showToast";
-import { FaCartPlus, FaRegHeart } from "react-icons/fa";
+} from "../Redux Toolkit/slices/WishlistSlice";
+import { showToast } from "../utilities/showToast";
+import { FaRegHeart } from "react-icons/fa";
 import { MdAddShoppingCart } from "react-icons/md";
 
-const CategoryProduct = memo(({ product, showDiscount = true }) => {
+const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
   const { price, slug, priceAfterDiscount, image, name, colors } = product;
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -35,7 +33,7 @@ const CategoryProduct = memo(({ product, showDiscount = true }) => {
   return (
     <div
       onClick={handleNavigate}
-      className="product pb-2 trans xl:w-[275px] border-white border hover:border-black hover:z-40 cursor-pointer"
+      className="border border-white cursor-pointer hover:border-black hover:z-40 pb-2 product trans xl:w-[275px]"
     >
       <div className="image-container relative">
         <div className="relative">
@@ -45,19 +43,22 @@ const CategoryProduct = memo(({ product, showDiscount = true }) => {
             className="w-full"
             loader={<CustomSkeleton width="100%" height="397px" />}
           />
-          {showDiscount && price && priceAfterDiscount && priceAfterDiscount < price && (
-            <p className="bg-white text-xs absolute top-[94%] left-2 px-1 text-center">
-              -{Math.round(((price - priceAfterDiscount) / price) * 100)}%
-            </p>
-          )}
+          {showDiscount &&
+            price &&
+            priceAfterDiscount &&
+            priceAfterDiscount < price && (
+              <p className="bg-white text-center text-xs absolute left-2 px-1 top-[94%]">
+                -{Math.round(((price - priceAfterDiscount) / price) * 100)}%
+              </p>
+            )}
 
           <Link
             title="Add to cart"
             to="/cart"
-            className="top-2 left-2 absolute"
+            className="absolute left-2 top-2"
             onClick={(e) => e.stopPropagation()}
           >
-            <MdAddShoppingCart  className="text-[22px] trans hover:text-[26px] font-semibold" />
+            <MdAddShoppingCart className="text-[22px] font-semibold hover:text-[26px] trans" />
           </Link>
 
           <div
@@ -66,40 +67,40 @@ const CategoryProduct = memo(({ product, showDiscount = true }) => {
               e.stopPropagation();
               handleAddToWishlist(product._id);
             }}
-            className="top-2 right-2 absolute"
+            className="absolute right-2 top-2"
           >
-            <FaRegHeart className="text-[20px] trans hover:text-[24px] font-semibold" />
+            <FaRegHeart className="text-[20px] font-semibold hover:text-[24px] trans" />
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-0.5 px-2 mt-2">
+      <div className="flex flex-col gap-0.5 mt-2 px-2">
         {name && (
-          <p title={name} className="title text-gray-500 text-sm">
+          <p title={name} className="text-gray-500 text-sm title">
             {name}
           </p>
         )}
-        <div className="w-full flex justify-between items-center">
+        <div className="flex justify-between w-full items-center">
           {showDiscount &&
           priceAfterDiscount &&
           price &&
           priceAfterDiscount < price ? (
-            <div className="flex items-center gap-2">
-              <p className="price text-gray-700 text-sm font-semibold">
+            <div className="flex gap-2 items-center">
+              <p className="text-gray-700 text-sm font-semibold price">
                 {priceAfterDiscount}$
               </p>
-              <p className="price text-gray-400 line-through decoration-black text-sm">
+              <p className="text-gray-400 text-sm decoration-black line-through price">
                 {price}$
               </p>
             </div>
           ) : (
-            <p className="price text-gray-700 text-sm font-semibold">
+            <p className="text-gray-700 text-sm font-semibold price">
               {price}$
             </p>
           )}
 
           {colors && colors.length && (
-            <div className="colors text-sm text-gray-500 font-semibold">
+            <div className="colors text-gray-500 text-sm font-semibold">
               {colors.length} {colors.length > 1 ? "colors" : "color"}
             </div>
           )}
@@ -109,4 +110,4 @@ const CategoryProduct = memo(({ product, showDiscount = true }) => {
   );
 });
 
-export default CategoryProduct;
+export default ProductCard;

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import CustomSkeleton from "../../utilities/CustomSkeleton";
-import CategoryProduct from "./CategoryProduct";
+import ProductCard from "../../components/ProductCard";
 
 const SubcategoryProducts = () => {
   const { products, status, error, showMoreLoading } = useSelector(
@@ -10,9 +10,9 @@ const SubcategoryProducts = () => {
   return (
     <>
       {status == "succeeded" && products && (
-        <div className="products pt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 smXl:grid-cols-5  gap-2  max-sm:gap-4 max-sm:flex max-sm:flex-col max-sm:items-center">
+        <div className="grid grid-cols-1 gap-2 lg:grid-cols-4 max-sm:flex max-sm:flex-col max-sm:gap-4 max-sm:items-center md:grid-cols-3 products pt-10 sm:grid-cols-2 smXl:grid-cols-5">
           {products?.map((product) => (
-            <CategoryProduct key={product._id} product={product} />
+            <ProductCard key={product._id} product={product} />
           ))}
           {showMoreLoading &&
             [...Array(12)].map((_, index) => (
@@ -28,7 +28,7 @@ const SubcategoryProducts = () => {
         </div>
       )}
       {status === "loading" && (
-        <div className="products pt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 smXl:grid-cols-5  gap-1  max-sm:gap-4 max-sm:flex max-sm:flex-col max-sm:items-center">
+        <div className="grid grid-cols-1 gap-1 lg:grid-cols-4 max-sm:flex max-sm:flex-col max-sm:gap-4 max-sm:items-center md:grid-cols-3 products pt-10 sm:grid-cols-2 smXl:grid-cols-5">
           {[...Array(12)].map((_, index) => (
             <div key={index} className="w-full max-sm:w-[90%]">
               <CustomSkeleton
@@ -43,12 +43,12 @@ const SubcategoryProducts = () => {
       )}
 
       {status === "failed" && (
-        <div className="w-full h-[500px] flex items-center justify-center">
+        <div className="flex h-[500px] justify-center w-full items-center">
           {error}
         </div>
       )}
       {products.length == 0 && status == "succeeded" && (
-        <div className="w-full h-[500px] flex items-center justify-center">
+        <div className="flex h-[500px] justify-center w-full items-center">
           More products are coming soon.
         </div>
       )}
