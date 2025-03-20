@@ -43,7 +43,7 @@ const CategoryProduct = memo(({ product, showDiscount = true }) => {
             className="w-full"
             loader={<CustomSkeleton width="100%" height="397px" />}
           />
-          {price && priceAfterDiscount && priceAfterDiscount < price && (
+          {showDiscount && price && priceAfterDiscount && priceAfterDiscount < price && (
             <p className="bg-white text-xs absolute top-[94%] left-2 px-1 text-center">
               -{Math.round(((price - priceAfterDiscount) / price) * 100)}%
             </p>
