@@ -9,8 +9,8 @@ export default function NewArrivals() {
     (state) => state.products
   );
   useEffect(() => {
-    if (status === "idle") dispatch(allProduct({ page: 1, limit: limit }));
-  }, [status, dispatch]);
+    dispatch(allProduct({ page: 1, limit: limit }));
+  }, []);
   return (
     <div className="container mx-auto">
       {status == "succeeded" && products && (

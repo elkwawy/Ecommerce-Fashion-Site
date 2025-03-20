@@ -42,7 +42,7 @@ const Footer = memo(() => {
             Categories
           </li>
           {status === "loading" ? (
-            [...Array(5)].map((_, index) => (
+            [...Array(4)].map((_, index) => (
               <li key={index}>
                 <Skeleton height={25} width={150} />
               </li>

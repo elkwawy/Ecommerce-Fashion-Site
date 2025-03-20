@@ -28,7 +28,13 @@ const productSlice = createSlice({
     currentPage: 1,
     totalDocuments: 0,
   },
-  reducers: {},
+  reducers: {
+    resetProducts: (state) => {
+      state.products = [];
+      state.currentPage = 1;
+      state.status = "idle";
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(allProduct.pending, (state) => {

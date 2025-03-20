@@ -10,6 +10,8 @@ import {
   getUserWhishList,
 } from "../../Redux Toolkit/slices/WishlistSlice";
 import { showToast } from "../../utilities/showToast";
+import { FaCartPlus, FaRegHeart } from "react-icons/fa";
+import { MdAddShoppingCart } from "react-icons/md";
 
 const CategoryProduct = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
@@ -55,7 +57,7 @@ const CategoryProduct = memo(({ product, showDiscount = true }) => {
             className="top-2 left-2 absolute"
             onClick={(e) => e.stopPropagation()}
           >
-            <BsBagPlus className="text-[20px] font-semibold" />
+            <MdAddShoppingCart  className="text-[22px] trans hover:text-[26px] font-semibold" />
           </Link>
 
           <div
@@ -66,7 +68,7 @@ const CategoryProduct = memo(({ product, showDiscount = true }) => {
             }}
             className="top-2 right-2 absolute"
           >
-            <CiHeart className="text-[24px] font-semibold" />
+            <FaRegHeart className="text-[20px] trans hover:text-[24px] font-semibold" />
           </div>
         </div>
       </div>

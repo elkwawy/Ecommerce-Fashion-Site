@@ -11,7 +11,6 @@ const Home = memo(() => {
       <SeasonCollection />
       <FilteredProducts />
       <Offers />
-      <Brands />
     </div>
   );
 });
