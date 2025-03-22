@@ -11,6 +11,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Category from "./Pages/Cateogries/Category";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 import Profile from "./Pages/Profile/Profile";
+import { HelmetProvider } from "react-helmet-async";
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
@@ -59,6 +60,7 @@ function App() {
 
   return (
     <div className="App">
+      <HelmetProvider>
       <Toaster />
       <Suspense
         fallback={
@@ -72,6 +74,8 @@ function App() {
         {showPopup && <Popup closePopup={closePopup} />}
         <Footer />
       </Suspense>
+      </HelmetProvider>
+     
     </div>
   );
 }

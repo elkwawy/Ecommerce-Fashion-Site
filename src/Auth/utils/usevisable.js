@@ -9,6 +9,7 @@ export default function useVisible() {
       value === "signup" ||
       value === "resetcode" ||
       value === "forgetPass" ||
+      value === "dropdowenmenu" ||
       value === null
     ) {
       setShowModel(value);

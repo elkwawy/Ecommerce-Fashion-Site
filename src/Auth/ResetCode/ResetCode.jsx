@@ -42,7 +42,7 @@ export default function ResetCode({ setShowModel }) {
                 Send
               </ButtonForm>
              <div
-                className="close-btn cursor-pointer"
+                className="close-btn top-10 cursor-pointer"
                 onClick={() => setShowModel(null)}
               >
                 <HiOutlineXMark className="text-2xl font-bold" />

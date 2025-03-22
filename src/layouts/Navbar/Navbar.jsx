@@ -18,12 +18,10 @@ import useVisible from "../../Auth/utils/usevisable";
 import Signin from "../../Auth/signin/Signin";
 import ForgetPass from "../../Auth/ForgetPass/ForgetPass";
 import ResetCode from "../../Auth/ResetCode/ResetCode";
-import { handleLogout } from "../../Redux Toolkit/slices/auth";
-import { showToast } from "../../utilities/showToast";
+import DropdowenMenu from "../../components/DropdowenMenu";
 
 const Navbar = memo(() => {
   const [showModel, setShowModel] = useVisible();
-
   const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
@@ -32,7 +30,9 @@ const Navbar = memo(() => {
   const location = useLocation();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const navigate = useNavigate();
+
+  const {count} = useSelector((state) => state.wishListSlice)
+  
   const toggleShowSearch = () => {
     setShowSearch(!showSearch);
     setShowPhoneMenu(false);
@@ -95,13 +95,6 @@ const Navbar = memo(() => {
     setShowCategory(!showCategory);
   };
 
-  const handelNvigateProfile = () => {
-    if (isAuthenticated) {
-      navigate("/profile");
-    } else {
-      showToast("error", "please login first");
-    }
-  };
 
   return (
     <>
@@ -180,7 +173,8 @@ const Navbar = memo(() => {
                 {" "}
                 <PiShoppingCart size={22} className="cursor-pointer" />
               </NavLink>
-
+          
+          <div className="relative">
               <NavLink
                 to={"/wishlist"}
                 className={({ isActive }) =>
@@ -193,28 +187,25 @@ const Navbar = memo(() => {
               >
                 <CiHeart size={22} className="cursor-pointer" />
               </NavLink>
-
-              <div onClick={handelNvigateProfile} title="profile">
-                <GoPerson size={22} className="cursor-pointer" />
+              <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
+                {count}
               </div>
 
-              {isAuthenticated ? (
-                <button
-                  className="bg-gray-100 rounded-xl shadow-xl cursor-pointer px-3 py-2"
-                  onClick={() => {
-                    dispatch(handleLogout());
-                  }}
-                >
-                  Logout
-                </button>
+              </div>
+
+              {isAuthenticated ? (<div className="cursor-pointer relative" onClick={() => setShowModel("dropdowenmenu")}>
+                <img src="/useravatar.jpg" alt="user" className="w-8 h-8"/>
+                <div className="relative">
+                {showModel === "dropdowenmenu" && <DropdowenMenu setShowModel={setShowModel} />}
+                </div>
+               </div>
               ) : (
-                <button
-                  className="bg-gray-100 rounded-xl shadow-xl cursor-pointer px-3 py-2"
-                  onClick={() => setShowModel("login")}
-                >
-                  Login
-                </button>
+                <div title="Login" onClick={() => setShowModel("login")}>
+                <GoPerson size={22} className="cursor-pointer" />
+              </div>
+                
               )}
+               
               {showModel === "login" ? (
                 <Login setShowModel={setShowModel} />
               ) : null}
