@@ -10,10 +10,12 @@ import {
 import { showToast } from "../utilities/showToast";
 import { FaRegHeart } from "react-icons/fa";
 import { MdAddShoppingCart } from "react-icons/md";
+import { addToCart, getUserCart } from "../Redux Toolkit/slices/cartSlice";
 
 const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
   const { price, slug, priceAfterDiscount, image, name, colors } = product;
+
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
@@ -21,6 +23,14 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
     if (isAuthenticated) {
       await dispatch(addToWhishList({ id }));
       dispatch(getUserWhishList());
+    } else {
+      showToast("error", "Please login first");
+    }
+  };
+  const handleAddToCart = async (id) => {
+    if (isAuthenticated) {
+      await dispatch(addToCart({ id , quantity: 1}));
+      // dispatch(getUserCart());
     } else {
       showToast("error", "Please login first");
     }
@@ -52,14 +62,16 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
               </p>
             )}
 
-          <Link
+          <div
             title="Add to cart"
-            to="/cart"
             className="absolute left-2 top-2"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart(product._id);
+            }}
           >
             <MdAddShoppingCart className="text-[22px] font-semibold hover:text-[26px] trans" />
-          </Link>
+          </div>
 
           <div
             title="Add to wishlist"

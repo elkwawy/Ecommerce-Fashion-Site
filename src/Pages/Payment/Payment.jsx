@@ -1,6 +1,6 @@
 import { PiGreaterThanBold } from "react-icons/pi";
 import { Link } from "react-router-dom";
-import Order from "../../components/Order";
+import Order from "../Checkout/components/Order";
 import visa from "../../assets/images/visa.png";
 import mastercard from "../../assets/images/mastercard.png";
 import paypal from "../../assets/images/paypal.png";
