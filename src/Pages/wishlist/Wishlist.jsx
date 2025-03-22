@@ -4,17 +4,14 @@ import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from 'react-icons/i
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserWhishList } from '../../Redux Toolkit/slices/WishlistSlice';
-import Cookies from "js-cookie";
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { getUserWhishList, removefromwishlist } from '../../Redux Toolkit/slices/WishlistSlice';
 import LoadingSpinner from '../../utilities/LoadingSpinner';
-import { showToast } from '../../utilities/showToast';
-import { BASE_URL } from '../../Api/Api';
+import { Helmet } from 'react-helmet-async';
 
 export default function Wishlist() {
   const { isLoading, wishListItems } = useSelector((state) => state.wishListSlice);
   const dispatch = useDispatch();
+   const {count} = useSelector((state) => state.wishListSlice)
   const [wishlist, setWishListItems] = useState([]);
 
   useEffect(() => {
@@ -26,21 +23,6 @@ export default function Wishlist() {
     setWishListItems(wishListItems);
   }, [wishListItems]);
 
-  async function removeItemsFromWishlist(id) {
-    try {
-      let options = {
-        url: `${BASE_URL}/wishlist/${id}`,
-        method: 'DELETE',
-        headers: { authorization: Cookies.get("token") },
-      };
-
-      await axios.request(options);
-      setWishListItems((prev) => prev.filter((item) => item._id !== id));
-     showToast("success","Item removed successfully");
-    } catch (error) {
-      toast.error("Failed to remove item");
-    }
-  }
 
   if (isLoading) {
     return (
@@ -54,6 +36,10 @@ export default function Wishlist() {
 
   return (
     <>
+    < Helmet>
+                          <title>Wishlist</title>
+                          <meta name="description" content="wishlist page" />
+                        </Helmet>
       {!isEmpty ? (
         <section className='pb-8'>
           <div className='w-[90%] m-auto'>
@@ -77,7 +63,7 @@ export default function Wishlist() {
                         <button className='bg-white text-black text-xl rounded py-2 px-3 h-[40px]'>
                           <FaCartPlus />
                         </button>
-                        <button className='bg-white text-xl rounded py-2 h-[40px] px-3' onClick={() => removeItemsFromWishlist(item._id)}>
+                        <button className='bg-white text-xl rounded py-2 h-[40px] px-3' onClick={() =>dispatch(removefromwishlist(item._id))}>
                           <RiDeleteBin6Line className='text-2xl text-red-700' />
                         </button>
                       </div>

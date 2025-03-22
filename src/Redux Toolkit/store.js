@@ -7,6 +7,9 @@ import authReducer from "./slices/auth";
 import productSlice from "./slices/productSlice";
 import onSaleSlice from "./slices/onSaleSlice";
 import allProducts from "./slices/allProductsSlice";
+import cartSlice from "./slices/cartSlice";
+import orderSlice from "./slices/orderSlice";
+
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +21,7 @@ export const store = configureStore({
     products: productSlice,
     onSale: onSaleSlice,
     allProducts : allProducts,
+    cart: cartSlice,
+    order: orderSlice,
   },
 });
