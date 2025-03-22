@@ -17,7 +17,9 @@ const SeasonCollection = () => {
                     {
                         categories && categories.map((coll) => (
                             <Link state={{categoryId: coll._id}} to={`${coll.slug}/all`} key={coll._id} className='min-w-[120px] md:w-fit trans hover:scale-105 py-2 rounded-md cursor-pointer flex flex-col items-center justify-center gap-2 sm:gap-4'>
-                                <Img src={coll.image} className={'rounded-full max-w-[100px] sm:max-w-[120px] md:max-w-[200px] h-[100px] sm:h-[120px] md:h-[200px] trans'} alt={`${coll.name} Category`} loader={<CustomSkeleton className='w-[100px] sm:w-[120px] md:w-[200px] relative h-[100px] sm:h-[120px] md:h-[200px] rounded-full flex items-center justify-center ' />}  />
+                                <div className='rounded-full min-w-[100px] max-w-[100px] sm:min-w-[120px] sm:max-w-[120px] md:min-w-[200px] md:max-w-[200px] h-[100px] sm:h-[120px] md:max-h-[200px] md:min-h-[200px] trans'>
+                                    <Img src={coll.image} className={' object-cover rounded-full h-full w-full'} alt={`${coll.name} Category`} loader={<CustomSkeleton className='w-[100px] sm:w-[120px] md:w-[200px] relative h-[100px] sm:h-[120px] md:h-[200px] rounded-full flex items-center justify-center ' />}  />
+                                </div>
                                 <div className='flex flex-col gap-0.5 items-center'>
                                     <h2 className='text-[16px] sm:text-lg font-semibold'>{coll.name}</h2>
                                 </div>

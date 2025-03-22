@@ -1,7 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
-import { IoIosSearch } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
@@ -11,8 +10,7 @@ import Login from "../../Auth/login/Login";
 import { fetchCategories } from "../../Redux Toolkit/slices/categoriesSlice";
 import { fetchAllSubcategories } from "../../Redux Toolkit/slices/subcategoriesForEachCategory";
 import Category from "./components/CategoryNav";
-import PhoneMenu from "./components/PhoneMenu";
-import Search from "./components/Search";
+import PhoneMenu from "./components/phoneMenu/PhoneMenu";
 import Logo from "../../assets/icons/logo.png";
 import useVisible from "../../Auth/utils/usevisable";
 import Signin from "../../Auth/signin/Signin";
@@ -23,8 +21,6 @@ import { showToast } from "../../utilities/showToast";
 
 const Navbar = memo(() => {
   const [showModel, setShowModel] = useVisible();
-
-  const [showSearch, setShowSearch] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showPhoneMenu, setShowPhoneMenu] = useState(false);
   const [shownMenuMark, setShownMenuMark] = useState(false); // the mark that will be shown ( X || menu bar )
@@ -33,12 +29,6 @@ const Navbar = memo(() => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
-  const toggleShowSearch = () => {
-    setShowSearch(!showSearch);
-    setShowPhoneMenu(false);
-    setShownMenuMark(false);
-  };
-
   const categoryBtnRef = useRef(null);
   const categoryDivRef = useRef(null);
 
@@ -46,16 +36,12 @@ const Navbar = memo(() => {
     const handleClick = (event) => {
       if (
         categoryBtnRef.current &&
-        !categoryBtnRef.current.contains(event.target) &&
         categoryDivRef.current &&
+        !categoryBtnRef.current.contains(event.target) &&
         !categoryDivRef.current.contains(event.target)
       ) {
+        console.log("Called");
         setShowCategory(false);
-      } else if (
-        categoryBtnRef.current &&
-        categoryBtnRef.current.target === event.target
-      ) {
-        setShowCategory((prevState) => !prevState);
       }
     };
 
@@ -63,7 +49,11 @@ const Navbar = memo(() => {
     return () => {
       document.body.removeEventListener("click", handleClick);
     };
-  }, [setShowCategory, categoryBtnRef, categoryDivRef]);
+  }, []);
+
+  useEffect(() => {
+    setShowCategory(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const checkScreenSize = () => setIsScreenSmall(window.innerWidth >= 768);
@@ -95,7 +85,7 @@ const Navbar = memo(() => {
     setShowCategory(!showCategory);
   };
 
-  const handelNvigateProfile = () => {
+  const handelNavigateProfile = () => {
     if (isAuthenticated) {
       navigate("/profile");
     } else {
@@ -106,9 +96,7 @@ const Navbar = memo(() => {
   return (
     <>
       <div className="flex bg-[#F8F8F8] h-[74px] justify-between shadow-sm w-full items-center md:h-[74px] md:px-10 md:py-[20px] px-6 py-2 sticky top-0 z-[100]">
-        {showSearch ? (
-          <Search toggleShowSearch={toggleShowSearch} />
-        ) : (
+        {(
           <>
             <NavLink
               to={"/"}
@@ -116,6 +104,7 @@ const Navbar = memo(() => {
             >
               <img src={Logo} className="w-[60px]" alt="" />
             </NavLink>
+
             <ul className="gap-6 hidden items-center md:flex">
               <NavLink
                 to={"/"}
@@ -133,16 +122,14 @@ const Navbar = memo(() => {
                 ref={categoryBtnRef}
                 onClick={toggleShowCategory}
                 className={` ${
-                  showCategory ||
-                  (location.pathname !== "/" &&
-                    location.pathname !== "/aboutUs" &&
-                    location.pathname !== "/contactUs")
+                  showCategory 
                     ? "font-bold"
                     : "font-normal text-gray-700 hover:text-black"
                 } trans outline-0`}
               >
                 Category
               </button>
+              
               <NavLink
                 to={"/aboutUs"}
                 className={({ isActive }) =>
@@ -155,6 +142,7 @@ const Navbar = memo(() => {
               >
                 About Us
               </NavLink>
+              
               <NavLink
                 to={"/contactUs"}
                 className={({ isActive }) =>
@@ -167,15 +155,10 @@ const Navbar = memo(() => {
               >
                 Contact Us
               </NavLink>
+
             </ul>
 
             <ul className="gap-6 hidden items-center sm:flex">
-              <IoIosSearch
-                onClick={toggleShowSearch}
-                size={22}
-                className={`cursor-pointer`}
-              />
-
               <NavLink to={"/cart"}>
                 {" "}
                 <PiShoppingCart size={22} className="cursor-pointer" />
@@ -194,7 +177,7 @@ const Navbar = memo(() => {
                 <CiHeart size={22} className="cursor-pointer" />
               </NavLink>
 
-              <div onClick={handelNvigateProfile} title="profile">
+              <div onClick={handelNavigateProfile} title="profile">
                 <GoPerson size={22} className="cursor-pointer" />
               </div>
 
@@ -209,7 +192,7 @@ const Navbar = memo(() => {
                 </button>
               ) : (
                 <button
-                  className="bg-gray-100 rounded-xl shadow-xl cursor-pointer px-3 py-2"
+                  className=" border border-black trans hover:bg-gray-200 cursor-pointer px-3 py-1"
                   onClick={() => setShowModel("login")}
                 >
                   Login
@@ -226,12 +209,8 @@ const Navbar = memo(() => {
                 <ResetCode setShowModel={setShowModel} />
               )}
             </ul>
+
             <div className="flex gap-6 items-center md:hidden">
-              <IoIosSearch
-                onClick={toggleShowSearch}
-                size={22}
-                className={`cursor-pointer sm:hidden`}
-              />
               {!shownMenuMark && (
                 <button onClick={toggleShowPhoneMenu}>
                   <VscMenu
