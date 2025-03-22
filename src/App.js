@@ -11,7 +11,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Category from "./Pages/Cateogries/Category";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 import Profile from "./Pages/Profile/Profile";
+
+import AllProducts from "./Pages/Products/AllProducts";
+
 import { HelmetProvider } from "react-helmet-async";
+
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
@@ -53,6 +57,7 @@ function App() {
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />
         <Route path="/:productName" element={<ProductPage />} />
+        <Route path="/products" element={<AllProducts />} />
       </Routes>
     ),
     []

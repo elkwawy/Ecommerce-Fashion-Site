@@ -85,7 +85,7 @@ const HeroSlider = () => {
           Discover the hottest trends and must-have looks
         </p>
         <Link
-          to={"#"}
+          to={"/products"}
           className="trans group bg-white rounded-md py-6 px-8 trans flex gap-1 items-center font-semibold"
         >
           <p className="text-normal min-[550px]:text-lg bg-white z-10">

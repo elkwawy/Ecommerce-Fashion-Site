@@ -38,7 +38,7 @@ const Category = memo(() => {
 
     useEffect(() => {
         setPage(1);
-    }, [subcategoryID]);
+    }, [categoryName, subcategoryID]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -115,7 +115,7 @@ const Category = memo(() => {
     return (
         <div className="container py-10 min-h-screen">
             {status === "succeeded" && categorySubcategories.subcategories && <div className="flex flex-col gap-10">
-                <div className="w-full flex justify-between">
+                <div className="w-full flex items-center justify-between">
                     <h1 className="capitalize font-bold text-3xl">{categoryName}</h1>
                     <button onClick={handleNewestSort} className={`px-5 py-1 border-2 ${newestSort ? "bg-black text-white" : "hover:bg-gray-100"} border-black trans  rounded-sm`}>Sort By Newest</button>
                 </div>
@@ -145,9 +145,9 @@ const Category = memo(() => {
             </div>}
             {status === "succeeded" && <SubcategoryProducts />}
             {
-                subcategoryID && subcategoryID == "all" && hasMore && 
+                status == "succeeded" &&subcategoryID && subcategoryID == "all" && hasMore && 
                 <div className='w-full text-center mt-8'>
-                    <button className='mx-auto bg-black px-3 py-2 text-white ' onClick={() => setPage(page => page + 1)}>Show more</button>
+                    <button className='mx-auto bg-black hover:opacity-80 trans px-3 py-2 text-white ' onClick={() => setPage(page => page + 1)}>Show more</button>
                 </div>
             }
         </div>
