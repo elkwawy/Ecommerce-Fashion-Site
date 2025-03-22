@@ -1,8 +1,13 @@
 import SendQuestion from "./components/SendQuestion";
 import ContactDetails from "./components/ContactDetails";
+import { Helmet } from "react-helmet-async";
 const ContactUs = () => {
   return (
     <div className="container mx-auto p-8">
+      < Helmet>
+                <title>Contact us</title>
+                <meta name="description" content="contact us page" />
+              </Helmet>
       <h1 className="text-2xl font-bold mb-6 border-b border-gray-300 pb-4">
         Contact Us
       </h1>

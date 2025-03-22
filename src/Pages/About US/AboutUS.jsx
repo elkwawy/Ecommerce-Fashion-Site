@@ -1,9 +1,14 @@
+import { Helmet } from "react-helmet-async";
 import aboutUS from "../../assets/images//About US/AboutUS.jpg";
 import Brands from "./Brands";
 
 const AboutUS = () => {
   return (
     <div className="aboutUs">
+       < Helmet>
+                      <title>About us</title>
+                      <meta name="description" content="About us page" />
+                    </Helmet>
       {/* Hero Section */}
       <div className="relative w-full h-[445px] mb-14">
         <img src={aboutUS} className="w-full h-full" alt="" />
