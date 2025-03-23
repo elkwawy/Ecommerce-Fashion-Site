@@ -5,12 +5,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserWhishList, removefromwishlist } from '../../Redux Toolkit/slices/WishlistSlice';
-import Cookies from "js-cookie";
-import axios from 'axios';
-import toast from 'react-hot-toast';
 import LoadingSpinner from '../../utilities/LoadingSpinner';
-import { showToast } from '../../utilities/showToast';
-import { BASE_URL } from '../../Api/Api';
 import { Helmet } from 'react-helmet-async';
 
 export default function Wishlist() {
