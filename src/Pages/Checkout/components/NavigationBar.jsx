@@ -12,12 +12,6 @@ const NavigationBar = () => {
         </Link>
         <PiGreaterThanBold size={15} />
         <span className="flex items-center text-gray-900">Checkout</span>
-        <PiGreaterThanBold size={15} />
-        <Link to="/cart/checkout/payment">
-          <span className="flex items-center text-gray-400 hover:text-gray-900">
-            Payment
-          </span>
-        </Link>
       </li>
     </ol>
   );

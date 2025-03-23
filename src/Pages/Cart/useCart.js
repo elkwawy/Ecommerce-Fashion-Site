@@ -6,14 +6,14 @@ import axios from "axios";
 
 export default function useCart() {
   const dispatch = useDispatch();
-  const { cartItems, error, totalCartPrice, cartId } = useSelector(
+  const { cartItems, error, totalCartPrice, status, cartId } = useSelector(
     (state) => state.cart
   );
+  console.log(status);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   console.log(cartItems);
-  
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -45,7 +45,7 @@ export default function useCart() {
         );
         setProducts(productData);
       } catch (error) {
-        console.log("Error fetching products:", error);        
+        console.log("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
@@ -56,5 +56,12 @@ export default function useCart() {
 
   const memoizedProducts = useMemo(() => products, [products]);
 
-  return { products: memoizedProducts , totalCartPrice, cartId, loading, error };
+  return {
+    products: memoizedProducts,
+    status,
+    totalCartPrice,
+    cartId,
+    loading,
+    error,
+  };
 }
