@@ -67,7 +67,7 @@ const wishListSlice = createSlice({
   name: "wishlist", 
   initialState: {
     wishListItems: [],
-    count: JSON.parse(localStorage.getItem("wishlist"))?.length || 0,
+    count: JSON.parse(localStorage.getItem("wishlist")) || 0,
     isLoading: false, 
     isError: false,
     error: null,
@@ -85,7 +85,7 @@ const wishListSlice = createSlice({
         state.isLoading = false;
         state.wishListItems.push(action.payload);
         state.count = state.wishListItems.length;
-        localStorage.setItem("wishlist", JSON.stringify(state.wishListItems));
+        localStorage.setItem("wishlist", JSON.stringify(state.wishListItems.length));
       })
       .addCase(addToWhishList.rejected, (state, action) => {
         state.isLoading = false;
@@ -103,7 +103,7 @@ const wishListSlice = createSlice({
         state.isLoading = false;
         state.wishListItems = action.payload?.data || action.payload || []
         state.count = state.wishListItems.length;
-        localStorage.setItem("wishlist", JSON.stringify(state.wishListItems));
+        localStorage.setItem("wishlist", JSON.stringify(state.wishListItems.length));
       })
       .addCase(getUserWhishList.rejected, (state, action) => {
         state.isLoading = false;
@@ -119,7 +119,7 @@ const wishListSlice = createSlice({
         state.isLoading = false;
         state.wishListItems = state.wishListItems.filter(item => item._id !== action.meta.arg);
         state.count = state.wishListItems.length;
-        localStorage.setItem("wishlist", JSON.stringify(state.wishListItems));
+        localStorage.setItem("wishlist", JSON.stringify(state.wishListItems.length));
       })  
       .addCase(removefromwishlist.rejected, (state, action) => {
         state.isLoading = false;

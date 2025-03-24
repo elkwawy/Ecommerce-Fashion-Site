@@ -7,9 +7,15 @@ export const API = {
   forgotPassword: `${BASE_URL}/auth/forgotPassword`,
   ResetCode: `${BASE_URL}/auth/verifyResetCode`,
   resetPassword: `${BASE_URL}/auth/resetPassword`,
-  
+
   /* ======= wishlist======= */
   getWishlist: `${BASE_URL}/wishlist`,
+  /* ======= cart ======= */
+  getUserCart: `${BASE_URL}/cart`,
+  /* ======= order ======= */
+  getUserOrders: (userId) => `${BASE_URL}/user/${userId}/order`,
+  createCashOrder: `${BASE_URL}/order`,
+  createInstantPayment: `${BASE_URL}/order/checkout`,
 
   /* ======= Contact Us ======= */
   contactUs: `${BASE_URL}/contact`,
@@ -19,10 +25,12 @@ export const API = {
   /* ======= Category ======= */
   getAllCategories: `${BASE_URL}/category/`,
   /* ======= Product ======= */
-  product : `${BASE_URL}/product/`,
-  getProductData : (id) => `${BASE_URL}/product/${id}`,
+  product: `${BASE_URL}/product/`,
+  getProductData: (id) => `${BASE_URL}/product/${id}`,
   /* ======= subcategory ======= */
   getAllSubcategories: `${BASE_URL}/subcategory/`,
-  getSpecificSubcategory: (subcategoryId) => `${BASE_URL}/subcategory/${subcategoryId}`,
-  getAllSubcategoriesForSpecificCategory: (categoryId) =>  `${BASE_URL}/category/${categoryId}/subcategories/`,
+  getSpecificSubcategory: (subcategoryId) =>
+    `${BASE_URL}/subcategory/${subcategoryId}`,
+  getAllSubcategoriesForSpecificCategory: (categoryId) =>
+    `${BASE_URL}/category/${categoryId}/subcategories/`,
 };

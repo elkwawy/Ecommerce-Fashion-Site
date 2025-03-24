@@ -1,4 +1,3 @@
-import Brands from "./components/Brands";
 import HeroSlider from "./components/HeroSlider";
 import Offers from "./components/Offers";
 import SeasonCollection from "./components/SeasonCollection";

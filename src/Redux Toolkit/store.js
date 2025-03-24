@@ -6,6 +6,11 @@ import subcategory from "./slices/subcategory";
 import authReducer from "./slices/auth";
 import productSlice from "./slices/productSlice";
 import onSaleSlice from "./slices/onSaleSlice";
+import allProducts from "./slices/allProductsSlice";
+import cartSlice from "./slices/cartSlice";
+import orderSlice from "./slices/orderSlice";
+import profileSlice from "./slices/profileSlice";
+
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +21,9 @@ export const store = configureStore({
     auth: authReducer,
     products: productSlice,
     onSale: onSaleSlice,
+    allProducts : allProducts,
+    cart: cartSlice,
+    order: orderSlice,
+    profile: profileSlice,
   },
 });

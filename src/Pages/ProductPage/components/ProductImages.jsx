@@ -9,13 +9,13 @@ const ProductImages = ({images}) => {
         setImgSrc(src);
     }
     return ( images ? 
-        <div className="flex gap-5 min-w-[590px] min-h-[456px]">
-            <div className="flex flex-col gap-2">
+        <div className="flex gap-5 max-sm:flex-col-reverse max-sm:items-center max-md:justify-center min-h-[618px] sm:min-h-[456px] lg:min-w-[590px] ">
+            <div className="flex  sm:flex-col gap-2">
                 {
-                    images.map((img) => <Img onMouseOver={() => changeImg(img)} className={`${img === imgSrc ? "border-black" : "hover:border-black"} min-w-[100px] max-w-[100px] shadow-md trans  border cursor-pointer`} src={img} loader={<CustomSkeleton width={100} height={100} />} />)
+                    images.slice(0,3).map((img) => <Img onMouseOver={() => changeImg(img)} className={`${img === imgSrc ? "border-black" : "hover:border-black"} min-w-[112px] max-w-[112px] shadow-md trans  border cursor-pointer`} src={img} loader={<CustomSkeleton width={100} height={100} />} />)
                 }
             </div>
-            {imgSrc && <Img className=" max-h-[456px] border" src={imgSrc} loader={<CustomSkeleton width={"100%"} />} />}
+            {imgSrc && <Img className="max-sm:h-[450px] max-lg:max-w-[300px] max-h-[456px] border" src={imgSrc} loader={<CustomSkeleton width={"100%"} />} />}
         </div>
         : <p className="text-sm font-semibold">We don't have images for this product</p> 
     )

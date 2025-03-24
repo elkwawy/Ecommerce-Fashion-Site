@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import aboutUS from "../../assets/images//About US/AboutUS.jpg";
-import Brands from "../home/components/Brands";
+import Brands from "./Brands";
 
 const AboutUS = () => {
   return (

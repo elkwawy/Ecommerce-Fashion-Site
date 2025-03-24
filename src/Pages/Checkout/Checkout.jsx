@@ -1,247 +1,143 @@
-import { PiGreaterThanBold } from "react-icons/pi";
-
-import Order from "../../components/Order";
-import { Link } from "react-router-dom";
-
+import Order from "./components/Order";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import PaymentMethod from "./components/PaymentMethod";
+import ShippingAddress from "./components/ShippingAddress";
+import NavigationBar from "./components/NavigationBar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createCashOrder,
+  createInstantPayment,
+} from "../../Redux Toolkit/slices/orderSlice";
+import LoaderW from "../../utilities/LoaderW";
+import { showToast } from "../../utilities/showToast";
+import { useEffect, useState } from "react";
 function Checkout() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { products, totalCartPrice, cartId } = location?.state ?? {};
+
+  const { order, statusOrder, error } = useSelector((state) => state.order);
+
+  // console.log(order);
+
+  // const [urlSitePayment, setUrlSitePayment] = useState("");
+
+  // useEffect(() => {
+  //   if (order && order.url) {
+  //     setUrlSitePayment(order.url);
+  //   }
+  // }, [order]);
+
+  // console.log(urlSitePayment);
+
+  const validationSchema = Yup.object({
+    address: Yup.string().required("Address is required"),
+    city: Yup.string().required("City is required"),
+    phone: Yup.string()
+      .matches(/^[0-9]+$/, "Phone number must be numeric")
+      .min(10, "Phone number must be at least 10 digits")
+      .required("Phone number is required"),
+    paymentMethod: Yup.string().required("Please select a payment method"),
+  });
+
+  const initialValues = {
+    address: "",
+    city: "",
+    phone: "",
+    paymentMethod: "",
+  };
+
+  const handleSubmit = (values) => {
+    const orderData = {
+      shippingAddress: {
+        address: values.address,
+        city: values.city,
+        phone: values.phone,
+      },
+    };
+
+    if (values.paymentMethod === "cashOrder") {
+      dispatch(createCashOrder({ cartId, orderData }))
+        .unwrap()
+        .then(() => {
+          navigate("/profile");
+        });
+    } else if (values.paymentMethod === "instantPayment") {
+      dispatch(createInstantPayment({ cartId, orderData }))
+        .unwrap()
+        .then(() => {
+        
+
+          
+          // const order = JSON.parse(localStorage.getItem("order"));
+          console.log(order);
+          // setTimeout(() => {
+          //   window.location.href = order.url;
+          // }, 3000);
+
+          // window.location.href = order.url;
+        });
+    }
+
+    console.log("Submitted Data:", values);
+  };
+
   return (
     <section className="bg-white py-8 antialiased md:py-16">
-      <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
-        <ol className="items-center flex  w-full max-w-2xl text-center text-sm font-medium text-gray-400 sm:text-base">
-          <li className="flex shrink-0 items-center gap-4">
-            <Link to="/cart">
-              <span className="flex items-center text-gray-400 hover:text-gray-900">
-                Cart
-              </span>
-            </Link>
-            <PiGreaterThanBold size={15} />
-            <span className="flex items-center text-gray-900">Checkout</span>
-            <PiGreaterThanBold size={15} />
-            <Link to="/cart/checkout/payment">
-              <span className="flex items-center text-gray-400 hover:text-gray-900">
-                Payment
-              </span>
-            </Link>
-          </li>
-        </ol>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ values, submitForm }) => (
+          <Form className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            {/* Navigation Bar*/}
+            <NavigationBar />
 
-        <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
-          <div className="min-w-0 flex-1 space-y-8">
-            <div className="space-y-4 border border-gray-300 rounded-lg p-4">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Select shipping country
-              </h2>
-              <select className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900 ">
-                <option value="US">United States</option>
-                <option value="AS">Australia</option>
-                <option value="FR">France</option>
-                <option value="ES">Spain</option>
-                <option value="UK">United Kingdom</option>
-              </select>
-
-              <h2 className="text-xl font-semibold text-gray-900  border-t  border-gray-200  pt-4">
-                shipping address
-              </h2>
-              <label
-                htmlFor="your_name"
-                className="mb-2 block text-sm font-medium text-gray-900"
-              >
-                Full name <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="your_name"
-                className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900"
-                placeholder="Enter your full name"
-                required
-              />
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="your_name"
-                    className="mb-2 block text-sm font-medium text-gray-900"
-                  >
-                    Email address <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="your_name"
-                    className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900"
-                    placeholder="Enter your email address"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="your_name"
-                    className="mb-2 block text-sm font-medium text-gray-900"
-                  >
-                    Confirmation email <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="your_name"
-                    className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900"
-                    placeholder="Enter your confirmation email"
-                    required
-                  />
-                </div>
+            <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
+              <div className="min-w-0 flex-1 space-y-8">
+                {/* Shipping Address*/}
+                <ShippingAddress Field={Field} ErrorMessage={ErrorMessage} />
+                {/* Payment Method */}
+                <PaymentMethod Field={Field} ErrorMessage={ErrorMessage} />
               </div>
 
-              <label
-                htmlFor="your_name"
-                className="mb-2 block text-sm font-medium text-gray-900"
-              >
-                Phone number <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="your_name"
-                className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900"
-                placeholder="Enter your phone number (only digits)"
-                required
-              />
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="your_name"
-                    className="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    City <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="your_name"
-                    className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900"
-                    placeholder="City"
-                    required
-                  />
-                </div>
+              <div class="border border-gray-300 p-4 rounded-lg mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-md xl:max-w-md">
+                <h2 class="text-xl font-semibold text-gray-900">Your Order</h2>
+                {products.map((product) => (
+                  <Order product={product} />
+                ))}
 
-                <div>
-                  <label
-                    htmlFor="your_name"
-                    className="mb-2 block text-sm font-medium text-gray-900 "
-                  >
-                    Select region
-                  </label>
-                  <select className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900 ">
-                    <option value="US">Muslim</option>
-                    <option value="AS">Australia</option>
-                    <option value="FR">France</option>
-                    <option value="ES">Spain</option>
-                    <option value="UK">United Kingdom</option>
-                  </select>
-                </div>
-              </div>
+                <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-6 mt-6 ">
+                  <dt class="text-base font-bold text-gray-900 ">
+                    Total Price
+                  </dt>
+                  <dd class="text-base font-bold text-gray-900 ">
+                    ${totalCartPrice}
+                  </dd>
+                </dl>
 
-              <label
-                htmlFor="your_name"
-                className="mb-2 block text-sm font-medium text-gray-900"
-              >
-                Postal code <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="your_name"
-                className="block w-full rounded-lg border border-gray-300  p-2.5 text-sm text-gray-900"
-                placeholder="Enter your postal code"
-                required
-              />
-            </div>
-            <div className="space-y-4 border border-gray-300 rounded-lg p-4">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Shipping method
-              </h2>
-              <div className="space-y-4 border border-gray-300 p-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                <input
-                  type="radio"
-                  className="w-4 h-4  text-gray-900 bg-gray-100 border-gray-300 rounded-full accent-gray-900  "
-                />
-
-                <div className="flex items -center justify-between md:order-3 md:justify-end">
-                  <div className="text-end md:order-4 md:w-32">
-                    <p className="text-base font-bold text-gray-900 ">$0</p>
-                  </div>
-                </div>
-
-                <div className="w-full min-w-0 flex-1 space-y-1 md:order-2 md:max-w-md">
-                  <h1 href="#" className="text-base font-medium text-gray-900 ">
-                    Free Shipping
-                  </h1>
-
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="button"
-                      className="inline-flex items-center text-sm font-medium text-gray-500"
-                    >
-                      7 - 30 bussiness days
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-4 border border-gray-300 p-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                <input
-                  type="radio"
-                  className="w-4 h-4  text-gray-900 bg-gray-100 border-gray-300 rounded-full accent-gray-900 "
-                />
-
-                <div className="flex items -center justify-between md:order-3 md:justify-end">
-                  <div className="text-end md:order-4 md:w-32">
-                    <p className="text-base font-bold text-gray-900 ">$0</p>
-                  </div>
-                </div>
-
-                <div className="w-full min-w-0 flex-1 space-y-1 md:order-2 md:max-w-md">
-                  <h1 href="#" className="text-base font-medium text-gray-900 ">
-                    Free Shipping
-                  </h1>
-
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="button"
-                      className="inline-flex items-center text-sm font-medium text-gray-500"
-                    >
-                      7 - 30 bussiness days
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-4 border border-gray-300 p-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                <input
-                  type="radio"
-                  className="w-4 h-4  text-gray-900 bg-gray-100 border-gray-300 rounded-full accent-gray-900 "
-                />
-
-                <div className="flex items -center justify-between md:order-3 md:justify-end">
-                  <div className="text-end md:order-4 md:w-32">
-                    <p className="text-base font-bold text-gray-900 ">$0</p>
-                  </div>
-                </div>
-
-                <div className="w-full min-w-0 flex-1 space-y-1 md:order-2 md:max-w-md">
-                  <h1 href="#" className="text-base font-medium text-gray-900 ">
-                    Free Shipping
-                  </h1>
-
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="button"
-                      className="inline-flex items-center text-sm font-medium text-gray-500"
-                    >
-                      7 - 30 bussiness days
-                    </button>
-                  </div>
-                </div>
+                <button
+                  type="submit"
+                  onClick={submitForm}
+                  disabled={statusOrder === "loading"}
+                  className="flex w-4/5 mx-auto items-center justify-center rounded-lg bg-gray-900 px-5 py-4 text-sm font-medium trans text-white hover:bg-gray-800"
+                >
+                  {statusOrder === "loading" ? (
+                    <LoaderW className="w-5 h-5" />
+                  ) : (
+                    "Continue to payment"
+                  )}
+                </button>
               </div>
             </div>
-          </div>
-
-          <Order />
-        </div>
-      </form>
+          </Form>
+        )}
+      </Formik>
     </section>
   );
 }
