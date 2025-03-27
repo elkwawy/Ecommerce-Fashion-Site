@@ -194,8 +194,8 @@ const Navbar = memo(() => {
                 className="cursor-pointer relative"
                 onClick={() => setShowModel("dropdowenmenu")}
               >
-                <img src="/user.png" alt="user" className="w-8 h-8" />
-                <div className="relative ">
+                <img src="/useravatar.jpg" alt="user" className="w-8 h-8" />
+                <div className="relative">
                   {showModel === "dropdowenmenu" && (
                     <DropdowenMenu setShowModel={setShowModel} />
                   )}

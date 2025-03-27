@@ -4,6 +4,11 @@ import Cookies from "js-cookie";
 import { showToast } from "../../utilities/showToast";
 import { API } from "../../Api/Api";
 
+const getAuthHeaders = () => {
+  const token = Cookies.get("token");
+  return token ? { authorization: token } : {};
+};
+
 // Create Cash Order
 export const createCashOrder = createAsyncThunk(
   "order/createCashOrder",
@@ -13,9 +18,7 @@ export const createCashOrder = createAsyncThunk(
         method: "POST",
         url: `${API.createCashOrder}/${cartId}`,
         data: orderData,
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
 
       const { data } = await axios.request(options);
@@ -38,11 +41,8 @@ export const createInstantPayment = createAsyncThunk(
         method: "POST",
         url: `${API.createInstantPayment}/${cartId}`,
         data: orderData,
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
-
       const { data } = await axios.request(options);
       showToast("success", "Checkout session created");
       return data.data;
@@ -62,9 +62,7 @@ export const getUserOrders = createAsyncThunk(
       const options = {
         method: "GET",
         url: API.getUserOrders(userId),
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
 
       const { data } = await axios.request(options);
@@ -83,7 +81,6 @@ const orderSlice = createSlice({
     orders: [],
     order: null,
     status: "idle",
-    UrlSitePayment: null,
     statusOrder: "idle",
     error: null,
   },
@@ -95,6 +92,7 @@ const orderSlice = createSlice({
         state.statusOrder = "loading";
       })
       .addCase(createCashOrder.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.statusOrder = "succeeded";
         state.order = action.payload;
         // state.orders.push(...action.payload.orderItems);
@@ -108,9 +106,9 @@ const orderSlice = createSlice({
         state.statusOrder = "loading";
       })
       .addCase(createInstantPayment.fulfilled, (state, action) => {
+        console.log(action.payload);
         state.statusOrder = "succeeded";
         state.order = action.payload;
-        // state.UrlSitePayment = action?.payload?.url;
       })
       .addCase(createInstantPayment.rejected, (state, action) => {
         state.statusOrder = "failed";

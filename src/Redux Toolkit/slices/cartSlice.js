@@ -4,6 +4,11 @@ import Cookies from "js-cookie";
 import { showToast } from "../../utilities/showToast";
 import { API } from "../../Api/Api";
 
+const getAuthHeaders = () => {
+  const token = Cookies.get("token");
+  return token ? { authorization: token } : {};
+};
+
 // Get User Cart
 export const getUserCart = createAsyncThunk(
   "cart/getUserCart",
@@ -12,9 +17,7 @@ export const getUserCart = createAsyncThunk(
       const options = {
         method: "GET",
         url: API.getUserCart,
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
 
       const { data } = await axios.request(options);
@@ -36,13 +39,9 @@ export const addToCart = createAsyncThunk(
         method: "POST",
         url: API.getUserCart,
         data: { product: id, quantity },
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
-
       const { data } = await axios.request(options);
-      showToast("success", "Product added to cart");
       return data;
     } catch (error) {
       return rejectWithValue(
@@ -61,14 +60,10 @@ export const updateCartQuantity = createAsyncThunk(
         method: "PUT",
         url: `${API.getUserCart}/${id}`,
         data: { quantity },
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
-
       const { data } = await axios.request(options);
-      showToast("success", "Cart updated");
-      return data.cart.cartItems;
+      return data;
     } catch (error) {
       return rejectWithValue(
         error.response?.data || error.message || "An unexpected error occurred"
@@ -85,14 +80,10 @@ export const deleteFromCart = createAsyncThunk(
       const options = {
         method: "DELETE",
         url: `${API.getUserCart}/${id}`,
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
-
-      await axios.request(options);
-      showToast("success", "Item removed from cart");
-      return id;
+      const { data } = await axios.request(options);
+      return { ...data, idProduct: id };
     } catch (error) {
       return rejectWithValue(
         error.response?.data || error.message || "An unexpected error occurred"
@@ -109,9 +100,7 @@ export const clearCart = createAsyncThunk(
       const options = {
         method: "DELETE",
         url: API.getUserCart,
-        headers: Cookies.get("token")
-          ? { authorization: Cookies.get("token") }
-          : {},
+        headers: getAuthHeaders(),
       };
 
       await axios.request(options);
@@ -133,48 +122,108 @@ const cartSlice = createSlice({
     cartId: null,
     status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
+    count:
+      JSON.parse(localStorage.getItem("cart")) > 0
+        ? JSON.parse(localStorage.getItem("cart"))
+        : 0,
   },
-  reducers: {},
+  reducers: {
+    setValues: (state, action) => {
+      state.cartItems = [];
+      state.totalCartPrice = 0;
+      state.count = 0;
+      localStorage.setItem("cart", 0);
+    },
+  },
   extraReducers: (builder) => {
     builder
+      // Get User Cart
       .addCase(getUserCart.pending, (state) => {
         state.status = "loading";
       })
       .addCase(getUserCart.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.cartItems = action.payload.cartItems || [];
-        state.totalCartPrice = action.payload.totalCartPrice || 0;
-        state.cartId = action.payload._id || null;
+        const {
+          cartItems = [],
+          totalCartPrice = 0,
+          _id,
+        } = action.payload || {};
+
+        Object.assign(state, {
+          status: "succeeded",
+          cartItems,
+          totalCartPrice,
+          cartId: _id || null,
+          count: cartItems.length,
+        });
+
+        localStorage.setItem("cart", cartItems.length);
       })
       .addCase(getUserCart.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(addToCart.pending, (state) => {
-        state.status = "loading";
-      })
+      // Add to Cart
       .addCase(addToCart.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.cartItems.push(action.payload);
+        const { isCartExist, data, message } = action.payload;
+        const cartData = isCartExist || data;
+
+        if (cartData) {
+          state.cartItems = cartData.cartItems || [];
+          state.totalCartPrice = cartData.totalCartPrice ?? 0;
+          state.count = cartData.cartItems?.length ?? 0;
+          localStorage.setItem("cart", state.count);
+        }
+
+        showToast("success", message || "Item added to cart");
       })
       .addCase(addToCart.rejected, (state, action) => {
-        state.status = "failed";
         state.error = action.payload;
       })
+      // Update Quantity
       .addCase(updateCartQuantity.fulfilled, (state, action) => {
-        state.cartItems = action.payload;
+        const { cart, message } = action.payload;
+
+        state.cartItems = cart?.cartItems;
+        state.totalCartPrice = cart?.totalCartPrice;
+
+        showToast("success", message || "Cart updated");
       })
+      .addCase(updateCartQuantity.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      // Delete from Cart
       .addCase(deleteFromCart.fulfilled, (state, action) => {
-        console.log(action.payload);
-        
-        state.cartItems = state.cartItems.filter(
-          (item) => item.product !== action.payload
-        );
+        // state.cartItems = state.cartItems.filter(
+        //   (item) => item.product !== action.payload.idProduct
+        // );
+        const { cart, message } = action.payload;
+
+        if (cart) {
+          state.cartItems = cart.cartItems || [];
+          state.totalCartPrice = cart.totalCartPrice ?? 0;
+          state.count = cart.cartItems?.length ?? 0;
+          localStorage.setItem("cart", state.count);
+        }
+
+        showToast("success", message || "Item removed from cart");
       })
+      .addCase(deleteFromCart.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      // Clear Cart
       .addCase(clearCart.fulfilled, (state) => {
-        state.cartItems = [];
+        Object.assign(state, {
+          cartItems: [],
+          totalCartPrice: 0,
+          count: 0,
+        });
+        localStorage.setItem("cart", 0);
+      })
+      .addCase(clearCart.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });
 
+export const { setValues } = cartSlice.actions;
 export default cartSlice.reducer;

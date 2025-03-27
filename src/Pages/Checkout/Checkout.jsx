@@ -11,8 +11,8 @@ import {
   createInstantPayment,
 } from "../../Redux Toolkit/slices/orderSlice";
 import LoaderW from "../../utilities/LoaderW";
-import { showToast } from "../../utilities/showToast";
-import { useEffect, useState } from "react";
+
+import { setValues } from "../../Redux Toolkit/slices/cartSlice";
 function Checkout() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -20,19 +20,7 @@ function Checkout() {
 
   const { products, totalCartPrice, cartId } = location?.state ?? {};
 
-  const { order, statusOrder, error } = useSelector((state) => state.order);
-
-  // console.log(order);
-
-  // const [urlSitePayment, setUrlSitePayment] = useState("");
-
-  // useEffect(() => {
-  //   if (order && order.url) {
-  //     setUrlSitePayment(order.url);
-  //   }
-  // }, [order]);
-
-  // console.log(urlSitePayment);
+  const { statusOrder, error } = useSelector((state) => state.order);
 
   const validationSchema = Yup.object({
     address: Yup.string().required("Address is required"),
@@ -43,13 +31,6 @@ function Checkout() {
       .required("Phone number is required"),
     paymentMethod: Yup.string().required("Please select a payment method"),
   });
-
-  const initialValues = {
-    address: "",
-    city: "",
-    phone: "",
-    paymentMethod: "",
-  };
 
   const handleSubmit = (values) => {
     const orderData = {
@@ -64,22 +45,21 @@ function Checkout() {
       dispatch(createCashOrder({ cartId, orderData }))
         .unwrap()
         .then(() => {
-          navigate("/profile");
+          dispatch(setValues());
+          navigate("/profile", { replace: true });
         });
     } else if (values.paymentMethod === "instantPayment") {
       dispatch(createInstantPayment({ cartId, orderData }))
         .unwrap()
-        .then(() => {
-        
-
-          
-          // const order = JSON.parse(localStorage.getItem("order"));
-          console.log(order);
-          // setTimeout(() => {
-          //   window.location.href = order.url;
-          // }, 3000);
-
-          // window.location.href = order.url;
+        .then((result) => {
+          if (result.url) {
+            console.log("git link");
+            window.location.href = result.url;
+          } else {
+            console.log("no link");
+            console.log(result);
+          }
+          dispatch(setValues());
         });
     }
 
@@ -89,7 +69,12 @@ function Checkout() {
   return (
     <section className="bg-white py-8 antialiased md:py-16">
       <Formik
-        initialValues={initialValues}
+        initialValues={{
+          address: "",
+          city: "",
+          phone: "",
+          paymentMethod: "",
+        }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -106,17 +91,19 @@ function Checkout() {
                 <PaymentMethod Field={Field} ErrorMessage={ErrorMessage} />
               </div>
 
-              <div class="border border-gray-300 p-4 rounded-lg mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-md xl:max-w-md">
-                <h2 class="text-xl font-semibold text-gray-900">Your Order</h2>
+              <div className="border border-gray-300 p-4 rounded-lg mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-md xl:max-w-md">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Your Order
+                </h2>
                 {products.map((product) => (
-                  <Order product={product} />
+                  <Order key={product._id} product={product} />
                 ))}
 
-                <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-6 mt-6 ">
-                  <dt class="text-base font-bold text-gray-900 ">
+                <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-6 mt-6 ">
+                  <dt className="text-base font-bold text-gray-900 ">
                     Total Price
                   </dt>
-                  <dd class="text-base font-bold text-gray-900 ">
+                  <dd className="text-base font-bold text-gray-900 ">
                     ${totalCartPrice}
                   </dd>
                 </dl>

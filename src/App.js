@@ -1,5 +1,5 @@
 import { default as React, Suspense, useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Footer from "./layouts/Footer";
 import Navbar from "./layouts/Navbar/Navbar";
@@ -16,16 +16,17 @@ import AllProducts from "./Pages/Products/AllProducts";
 
 import { HelmetProvider } from "react-helmet-async";
 
+import Cart from "./Pages/Cart/Cart";
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
-const Cart = React.lazy(() => import("./Pages/Cart/Cart"));
 const Checkout = React.lazy(() => import("./Pages/Checkout/Checkout"));
 const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
 const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 // const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
 const AboutUS = React.lazy(() => import("./Pages/About US/AboutUS"));
+
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -40,6 +41,12 @@ function App() {
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
+
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const RoutesMemoized = React.useMemo(
     () => (

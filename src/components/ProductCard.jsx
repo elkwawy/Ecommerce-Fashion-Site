@@ -14,7 +14,8 @@ import { addToCart, getUserCart } from "../Redux Toolkit/slices/cartSlice";
 
 const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
-  const { price, slug, priceAfterDiscount, image, name, colors } = product;
+  const { price, slug, priceAfterDiscount, image, name, colors, stock } =
+    product;
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   };
   const handleAddToCart = async (id) => {
     if (isAuthenticated) {
-      await dispatch(addToCart({ id , quantity: 1}));
+      await dispatch(addToCart({ id, quantity: 1 }));
       // dispatch(getUserCart());
     } else {
       showToast("error", "Please login first");
@@ -43,7 +44,9 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   return (
     <div
       onClick={handleNavigate}
-      className="border border-white cursor-pointer hover:border-black hover:z-40 pb-2 product trans xl:w-[275px]"
+      className={`border border-white cursor-pointer hover:border-black hover:z-40 pb-2 product trans xl:w-[275px] ${
+        stock === 0 ? "opacity-50 pointer-events-none" : ""
+      } `}
     >
       <div className="image-container relative">
         <div className="relative">
@@ -62,9 +65,15 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
               </p>
             )}
 
+          {stock === 0 && (
+            <div className="absolute left-2 top-2 bg-red-600 text-white font-bold px-3 py-1 shadow-md">
+              <h1>Out of stock</h1>
+            </div>
+          )}
+
           <div
             title="Add to cart"
-            className="absolute left-2 top-2"
+            className={`absolute left-2 top-2 ${stock === 0 ? "hidden" : ""}`}
             onClick={(e) => {
               e.stopPropagation();
               handleAddToCart(product._id);
@@ -79,7 +88,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
               e.stopPropagation();
               handleAddToWishlist(product._id);
             }}
-            className="absolute right-2 top-2"
+            className={`absolute right-2 top-2 ${stock === 0 ? "hidden" : ""}`}
           >
             <FaRegHeart className="text-[20px] font-semibold hover:text-[24px] trans" />
           </div>
@@ -112,7 +121,11 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           )}
 
           {colors && colors.length && (
-            <div className="colors text-gray-500 text-sm font-semibold">
+            <div
+              className={`colors text-gray-500 text-sm font-semibold ${
+                stock === 0 ? "hidden" : ""
+              }`}
+            >
               {colors.length} {colors.length > 1 ? "colors" : "color"}
             </div>
           )}
