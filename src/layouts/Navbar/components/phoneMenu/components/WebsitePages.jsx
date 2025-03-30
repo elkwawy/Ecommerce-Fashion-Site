@@ -84,6 +84,20 @@ const WebsitePages = memo(({phoneMenu, closeMenu}) => {
                 >
                 Home
             </NavLink>
+
+            <NavLink
+                onClick={closeMenu}
+                to={"/products"}
+                className={({ isActive }) =>
+                    ` ${
+                    isActive && !showCategory
+                        ? "font-bold"
+                        : "font-normal text-gray-700 hover:text-black"
+                    } trans text-2xl  `
+                }
+                >
+                All Products
+            </NavLink>
             
             <div
                 onClick={toggleShowCatgeroy}

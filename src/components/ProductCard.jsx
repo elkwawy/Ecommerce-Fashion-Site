@@ -1,21 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
 import { memo } from "react";
-import CustomSkeleton from "../utilities/CustomSkeleton";
+import { FaRegHeart } from "react-icons/fa";
+import { MdAddShoppingCart } from "react-icons/md";
 import { Img } from "react-image";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addToCart } from "../Redux Toolkit/slices/cartSlice";
 import {
   addToWhishList,
   getUserWhishList,
 } from "../Redux Toolkit/slices/WishlistSlice";
+import CustomSkeleton from "../utilities/CustomSkeleton";
 import { showToast } from "../utilities/showToast";
-import { FaRegHeart } from "react-icons/fa";
-import { MdAddShoppingCart } from "react-icons/md";
-import { addToCart, getUserCart } from "../Redux Toolkit/slices/cartSlice";
 
 const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
-  const { price, slug, priceAfterDiscount, image, name, colors, stock } =
-    product;
+  const { price, slug, priceAfterDiscount,SubCategory, image, name, colors, stock } = product;
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
@@ -40,7 +39,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   };
 
   const handleNavigate = () => {
-    navigate(`/${slug}`, { state: { productId: product._id } });
+    navigate(`/product/${SubCategory}/${product._id}`);
   };
 
   return (

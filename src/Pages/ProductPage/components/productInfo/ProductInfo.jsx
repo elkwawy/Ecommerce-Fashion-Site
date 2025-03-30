@@ -100,9 +100,13 @@ const ProductInfo = ({ product }) => {
             {<ProductSizes sizes={size} choseSize={(s) => updateOpts("size", s)} />}
             
             <div className="w-fit flex flex-col items-start">
-                {/* <div className="flex  items-center gap-1 "> */}
+                {
+                    stock > 0 
+                    ?  
                     <p className="text-sm text-gray-700">{stock} items in stock</p>
-                {/* </div> */}
+                    : 
+                    <p className="text-sm text-gray-700">Out of stock</p>
+                }
                 <div className="gap-x-2 w-fit flex items-center ">
                     <button onClick={handleAddToCart} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} className="bg-black min-w-[170px] text-white  trans hover:opacity-80 py-2">
                         {addToCart}
