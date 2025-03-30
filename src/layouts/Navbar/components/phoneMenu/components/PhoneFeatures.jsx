@@ -1,3 +1,4 @@
+import { GoPerson } from "react-icons/go";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { PiShoppingCart } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +8,6 @@ import Login from "../../../../../Auth/login/Login";
 import ResetCode from "../../../../../Auth/ResetCode/ResetCode";
 import Signin from "../../../../../Auth/signin/Signin";
 import useVisible from "../../../../../Auth/utils/usevisable";
-import { GoPerson } from "react-icons/go";
 import DropdowenMenu from "../../../../../components/DropdowenMenu";
 
 const PhoneFeatures = ({closeMenu}) => {
