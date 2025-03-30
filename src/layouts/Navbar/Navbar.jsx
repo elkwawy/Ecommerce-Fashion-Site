@@ -153,41 +153,37 @@ const Navbar = memo(() => {
           </ul>
 
           <ul className="gap-6 hidden items-center sm:flex">
-            <div className="relative">
-              <NavLink
-                to={"/cart"}
-                className={({ isActive }) =>
-                  ` ${
-                    isActive && !showCategory
-                      ? "font-bold"
-                      : "font-normal text-gray-700 hover:text-black"
-                  } trans  `
-                }
-              >
-                <PiShoppingCart size={22} className="cursor-pointer" />
-              </NavLink>
+            <NavLink
+              to={"/cart"}
+              className={({ isActive }) =>
+                `relative ${
+                  isActive && !showCategory
+                    ? "font-bold"
+                    : "font-normal text-gray-700 hover:text-black"
+                } trans  `
+              }
+            >
+              <PiShoppingCart size={22} className="cursor-pointer" />
               <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
                 {countCart}
               </div>
-            </div>
+            </NavLink>
 
-            <div className="relative">
-              <NavLink
-                to={"/wishlist"}
-                className={({ isActive }) =>
-                  ` ${
-                    isActive && !showCategory
-                      ? "font-bold"
-                      : "font-normal text-gray-700 hover:text-black"
-                  } trans  `
-                }
-              >
-                <CiHeart size={22} className="cursor-pointer" />
-              </NavLink>
+            <NavLink
+              to={"/wishlist"}
+              className={({ isActive }) =>
+                `relative ${
+                  isActive && !showCategory
+                    ? "font-bold"
+                    : "font-normal text-gray-700 hover:text-black"
+                } trans  `
+              }
+            >
+              <CiHeart size={24} className="cursor-pointer" />
               <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
                 {count}
               </div>
-            </div>
+            </NavLink>
 
             {isAuthenticated ? (
               <div
@@ -202,9 +198,9 @@ const Navbar = memo(() => {
                 </div>
               </div>
             ) : (
-              <div title="Login" onClick={() => setShowModel("login")}>
-                <GoPerson size={22} className="cursor-pointer" />
-              </div>
+              <NavLink title="Login" onClick={() => setShowModel("login")}>
+                <GoPerson size={24} className="cursor-pointer" />
+              </NavLink>
             )}
 
             {showModel === "login" ? (

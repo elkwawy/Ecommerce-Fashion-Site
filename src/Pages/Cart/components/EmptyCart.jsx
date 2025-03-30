@@ -3,18 +3,18 @@ import { Link } from "react-router-dom";
 
 export function EmptyCartSection() {
   return (
-    <section className="min-h-[80vh]">
+    <section className="">
       <div className="w-[90%] m-auto">
         <h3 className="text-2xl font-bold border-b-2 pb-4 pt-6">My Cart</h3>
-        <div className="flex flex-col justify-center items-center gap-1 text-center">
-          <MdOutlineShoppingCart className="text-4xl" />
-          <p className="font-bold text-xl">It is empty here</p>
-          <p className=" text-gray-600 font-bold mb-2">
+        <div className="flex flex-col justify-center items-center gap-1 text-center min-h-[85vh]">
+          <MdOutlineShoppingCart className="text-5xl mb-2" />
+          <p className="font-bold">It is empty here</p>
+          <p className="text-sm mb-4 font-bold">
             Your cart is empty! Start adding items now and enjoy shopping.
           </p>
           <Link
             to="/"
-            className="w-[15rem] bg-black trans hover:ml-2 text-white py-2 px-6 rounded"
+            className="w-[15rem] bg-black trans hover:opacity-80 text-white py-2 px-6 rounded"
           >
             CONTINUE SHOPPING
           </Link>
@@ -34,7 +34,7 @@ export function EmptyCart() {
       </p>
       <Link
         to="/"
-        className="w-[13rem] bg-black text-sm trans hover:ml-2 text-white py-2 px-6 rounded"
+        className="w-[13rem] bg-black text-sm trans hover:opacity-80 text-white py-2 px-6 rounded"
       >
         CONTINUE SHOPPING
       </Link>

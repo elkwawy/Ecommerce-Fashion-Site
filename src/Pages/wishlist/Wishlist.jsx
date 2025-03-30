@@ -123,7 +123,7 @@ export default function Wishlist() {
             <h3 className="text-2xl font-bold border-b-2 pb-4 pt-6">
               My Wishlist
             </h3>
-            <div className="flex flex-col justify-center items-center text-center  min-h-screen">
+            <div className="flex flex-col justify-center items-center text-center  min-h-[85vh]">
               <FaRegHeart className="text-4xl mb-4" />
               <p className="font-bold">It is empty here</p>
               <p className="text-sm mb-4 font-bold">
