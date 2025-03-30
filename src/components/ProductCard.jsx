@@ -20,6 +20,8 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
+  
+  
   const handleAddToWishlist = async (id) => {
     if (isAuthenticated) {
       await dispatch(addToWhishList({ id }));

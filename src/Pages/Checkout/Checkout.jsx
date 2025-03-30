@@ -46,7 +46,8 @@ function Checkout() {
         .unwrap()
         .then(() => {
           dispatch(setValues());
-          navigate("/profile", { replace: true });
+          navigate("/profile", {  replace: true,
+            state: { products: products, totalCartPrice, cartId }});
         });
     } else if (values.paymentMethod === "instantPayment") {
       dispatch(createInstantPayment({ cartId, orderData }))

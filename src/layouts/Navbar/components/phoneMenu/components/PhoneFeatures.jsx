@@ -9,6 +9,7 @@ import Signin from "../../../../../Auth/signin/Signin";
 import useVisible from "../../../../../Auth/utils/usevisable";
 import { handleLogout } from "../../../../../Redux Toolkit/slices/auth";
 import { useNavigate } from "react-router-dom";
+import DropdowenMenu from "../../../../../components/DropdowenMenu";
 
 const PhoneFeatures = ({closeMenu}) => {
     const [showModel, setShowModel] = useVisible();
@@ -26,22 +27,22 @@ const PhoneFeatures = ({closeMenu}) => {
             </button>
     
             {isAuthenticated ? (
-                <button
-                className="bg-gray-100 rounded-xl shadow-xl cursor-pointer px-3 py-2"
-                onClick={() => {
-                    dispatch(handleLogout());
-                }}
-                >
-                    Logout
-                </button>
-            ) : (
-                <button
-                    className=" border border-black trans hover:bg-gray-200 cursor-pointer px-3 py-1"
-                    onClick={() => setShowModel("login")}
-                >
-                    Login
-                </button>
-            )}
+                         <div
+                           className="cursor-pointer relative"
+                           onClick={() => setShowModel("dropdowenmenu")}
+                         >
+                           <img src="/user.png" alt="user" className="w-8 h-8" />
+                           <div className="relative">
+                             {showModel === "dropdowenmenu" && (
+                               <DropdowenMenu setShowModel={setShowModel} />
+                             )}
+                           </div>
+                         </div>
+                       ) : (
+                         <div title="Login" onClick={() => setShowModel("login")}>
+                           <GoPerson size={22} className="cursor-pointer" />
+                         </div>
+                       )}
             {showModel === "login" ? <Login setShowModel={setShowModel} /> : null}
             {showModel === "signup" && <Signin setShowModel={setShowModel} />}
             {showModel === "forgetPass" && (<ForgetPass setShowModel={setShowModel} /> )}
