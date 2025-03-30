@@ -25,24 +25,24 @@ export default function DropdowenMenu({ setShowModel }) {
   }, []);
   return (
     <div
-      className="bg-white flex flex-col items-center justify-center rounded-xl rounded-tr-none space-y-2 shadow-xl py-4 absolute top-[20px] right-4 min-w-[150px] "
+      className="bg-white flex flex-col overflow-hidden  rounded-xl rounded-tr-none space-y-2 shadow-xl pt-4 absolute z-[999]  top-[20px] max-[635px]:right-0 right-4 min-w-[150px] "
       ref={dropdownRef}
    >
       <div className="">
-        {user ? <h2 className="font-semibold">Welcome {user.name}</h2> : <p>No user found</p>}
+        {user ? <h2 className="font-semibold p-2">{user.name}</h2> : <p>No user found</p>}
 
         <Link
           to="/profile"
           onClick={() => {
             setTimeout(() => setShowModel(null), 100); 
           }}
-          className="block text-center hover:bg-gray-100 transition-all duration-300 p-2"
+          className="block  hover:bg-gray-100 transition-all duration-300 p-2"
         >
           Profile
         </Link>
 
         <button
-          className="cursor-pointer hover:bg-gray-100 transition-all duration-300 p-2 w-full "
+          className="cursor-pointer text-start hover:bg-gray-100 transition-all duration-300 p-2 w-full "
           onClick={() => {
             dispatch(handleLogout());
             setShowModel(null);
