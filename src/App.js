@@ -63,7 +63,7 @@ function App() {
         <Route path="/changepassword" element={<ChangePassword />} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />
-        <Route path="/:productName" element={<ProductPage />} />
+        <Route path="/product/:subcatId/:productId" element={<ProductPage />} />
         <Route path="/products" element={<AllProducts />} />
       </Routes>
     ),

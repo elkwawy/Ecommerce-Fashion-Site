@@ -1,24 +1,22 @@
 import { memo, useEffect, useRef, useState } from "react";
-import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
-import { IoIosSearch } from "react-icons/io";
+import { IoMdHeartEmpty } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import Logo from "../../assets/icons/logo.png";
+import ForgetPass from "../../Auth/ForgetPass/ForgetPass";
 import Login from "../../Auth/login/Login";
+import ResetCode from "../../Auth/ResetCode/ResetCode";
+import Signin from "../../Auth/signin/Signin";
+import useVisible from "../../Auth/utils/usevisable";
+import DropdowenMenu from "../../components/DropdowenMenu";
 import { fetchCategories } from "../../Redux Toolkit/slices/categoriesSlice";
 import { fetchAllSubcategories } from "../../Redux Toolkit/slices/subcategoriesForEachCategory";
 import Category from "./components/CategoryNav";
 import PhoneMenu from "./components/phoneMenu/PhoneMenu";
-import Search from "./components/Search";
-import Logo from "../../assets/icons/logo.png";
-import useVisible from "../../Auth/utils/usevisable";
-import Signin from "../../Auth/signin/Signin";
-import ForgetPass from "../../Auth/ForgetPass/ForgetPass";
-import ResetCode from "../../Auth/ResetCode/ResetCode";
-import DropdowenMenu from "../../components/DropdowenMenu";
 
 const Navbar = memo(() => {
   const [showModel, setShowModel] = useVisible();
@@ -92,64 +90,78 @@ const Navbar = memo(() => {
   return (
     <>
       <div className="flex bg-[#F8F8F8] h-[74px] justify-between shadow-sm w-full items-center md:h-[74px] md:px-10 md:py-[20px] px-6 py-2 sticky top-0 z-[100]">
-        <>
-          <NavLink
-            to={"/"}
-            className="text-2xl cursor-pointer font-bold relative"
-          >
-            <img src={Logo} className="w-[60px]" alt="" />
-          </NavLink>
-          <ul className="gap-6 hidden items-center md:flex">
+        {(
+          <>
             <NavLink
               to={"/"}
-              className={({ isActive }) =>
-                ` ${
-                  isActive && !showCategory
+              className="text-2xl cursor-pointer font-bold relative"
+            >
+              <img src={Logo} className="w-[60px]" alt="" />
+            </NavLink>
+
+            <ul className="gap-3 lg:gap-6 hidden items-center md:flex">
+              <NavLink
+                to={"/"}
+                className={({ isActive }) =>
+                  ` ${
+                    isActive && !showCategory
+                      ? "font-bold"
+                      : "font-normal text-gray-700 hover:text-black"
+                  } trans  `
+                }
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to={"/products"}
+                className={({ isActive }) =>
+                  ` ${
+                    isActive && !showCategory
+                      ? "font-bold"
+                      : "font-normal text-gray-700 hover:text-black"
+                  } trans  `
+                }
+              >
+                All Products
+              </NavLink>
+              <button
+                ref={categoryBtnRef}
+                onClick={toggleShowCategory}
+                className={` ${
+                  showCategory 
                     ? "font-bold"
                     : "font-normal text-gray-700 hover:text-black"
-                } trans  `
-              }
-            >
-              Home
-            </NavLink>
-            <button
-              ref={categoryBtnRef}
-              onClick={toggleShowCategory}
-              className={` ${
-                showCategory ||
-                (location.pathname !== "/" &&
-                  location.pathname !== "/aboutUs" &&
-                  location.pathname !== "/contactUs")
-                  ? "font-bold"
-                  : "font-normal text-gray-700 hover:text-black"
-              } trans outline-0`}
-            >
-              Category
-            </button>
-            <NavLink
-              to={"/aboutUs"}
-              className={({ isActive }) =>
-                ` ${
-                  isActive && !showCategory
-                    ? "font-bold"
-                    : "font-normal text-gray-700 hover:text-black"
-                } trans  `
-              }
-            >
-              About Us
-            </NavLink>
-            <NavLink
-              to={"/contactUs"}
-              className={({ isActive }) =>
-                ` ${
-                  isActive && !showCategory
-                    ? "font-bold"
-                    : "font-normal text-gray-700 hover:text-black"
-                } trans  `
-              }
-            >
-              Contact Us
-            </NavLink>
+
+                } trans outline-0`}
+              >
+                Category
+              </button>
+              
+              <NavLink
+                to={"/aboutUs"}
+                className={({ isActive }) =>
+                  ` ${
+                    isActive && !showCategory
+                      ? "font-bold"
+                      : "font-normal text-gray-700 hover:text-black"
+                  } trans  `
+                }
+              >
+                About Us
+              </NavLink>
+              
+              <NavLink
+                to={"/contactUs"}
+                className={({ isActive }) =>
+                  ` ${
+                    isActive && !showCategory
+                      ? "font-bold"
+                      : "font-normal text-gray-700 hover:text-black"
+                  } trans  `
+                }
+              >
+                Contact Us
+              </NavLink>
           </ul>
 
           <ul className="gap-6 hidden items-center sm:flex">
@@ -185,58 +197,61 @@ const Navbar = memo(() => {
               </div>
             </NavLink>
 
-            {isAuthenticated ? (
-              <div
-                className="cursor-pointer relative"
-                onClick={() => setShowModel("dropdowenmenu")}
-              >
-                <img src="/user.png" alt="user" className="w-8 h-8" />
-                <div className="relative">
-                  {showModel === "dropdowenmenu" && (
-                    <DropdowenMenu setShowModel={setShowModel} />
-                  )}
+            </ul>
+
+              {isAuthenticated ? (
+                <div
+                  className="cursor-pointer relative"
+                  onClick={() => setShowModel("dropdowenmenu")}
+                >
+                  <img src="/user.png" alt="user" className="w-8 h-8" />
+                  <div className="relative">
+                    {showModel === "dropdowenmenu" && (
+                      <DropdowenMenu setShowModel={setShowModel} />
+                    )}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <NavLink title="Login" onClick={() => setShowModel("login")}>
+              ) : (
+            <NavLink title="Login" onClick={() => setShowModel("login")}>
                 <GoPerson size={24} className="cursor-pointer" />
               </NavLink>
-            )}
+              )}
 
-            {showModel === "login" ? (
-              <Login setShowModel={setShowModel} />
-            ) : null}
-            {showModel === "signup" && <Signin setShowModel={setShowModel} />}
-            {showModel === "forgetPass" && (
-              <ForgetPass setShowModel={setShowModel} />
-            )}
-            {showModel === "resetcode" && (
-              <ResetCode setShowModel={setShowModel} />
-            )}
-          </ul>
-          <div className="flex gap-6 items-center md:hidden">
-            {!shownMenuMark && (
-              <button onClick={toggleShowPhoneMenu}>
-                <VscMenu
-                  size={22}
-                  className={`cursor-pointer trans ${
-                    showPhoneMenu ? "rotate-180 duration-700" : "rotate-0"
-                  }`}
-                />
-              </button>
-            )}
-            {shownMenuMark && (
-              <button onClick={toggleShowPhoneMenu}>
-                <MdClose
-                  size={22}
-                  className={`cursor-pointer trans ${
-                    showPhoneMenu ? "rotate-0" : "-rotate-180 duration-700"
-                  }`}
-                />
-              </button>
-            )}
-          </div>
-        </>
+              {showModel === "login" ? (
+                <Login setShowModel={setShowModel} />
+              ) : null}
+              {showModel === "signup" && <Signin setShowModel={setShowModel} />}
+              {showModel === "forgetPass" && (
+                <ForgetPass setShowModel={setShowModel} />
+              )}
+              {showModel === "resetcode" && (
+                <ResetCode setShowModel={setShowModel} />
+              )}
+            </ul>
+            <div className="flex gap-6 items-center md:hidden">
+              {!shownMenuMark && (
+                <button onClick={toggleShowPhoneMenu}>
+                  <VscMenu
+                    size={22}
+                    className={`cursor-pointer trans ${
+                      showPhoneMenu ? "rotate-180 duration-700" : "rotate-0"
+                    }`}
+                  />
+                </button>
+              )}
+              {shownMenuMark && (
+                <button onClick={toggleShowPhoneMenu}>
+                  <MdClose
+                    size={22}
+                    className={`cursor-pointer trans ${
+                      showPhoneMenu ? "rotate-0" : "-rotate-180 duration-700"
+                    }`}
+                  />
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       <div ref={categoryDivRef} className="hidden sm:block">
@@ -255,6 +270,6 @@ const Navbar = memo(() => {
         />
       )}
     </>
-  );
-});
+  )
+})
 export default Navbar;

@@ -1,14 +1,13 @@
-import { CiHeart } from "react-icons/ci";
 import { GoPerson } from "react-icons/go";
+import { IoMdHeartEmpty } from "react-icons/io";
 import { PiShoppingCart } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import ForgetPass from "../../../../../Auth/ForgetPass/ForgetPass";
 import Login from "../../../../../Auth/login/Login";
 import ResetCode from "../../../../../Auth/ResetCode/ResetCode";
 import Signin from "../../../../../Auth/signin/Signin";
 import useVisible from "../../../../../Auth/utils/usevisable";
-import { handleLogout } from "../../../../../Redux Toolkit/slices/auth";
-import { useNavigate } from "react-router-dom";
 import DropdowenMenu from "../../../../../components/DropdowenMenu";
 
 const PhoneFeatures = ({closeMenu}) => {
@@ -23,7 +22,7 @@ const PhoneFeatures = ({closeMenu}) => {
     return (
         <ul className="flex gap-8 items-center sm:hidden">
             <button onClick={() => goToPage("/wishList")} >
-                <CiHeart size={30} className="cursor-pointer" />
+                <IoMdHeartEmpty size={30} className="cursor-pointer" />
             </button>
     
             {isAuthenticated ? (

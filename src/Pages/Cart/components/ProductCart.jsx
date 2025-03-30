@@ -24,6 +24,7 @@ const ProductCart = ({ product }) => {
     }
   };
 
+  
   const handleDelete = () => {
     dispatch(deleteFromCart(product._id));
   };

@@ -5,12 +5,12 @@ import { API } from "../../Api/Api";
 // Async thunk for fetching products
 export const fetchProducts = createAsyncThunk(
     "allProducts/fetchProducts",
-    async (_, { getState, rejectWithValue }) => {
+    async (sortTerm, { getState, rejectWithValue }) => {
         const { page, searchTerm, products } = getState().allProducts;
 
         try {
             const response = await axios.get(API.product, {
-                params: { limit: 10, sort: "-createdAt", page, search: searchTerm || null },
+                params: { limit: 10, sort: sortTerm || "-createdAt", page, search: searchTerm || null },
             });
 
             const { data, totalDocuments } = response.data; // Extract totalDocuments from API response
@@ -45,11 +45,18 @@ const allProducts = createSlice({
             state.hasMore = true;
             state.error = null;
             state.totalDocs = 0;
+            state.searchTerm= "";
         },
         setSearchTerm: (state, action) => {
             state.searchTerm = action.payload;
         },
         resetSearchTerm: (state) => {
+            state.searchTerm = "";
+        },
+        setSortTerm: (state, action) => {
+            state.searchTerm = action.payload;
+        },
+        resetSortTerm: (state) => {
             state.searchTerm = "";
         }
     },
