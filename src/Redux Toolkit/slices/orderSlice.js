@@ -66,6 +66,7 @@ export const getUserOrders = createAsyncThunk(
       };
 
       const { data } = await axios.request(options);
+      
       return data.orders;
     } catch (error) {
       return rejectWithValue(
