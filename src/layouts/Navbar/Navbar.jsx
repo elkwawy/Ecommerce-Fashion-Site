@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { GoPerson } from "react-icons/go";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { CiHeart } from "react-icons/ci";
 import { MdClose } from "react-icons/md";
 import { PiShoppingCart } from "react-icons/pi";
 import { VscMenu } from "react-icons/vsc";
@@ -90,7 +90,7 @@ const Navbar = memo(() => {
   return (
     <>
       <div className="flex bg-[#F8F8F8] h-[74px] justify-between shadow-sm w-full items-center md:h-[74px] md:px-10 md:py-[20px] px-6 py-2 sticky top-0 z-[100]">
-        {(
+        {
           <>
             <NavLink
               to={"/"}
@@ -128,15 +128,14 @@ const Navbar = memo(() => {
                 ref={categoryBtnRef}
                 onClick={toggleShowCategory}
                 className={` ${
-                  showCategory 
+                  showCategory
                     ? "font-bold"
                     : "font-normal text-gray-700 hover:text-black"
-
                 } trans outline-0`}
               >
                 Category
               </button>
-              
+
               <NavLink
                 to={"/aboutUs"}
                 className={({ isActive }) =>
@@ -149,7 +148,7 @@ const Navbar = memo(() => {
               >
                 About Us
               </NavLink>
-              
+
               <NavLink
                 to={"/contactUs"}
                 className={({ isActive }) =>
@@ -162,42 +161,40 @@ const Navbar = memo(() => {
               >
                 Contact Us
               </NavLink>
-          </ul>
-
-          <ul className="gap-6 hidden items-center sm:flex">
-            <NavLink
-              to={"/cart"}
-              className={({ isActive }) =>
-                `relative ${
-                  isActive && !showCategory
-                    ? "font-bold"
-                    : "font-normal text-gray-700 hover:text-black"
-                } trans  `
-              }
-            >
-              <PiShoppingCart size={22} className="cursor-pointer" />
-              <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
-                {countCart}
-              </div>
-            </NavLink>
-
-            <NavLink
-              to={"/wishlist"}
-              className={({ isActive }) =>
-                `relative ${
-                  isActive && !showCategory
-                    ? "font-bold"
-                    : "font-normal text-gray-700 hover:text-black"
-                } trans  `
-              }
-            >
-              <CiHeart size={24} className="cursor-pointer" />
-              <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
-                {count}
-              </div>
-            </NavLink>
-
             </ul>
+
+            <ul className="gap-6 hidden items-center sm:flex">
+              <NavLink
+                to={"/cart"}
+                className={({ isActive }) =>
+                  `relative ${
+                    isActive && !showCategory
+                      ? "font-bold"
+                      : "font-normal text-gray-700 hover:text-black"
+                  } trans  `
+                }
+              >
+                <PiShoppingCart size={22} className="cursor-pointer" />
+                <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
+                  {countCart}
+                </div>
+              </NavLink>
+
+              <NavLink
+                to={"/wishlist"}
+                className={({ isActive }) =>
+                  `relative ${
+                    isActive && !showCategory
+                      ? "font-bold"
+                      : "font-normal text-gray-700 hover:text-black"
+                  } trans  `
+                }
+              >
+                <CiHeart size={24} className="cursor-pointer" />
+                <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
+                  {count}
+                </div>
+              </NavLink>
 
               {isAuthenticated ? (
                 <div
@@ -212,22 +209,23 @@ const Navbar = memo(() => {
                   </div>
                 </div>
               ) : (
-            <NavLink title="Login" onClick={() => setShowModel("login")}>
-                <GoPerson size={24} className="cursor-pointer" />
-              </NavLink>
-              )}
-
-              {showModel === "login" ? (
-                <Login setShowModel={setShowModel} />
-              ) : null}
-              {showModel === "signup" && <Signin setShowModel={setShowModel} />}
-              {showModel === "forgetPass" && (
-                <ForgetPass setShowModel={setShowModel} />
-              )}
-              {showModel === "resetcode" && (
-                <ResetCode setShowModel={setShowModel} />
+                <NavLink title="Login" onClick={() => setShowModel("login")}>
+                  <GoPerson size={24} className="cursor-pointer" />
+                </NavLink>
               )}
             </ul>
+
+            {showModel === "login" ? (
+              <Login setShowModel={setShowModel} />
+            ) : null}
+            {showModel === "signup" && <Signin setShowModel={setShowModel} />}
+            {showModel === "forgetPass" && (
+              <ForgetPass setShowModel={setShowModel} />
+            )}
+            {showModel === "resetcode" && (
+              <ResetCode setShowModel={setShowModel} />
+            )}
+
             <div className="flex gap-6 items-center md:hidden">
               {!shownMenuMark && (
                 <button onClick={toggleShowPhoneMenu}>
@@ -251,7 +249,7 @@ const Navbar = memo(() => {
               )}
             </div>
           </>
-        )}
+        }
       </div>
 
       <div ref={categoryDivRef} className="hidden sm:block">
@@ -270,6 +268,6 @@ const Navbar = memo(() => {
         />
       )}
     </>
-  )
-})
+  );
+});
 export default Navbar;
