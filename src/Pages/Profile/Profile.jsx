@@ -6,16 +6,13 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProfile } from "../../Redux Toolkit/slices/profileSlice";
 import ButtonForm from "../../components/helpers/ButtonForm";
 import { showToast } from "../../utilities/showToast";
-import Order from "../Checkout/components/Order";
-import { useLocation } from "react-router-dom";
-
+import OrderSummary from "./OrderSummary";
+import { updateProfile } from "../../Redux Toolkit/slices/profileSlice";
 
 const userCookie = Cookies.get("user");
 const user = userCookie ? JSON.parse(userCookie) : null;
-
 
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -25,25 +22,20 @@ const validationSchema = Yup.object({
 export default function Profile() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.profile) || {};
-  const location = useLocation();
-  const { products, totalCartPrice, cartId } = location?.state ?? {};
+ 
+ 
 
   return (
-    <div className=" container py-6 mx-auto">
-      <h1 className=" text-2xl font-semibold text-gray-900 mb-4">
-        Profile
-      </h1>
-      <div className="flex flex-col xl:flex-row justify-between gap-4">
-      <Helmet>
-        <title>Profile</title>
-        <meta name="description" content="This is the profile page" />
-      </Helmet>
-
-     
-      <ProfileForm user={user} loading={loading} dispatch={dispatch} />
-
-     
-      <OrderSummary products={products} totalCartPrice={totalCartPrice} />
+    <div className="container py-6 mx-auto">
+      <h1 className="text-2xl font-semibold text-gray-900 mb-4">Profile</h1>
+      <div className="">
+        <Helmet>
+          <title>My Profile</title>
+          <meta name="description" content="This is the profile page" />
+        </Helmet>
+        <ProfileForm user={user} loading={loading} dispatch={dispatch} />
+        <OrderSummary />
+        
       </div>
     </div>
   );
@@ -52,7 +44,7 @@ export default function Profile() {
 
 function ProfileForm({ user, loading, dispatch }) {
   return (
-    <div className="flex-1">
+    <div className="">
       <Formik
         initialValues={{
           email: user?.email || "",
@@ -107,7 +99,6 @@ function ProfileForm({ user, loading, dispatch }) {
   );
 }
 
-
 function ProfileAvatar() {
   return (
     <div className="flex flex-col md:flex-row gap-2 items-center justify-between mb-4">
@@ -123,23 +114,3 @@ function ProfileAvatar() {
 }
 
 
-function OrderSummary({ products, totalCartPrice }) {
-  return (
-    <div className="xl:w-1/3">
-      <div className="border border-gray-300 p-4 rounded-lg mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-md xl:max-w-md">
-        <h2 className="text-xl font-semibold text-gray-900">Your Order</h2>
-
-        {products?.length > 0 ? (
-          products.map((product) => <Order key={product._id} product={product} />)
-        ) : (
-          <p className="text-gray-600">No orders available.</p>
-        )}
-
-        <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-6 mt-6">
-          <dt className="text-base font-bold text-gray-900">Total Price</dt>
-          <dd className="text-base font-bold text-gray-900">${totalCartPrice || 0}</dd>
-        </dl>
-      </div>
-    </div>
-  );
-}

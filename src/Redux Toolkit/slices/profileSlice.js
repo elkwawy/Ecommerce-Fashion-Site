@@ -26,6 +26,24 @@ export const updateProfile = createAsyncThunk(
   }
 );
 
+
+
+export const getLogedUser = createAsyncThunk(
+  "profile/getLogedUser", 
+  async () => {
+    try {
+      const options = {
+        method: "GET",
+        url: `${BASE_URL}/user/getMe`,
+        headers: Cookies.get("token") ? { authorization: Cookies.get("token") } : {},
+      };
+      const { data } = await axios.request(options);
+      return data;
+    } catch (error) {
+      return (error.response?.data || "Request failed");
+    }
+  }
+);
 const profileSlice = createSlice({
   name: "profile", 
   initialState: {
@@ -45,6 +63,19 @@ const profileSlice = createSlice({
       state.userData = action.payload;
     })
     .addCase(updateProfile.rejected, (state, action) => {
+      state.loading = false;
+      state.isError = true;
+      state.error = action.payload;
+    })
+    .addCase(getLogedUser.pending, (state) => {
+      state.loading = false;
+      state.isError = false
+    })
+    .addCase(getLogedUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.userData = action.payload;
+    })
+    .addCase(getLogedUser.rejected, (state, action) => {
       state.loading = false;
       state.isError = true;
       state.error = action.payload;
