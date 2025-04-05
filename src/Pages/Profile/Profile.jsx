@@ -115,7 +115,10 @@ function ProfileForm({ userData, loading, dispatch, showForm ,setShowForm}) {
 
 function UserDetails({ userData, setShowForm ,loading ,showForm}) {
   return (
-    <div className={`max-[500px]:w-full transition-all duration-700 ease-in-out flex flex-col gap-2 items-center justify-between absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${showForm && "top-1/2 right-0 -translate-x-0 -translate-y-1/2 max-[500px]:-translate-x-1/2"}`}>
+    <div className={`transition-all duration-700 ease-in-out flex flex-col gap-2 items-center justify-between absolute top-1/2 transform -translate-y-1/2 
+      ${showForm ? "left-[70%]  -translate-x-0 max-[576px]:left-[45%]" : "left-1/2 -translate-x-1/2"}
+    `}
+    >
       <div className="space-y-1 flex flex-col gap-2 items-center">
         <div>
           <Img 
