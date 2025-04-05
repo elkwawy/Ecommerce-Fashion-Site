@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { FaPenToSquare } from "react-icons/fa6";
 import InputForm from "../../components/helpers/InputForm";
@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import ButtonForm from "../../components/helpers/ButtonForm";
 import { showToast } from "../../utilities/showToast";
 import OrderSummary from "./OrderSummary";
-import { updateProfile } from "../../Redux Toolkit/slices/profileSlice";
+import { getLogedUser, updateProfile } from "../../Redux Toolkit/slices/profileSlice";
+import { IoClose } from "react-icons/io5";
+import { Img } from "react-image";
+import CustomSkeleton from "../../utilities/CustomSkeleton";
 
-const userCookie = Cookies.get("user");
-const user = userCookie ? JSON.parse(userCookie) : null;
 
+const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : {};
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
   name: Yup.string().min(3, "Too short").required("Name is required"),
@@ -22,40 +24,52 @@ const validationSchema = Yup.object({
 export default function Profile() {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.profile) || {};
- 
- 
-
+  const [showForm, setShowForm] = useState(false)
+   const userData = useSelector((state) => state.profile.userData);
+   console.log(userData);
+   
   return (
     <div className="container py-6 mx-auto">
       <h1 className="text-2xl font-semibold text-gray-900 mb-4">Profile</h1>
-      <div className="">
+      <div className="space-y-4">
         <Helmet>
           <title>My Profile</title>
           <meta name="description" content="This is the profile page" />
         </Helmet>
-        <ProfileForm user={user} loading={loading} dispatch={dispatch} />
+       <div className="relative grid grid-cols-1 md:grid-cols-2 gap-4 w-full ">
+       <UserDetails userData={userData} setShowForm={setShowForm} loading={loading} showForm={showForm}/>
+       <ProfileForm userData={userData} loading={loading} dispatch={dispatch} showForm={showForm} setShowForm={setShowForm} />
+       </div>
         <OrderSummary />
-        
       </div>
     </div>
   );
 }
 
 
-function ProfileForm({ user, loading, dispatch }) {
+function ProfileForm({ userData, loading, dispatch, showForm ,setShowForm}) {
   return (
-    <div className="">
+    <div
+      className={`transition-all duration-500 ease-in-out  ${
+        showForm ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10 pointer-events-none"
+      }`}
+     
+    >
+      <div className="absolute top-2 text-2xl right-2 cursor-pointer hover:bg-gray-100 rounded-full p-2 transition-all  duration-300" onClick={() => setShowForm(false)}><IoClose /></div>
       <Formik
+      enableReinitialize
         initialValues={{
-          email: user?.email || "",
-          name: user?.name || "",
+          email: userData?.data?.email || "",
+          name: userData?.data?.name || "",
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
             await dispatch(updateProfile(values)).unwrap();
             Cookies.set("user", JSON.stringify({ ...user, ...values }));
+            await dispatch(getLogedUser())
             showToast("success", "Profile updated successfully");
+            setShowForm(false);
           } catch (error) {
             setErrors({ submit: error.message || "Failed to update profile" });
           } finally {
@@ -64,8 +78,7 @@ function ProfileForm({ user, loading, dispatch }) {
         }}
       >
         {({ handleChange, handleBlur, values, errors, touched }) => (
-          <Form className="border border-gray-300 p-4 rounded-lg space-y-4 bg-white shadow-lg">
-            <ProfileAvatar />
+          <Form className="border border-gray-300 py-6 px-4 rounded-lg space-y-4 bg-white shadow-lg">
             <InputForm
               labelName="Email"
               value={values.email}
@@ -99,18 +112,33 @@ function ProfileForm({ user, loading, dispatch }) {
   );
 }
 
-function ProfileAvatar() {
+
+function UserDetails({ userData, setShowForm ,loading ,showForm}) {
   return (
-    <div className="flex flex-col md:flex-row gap-2 items-center justify-between mb-4">
-      <div className="relative w-14 h-14 m-auto">
-        <img src="/profile-user.png" alt="User Avatar" className="w-full rounded-full" />
-        <FaPenToSquare
-          className="absolute cursor-pointer top-[60%] left-8 text-xl text-blue-600 hover:text-blue-500 transition-all duration-200"
-          aria-label="Edit Avatar"
-        />
+    <div className={`max-[500px]:w-full transition-all duration-700 ease-in-out flex flex-col gap-2 items-center justify-between absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${showForm && "top-1/2 right-0 -translate-x-0 -translate-y-1/2 max-[500px]:-translate-x-1/2"}`}>
+      <div className="space-y-1 flex flex-col gap-2 items-center">
+        <div>
+          <Img 
+           src="/user.png" alt="" className="w-20 h-20" />
+        </div>
+       {loading ?
+       <div>
+       <p className="text-gray-600">Email: <CustomSkeleton width={"150px"} height={"10px"} /></p>
+       <p className="text-gray-600">Name: <CustomSkeleton width={"100px"} height={"10px"} /></p>
       </div>
+       :(
+         <div>
+          <p className="text-gray-600">Email: {userData?.data?.email || <CustomSkeleton width={"150px"} height={"10px"} />}</p>
+          <p className="text-gray-600">Name: {userData?.data?.name || <CustomSkeleton width={"100px"} height={"10px"} />}</p>
+         </div>
+       )
+
+       }
+      </div>
+      <ButtonForm className="" type="button" onClick={() => setShowForm(true)}>
+        <FaPenToSquare className="mr-2" />
+        Update information
+      </ButtonForm>
     </div>
   );
 }
-
-
