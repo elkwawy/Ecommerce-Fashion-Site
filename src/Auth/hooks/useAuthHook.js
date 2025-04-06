@@ -8,6 +8,7 @@ const useAuthHook = ({ setShowModel }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
   async function handelSignuP(values) {
     try {
       setLoading(true);
@@ -19,13 +20,13 @@ const useAuthHook = ({ setShowModel }) => {
       const { data } = await axios.request(options);
       showToast("success", "user signed in successfully");
       setLoading(false);
-
       if (data.token) {
         setShowModel("login");
       }
-    } catch (error) {
-      showToast("error", error.response.data?.message || "error in signup");
-    } finally {
+    }  catch (error) {
+      const message = error.response?.data.errors[0].msg || "Error in registration";
+      showToast("error", message);
+    }  finally {
       setLoading(false);
     }
   }

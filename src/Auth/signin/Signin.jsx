@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import * as yup from "yup";
 import { Form, Formik } from "formik";
@@ -9,6 +9,7 @@ import useAuthHook from "../hooks/useAuthHook";
 
 export default function Signin({ setShowModel }) {
   const { handelSignuP, loading } = useAuthHook({ setShowModel });
+  const [error, setError] = useState("")
   const validationSchema = yup.object({
     name: yup
       .string()
@@ -44,8 +45,12 @@ export default function Signin({ setShowModel }) {
           role: "user",
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          handelSignuP(values);
+        onSubmit={async (values) => {
+          try {
+            await handelSignuP(values); 
+          } catch (err) {
+            setError(err); 
+          }
         }}
       >
         {({ handleChange, handleBlur, values, errors, touched }) => (
@@ -75,6 +80,11 @@ export default function Signin({ setShowModel }) {
               condition={touched.email && !!errors.email}
               errorMessage={errors.email}
             />
+            {
+              error && (
+                <p className="text-red-500">{error}</p>
+              )
+            }
             <PasswordForm
               labelName="password"
               value={values.password}
@@ -95,6 +105,7 @@ export default function Signin({ setShowModel }) {
               condition={touched.passwordConfirm && !!errors.passwordConfirm}
               errorMessage={errors.passwordConfirm}
             />
+           
             <div className="">
               <ButtonForm
                 type="submit"

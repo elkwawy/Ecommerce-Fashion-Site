@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import * as yup from "yup";
 import InputForm from "../../components/helpers/InputForm";
@@ -13,6 +13,7 @@ export default function Login({ setShowModel }) {
   const { loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [error, setError] = useState("")
 
   const validationSchema = yup.object({
     email: yup
@@ -31,16 +32,21 @@ export default function Login({ setShowModel }) {
       className="fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-[66] min-h-screen text-center "
       onClick={() => setShowModel(null)}
     >
+      <div>
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          dispatch(handleLogin(values))
-            .unwrap()
-            .then(() => {
-              navigate("/");
-              setShowModel(null);
-            });
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            setError(""); 
+            await dispatch(handleLogin(values)).unwrap();
+            navigate("/");
+            setShowModel(null);
+          } catch (err) {
+            setError(err);
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
         {({ handleChange, handleBlur, values, errors, touched }) => (
@@ -68,6 +74,9 @@ export default function Login({ setShowModel }) {
               condition={touched.password && !!errors.password}
               errorMessage={errors.password}
             />
+             {error && (
+              <div className= "bg-red-200 w-fit mx-auto rounded px-2 text-red-500 text-sm mb-2">{error}</div>
+            )}
             <div
               className="md:flex justify-between mb-4 ml-auto w-fit"
               onClick={() => setShowModel("forgetPass")}
@@ -105,6 +114,7 @@ export default function Login({ setShowModel }) {
           </Form>
         )}
       </Formik>
+      </div>
     </section>
   );
 }

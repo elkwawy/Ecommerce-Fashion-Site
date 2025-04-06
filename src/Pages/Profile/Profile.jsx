@@ -15,7 +15,14 @@ import { Img } from "react-image";
 import CustomSkeleton from "../../utilities/CustomSkeleton";
 
 
-const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : {};
+let user = {};
+try {
+  const cookie = Cookies.get("user");
+  user = cookie ? JSON.parse(cookie) : {};
+} catch (error) {
+  console.error("Invalid JSON in 'user' cookie:", error);
+  user = {};
+}
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
   name: Yup.string().min(3, "Too short").required("Name is required"),
@@ -26,8 +33,7 @@ export default function Profile() {
   const { loading } = useSelector((state) => state.profile) || {};
   const [showForm, setShowForm] = useState(false)
    const userData = useSelector((state) => state.profile.userData);
-   console.log(userData);
-   
+  
   return (
     <div className="container py-6 mx-auto">
       <h1 className="text-2xl font-semibold text-gray-900 mb-4">Profile</h1>
@@ -115,8 +121,8 @@ function ProfileForm({ userData, loading, dispatch, showForm ,setShowForm}) {
 
 function UserDetails({ userData, setShowForm ,loading ,showForm}) {
   return (
-    <div className={`transition-all duration-700 ease-in-out flex flex-col gap-2 items-center justify-between absolute top-1/2 transform -translate-y-1/2 
-      ${showForm ? "left-[70%]  -translate-x-0 max-[576px]:left-[45%]" : "left-1/2 -translate-x-1/2"}
+    <div className={` max-[500px]:w-full transition-all duration-700 ease-in-out flex flex-col gap-2 items-center justify-between absolute top-1/2 transform -translate-y-1/2 
+      ${showForm ? "left-[70%]  -translate-x-0 max-[576px]:left-[0%]" : "left-1/2 -translate-x-1/2"}
     `}
     >
       <div className="space-y-1 flex flex-col gap-2 items-center">
