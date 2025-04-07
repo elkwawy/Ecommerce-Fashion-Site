@@ -1,21 +1,23 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useProduct from "./useProduct";
 import { useEffect } from "react";
 import ProductImages from "./components/ProductImages";
 import ProductInfo from "./components/productInfo/ProductInfo";
 import LoadingPage from "./components/loadingPage/LoadingPage";
-
+import RelatedProducts from "./components/RelatedProducts";
 
 const ProductPage = () => {
-    const location = useLocation();
-    const productId = location?.state?.productId;
+    // const productId = location?.state?.productId;
+    const {subcatId, productId} = useParams();
+    console.log(productId);
+    
     const {product, loading, error, getProductData} = useProduct();
     useEffect(() => { 
         window.scrollTo(0, 0);
         if (productId)  { 
             getProductData(productId);
         }
-    }, []);
+    }, [productId]);
     console.log(product);
     
     return (
@@ -36,7 +38,7 @@ const ProductPage = () => {
                         </div>
                         <div className="space-y-1">
                             <h2 className="text-xl font-semibold">Product Description</h2>
-                            <p className="text-sm text-gray-600 lg:w-1/2">{product.Desc}</p>
+                            <p className="text-sm text-gray-600 lg:w-2/3">{product.Desc}</p>
                         </div>
                     </div>
                 )
@@ -47,8 +49,11 @@ const ProductPage = () => {
                 {error}
                 </p>
             )}
+
+            {subcatId && !error && <RelatedProducts subcatId={subcatId} productId={productId} />}
+
         </div>
-  );
+    );
 };
 
 export default ProductPage;

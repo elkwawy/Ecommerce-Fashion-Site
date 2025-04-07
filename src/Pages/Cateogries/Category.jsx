@@ -117,7 +117,6 @@ const Category = memo(() => {
             {status === "succeeded" && categorySubcategories.subcategories && <div className="flex flex-col gap-10">
                 <div className="w-full flex items-center justify-between">
                     <h1 className="capitalize font-bold text-3xl">{categoryName}</h1>
-                    <button onClick={handleNewestSort} className={`px-5 py-1 border-2 ${newestSort ? "bg-black text-white" : "hover:bg-gray-100"} border-black trans  rounded-sm`}>Sort By Newest</button>
                 </div>
                 <div className="relative">
                     {(

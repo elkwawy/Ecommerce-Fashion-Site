@@ -11,7 +11,6 @@ function Cart() {
   const { products, loading, totalCartPrice, cartId, status } = useCart();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  
 
   return isAuthenticated ? (
     <section
@@ -34,9 +33,10 @@ function Cart() {
               </button>
             )}
           </div>
-          {products.length === 0 && !loading && status !== "loading" && !totalCartPrice && (
-            <EmptyCart />
-          )}
+          {products.length === 0 &&
+            !loading &&
+            status !== "loading" &&
+            !totalCartPrice && <EmptyCart />}
           <div className="space-y-6">
             {products.length !== 0 && (
               <div className="text-gray-400 space-y-4 hidden md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">

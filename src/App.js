@@ -17,12 +17,12 @@ import AllProducts from "./Pages/Products/AllProducts";
 import { HelmetProvider } from "react-helmet-async";
 
 import Cart from "./Pages/Cart/Cart";
+import Wishlist from "./Pages/wishlist/Wishlist";
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
 const Checkout = React.lazy(() => import("./Pages/Checkout/Checkout"));
 const Payment = React.lazy(() => import("./Pages/Payment/Payment"));
-const Wishlist = React.lazy(() => import("./Pages/wishlist/Wishlist"));
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 // const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
 const AboutUS = React.lazy(() => import("./Pages/About US/AboutUS"));
@@ -63,7 +63,7 @@ function App() {
         <Route path="/changepassword" element={<ChangePassword />} />
         {/* subcategory route */}
         <Route path="/:categoryName/:subcategoryID" element={<Category />} />
-        <Route path="/:productName" element={<ProductPage />} />
+        <Route path="/product/:subcatId/:productId" element={<ProductPage />} />
         <Route path="/products" element={<AllProducts />} />
       </Routes>
     ),
