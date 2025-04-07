@@ -186,7 +186,7 @@ const cartSlice = createSlice({
         state.cartItems = cart?.cartItems;
         state.totalCartPrice = cart?.totalCartPrice;
 
-        showToast("success", message || "Cart updated");
+        // showToast("success", message || "Cart updated");
       })
       .addCase(updateCartQuantity.rejected, (state, action) => {
         state.error = action.payload;

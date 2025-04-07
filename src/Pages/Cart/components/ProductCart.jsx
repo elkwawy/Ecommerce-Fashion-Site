@@ -6,25 +6,45 @@ import {
   deleteFromCart,
   updateCartQuantity,
 } from "../../../Redux Toolkit/slices/cartSlice";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { showToast } from "../../../utilities/showToast";
 
 const ProductCart = ({ product }) => {
   const dispatch = useDispatch();
 
-  
+  const [quantity, setQuantity] = useState(product.quantity);
+
   const totalPrice = useMemo(
     () => product.price * product.quantity,
-    [product.price, product.quantity]
+    [product.price, product.quantity , quantity]
   );
-  const handleQuantityChange = (newQuantity) => {
-    if (newQuantity > 0) {
-      dispatch(
-        updateCartQuantity({ id: product._id, quantity: newQuantity })
-      );
+
+    
+  const handleIncrement = () => {
+    if (product.quantity === product.stock) {
+      showToast("error", "Product is out of stock");
+      return;
     }
+    setQuantity((prevQuantity) => prevQuantity + 1);
+    dispatch(updateCartQuantity({ id: product._id, quantity: quantity + 1 }))
+      .unwrap()
+      .catch((error) => {
+        setQuantity((prevQuantity) => prevQuantity - 1);
+        showToast("error", "Failed to update quantity");
+      });
   };
 
-  
+  const handleDecrement = () => {
+    if (quantity === 1) return;
+    setQuantity((prevQuantity) => prevQuantity - 1);
+    dispatch(updateCartQuantity({ id: product._id, quantity: quantity - 1 }))
+      .unwrap()
+      .catch((error) => {
+        setQuantity((prevQuantity) => prevQuantity + 1);
+        showToast("error", "Failed to update quantity");
+      });
+  };
+
   const handleDelete = () => {
     dispatch(deleteFromCart(product._id));
   };
@@ -43,7 +63,7 @@ const ProductCart = ({ product }) => {
           <div className="flex items-center border border-gray-300 p-1">
             <button
               type="button"
-              onClick={() => handleQuantityChange(product.quantity - 1)}
+              onClick={() => handleDecrement()}
               className="inline-flex h-5 w-5 shrink-0 items-center justify-center focus:outline-none focus:ring-2 focus:ring-gray-100"
             >
               <FiMinus />
@@ -51,12 +71,12 @@ const ProductCart = ({ product }) => {
             <input
               type="text"
               className="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0"
-              value={product.quantity}
+              value={quantity}
               readOnly
             />
             <button
               type="button"
-              onClick={() => handleQuantityChange(product.quantity + 1)}
+              onClick={() => handleIncrement()}
               className="inline-flex h-5 w-5 shrink-0 items-center justify-center focus:outline-none focus:ring-2 focus:ring-gray-100"
             >
               <FiPlus />
