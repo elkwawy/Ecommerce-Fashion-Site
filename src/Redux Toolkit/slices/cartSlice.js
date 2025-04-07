@@ -205,7 +205,7 @@ const cartSlice = createSlice({
           localStorage.setItem("cart", state.count);
         }
 
-        showToast("success", message || "Item removed from cart");
+        // showToast("success", message || "Item removed from cart");
       })
       .addCase(deleteFromCart.rejected, (state, action) => {
         state.error = action.payload;

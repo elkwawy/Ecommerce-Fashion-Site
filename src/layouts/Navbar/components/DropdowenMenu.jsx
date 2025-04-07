@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { handleLogout } from "../../Redux Toolkit/slices/auth";
 import { handleLogout } from "../../../Redux Toolkit/slices/auth";
 import { useDispatch } from "react-redux";
 
 export default function DropdowenMenu({ setShowModel, dropdownRef }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userCookie = Cookies.get("user");
   const user = userCookie ? JSON.parse(userCookie) : null;
@@ -36,6 +37,7 @@ export default function DropdowenMenu({ setShowModel, dropdownRef }) {
           className="cursor-pointer text-start hover:bg-gray-100 transition-all duration-300 p-2 w-full "
           onClick={() => {
             dispatch(handleLogout());
+            navigate("/");
             setShowModel(null);
           }}
         >

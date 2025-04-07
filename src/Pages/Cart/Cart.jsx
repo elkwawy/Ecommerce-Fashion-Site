@@ -6,11 +6,24 @@ import SkeletonCart from "./components/SkeletonCart";
 import ProductCart from "./components/ProductCart";
 import { useDispatch, useSelector } from "react-redux";
 import { EmptyCartSection, EmptyCart } from "./components/EmptyCart";
+import { showToast } from "../../utilities/showToast";
 function Cart() {
   const dispatch = useDispatch();
-  const { products, loading, totalCartPrice, cartId, status } = useCart();
-
+  const { products, setProducts, loading, totalCartPrice, cartId, status } =
+    useCart();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const handelClearCart = () => {
+    if (products.length === 0) return;
+    const saveProducts = [...products];
+    setProducts([]);
+    dispatch(clearCart())
+      .unwrap()
+      .catch((error) => {
+        setProducts(saveProducts);
+        showToast("error", "Failed to clear cart");
+      });
+  };
 
   return isAuthenticated ? (
     <section
@@ -26,7 +39,7 @@ function Cart() {
             </h2>
             {products.length !== 0 && (
               <button
-                onClick={() => dispatch(clearCart())}
+                onClick={handelClearCart}
                 className="flex items-center gap-1 text-sm font-semibold text-gray-900 trans hover:text-red-500"
               >
                 <RiDeleteBin5Line size={16} /> Clear Cart
@@ -52,7 +65,11 @@ function Cart() {
                   .fill()
                   .map((_, index) => <SkeletonCart key={index} />)
               : products.map((product, index) => (
-                  <ProductCart key={index} product={product} />
+                  <ProductCart
+                    key={index}
+                    product={product}
+                    setProducts={setProducts}
+                  />
                 ))}
           </div>
         </div>

@@ -58,6 +58,7 @@ export default function useCart() {
 
   return {
     products: memoizedProducts,
+    setProducts,
     status,
     totalCartPrice,
     cartId,

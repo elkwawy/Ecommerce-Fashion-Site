@@ -9,17 +9,16 @@ import {
 import { useMemo, useState } from "react";
 import { showToast } from "../../../utilities/showToast";
 
-const ProductCart = ({ product }) => {
+const ProductCart = ({ product, setProducts }) => {
   const dispatch = useDispatch();
 
   const [quantity, setQuantity] = useState(product.quantity);
 
   const totalPrice = useMemo(
     () => product.price * product.quantity,
-    [product.price, product.quantity , quantity]
+    [product.price, product.quantity, quantity]
   );
 
-    
   const handleIncrement = () => {
     if (product.quantity === product.stock) {
       showToast("error", "Product is out of stock");
@@ -46,7 +45,16 @@ const ProductCart = ({ product }) => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteFromCart(product._id));
+    const saveProduct = product;
+    setProducts((prevProducts) =>
+      prevProducts.filter((item) => item._id !== product._id)
+    );
+    dispatch(deleteFromCart(product._id))
+      .unwrap()
+      .catch((error) => {
+        setProducts((prevProducts) => [saveProduct, ...prevProducts]);
+        showToast("error", "Failed to delete from cart");
+      });
   };
 
   return (

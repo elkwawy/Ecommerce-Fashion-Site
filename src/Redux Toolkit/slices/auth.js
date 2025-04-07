@@ -3,7 +3,6 @@ import { API } from "../../Api/Api";
 import axios from "axios";
 import { showToast } from "../../utilities/showToast";
 import Cookies from "js-cookie";
-
 export const handleLogin = createAsyncThunk(
   "auth/handleLogin",
   async (values, { rejectWithValue }) => {
@@ -26,6 +25,8 @@ export const handleLogin = createAsyncThunk(
 export const handleLogout = () => (dispatch) => {
   Cookies.remove("token");
   Cookies.remove("user");
+  localStorage.setItem("cart", 0);
+  localStorage.setItem("wishlist", 0);
   dispatch(logout());
   showToast("success", "Logged out successfully");
 };
@@ -34,7 +35,7 @@ const AuthSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
-    isAuthenticated: Cookies.get("token") ? true :  false,
+    isAuthenticated: Cookies.get("token") ? true : false,
     loading: false,
     error: null,
   },
@@ -55,8 +56,6 @@ const AuthSlice = createSlice({
         state.isAuthenticated = true;
         state.user = action.payload;
         Cookies.set("user", JSON.stringify(action.payload), { expires: 7 });
-       
-        
       })
       .addCase(handleLogin.rejected, (state, action) => {
         state.loading = false;

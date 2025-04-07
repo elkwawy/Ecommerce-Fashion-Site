@@ -191,7 +191,7 @@ const Navbar = memo(() => {
             >
               <PiShoppingCart size={22} className="cursor-pointer" />
               <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
-                {countCart}
+                {localStorage.getItem("cart")}
               </div>
             </NavLink>
 
@@ -207,7 +207,7 @@ const Navbar = memo(() => {
             >
               <CiHeart size={22} className="cursor-pointer" />
               <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
-                {count}
+                {localStorage.getItem("wishlist")}
               </div>
             </NavLink>
 
