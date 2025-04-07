@@ -19,6 +19,15 @@ const PhoneFeatures = ({closeMenu}) => {
         closeMenu();
         navigate(link);
     }
+
+
+    const toggleDropdown = () => {
+      if(showModel === null){
+        setShowModel("dropdowenmenu");
+      }else{
+        setShowModel(null);
+      }
+    };
     return (
         <ul className="flex gap-8 items-center sm:hidden">
             <button onClick={() => goToPage("/wishList")} >
@@ -28,7 +37,7 @@ const PhoneFeatures = ({closeMenu}) => {
             {isAuthenticated ? (
                          <div
                            className="cursor-pointer relative"
-                           onClick={() => setShowModel("dropdowenmenu")}
+                           onClick={toggleDropdown}
                          >
                            <img src="/user.png" alt="user" className="w-8 h-8" />
                            <div className="relative">

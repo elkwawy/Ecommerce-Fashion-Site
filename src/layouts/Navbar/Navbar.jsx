@@ -27,6 +27,9 @@ const Navbar = memo(() => {
   const location = useLocation();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const dropdownRef = useRef(null);
+
+ 
 
   const { count } = useSelector((state) => state.wishListSlice);
   const { count: countCart } = useSelector((state) => state.cart);
@@ -87,6 +90,34 @@ const Navbar = memo(() => {
     setShowCategory(!showCategory);
   };
 
+
+  // useEffect(() => {
+  //   if (showModel !== "dropdowenmenu") return;
+  
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       dropdownRef.current &&
+  //       !dropdownRef.current.contains(event.target)
+  //     ) {
+  //       setShowModel(null);
+  //     }
+  //   };
+  
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [showModel]);
+  
+  
+
+  const toggleDropdown = () => {
+    if(showModel === null){
+      setShowModel("dropdowenmenu");
+    }else{
+      setShowModel(null);
+    }
+  };
   return (
     <>
       <div className="flex bg-[#F8F8F8] h-[74px] justify-between shadow-sm w-full items-center md:h-[74px] md:px-10 md:py-[20px] px-6 py-2 sticky top-0 z-[100]">
@@ -163,6 +194,19 @@ const Navbar = memo(() => {
               </NavLink>
             </ul>
 
+
+            {isAuthenticated ? (
+              <div
+                className="cursor-pointer relative"
+                onClick={toggleDropdown}
+                 
+              >
+                <img src="/user.png" alt="user" className="w-8 h-8"/>
+                <div className="relative">
+                  {showModel === "dropdowenmenu" && (
+                    <DropdowenMenu setShowModel={setShowModel} dropdownRef={dropdownRef} />
+                  )}
+
             <ul className="gap-6 hidden items-center sm:flex">
               <NavLink
                 to={"/cart"}
@@ -177,6 +221,7 @@ const Navbar = memo(() => {
                 <PiShoppingCart size={22} className="cursor-pointer" />
                 <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
                   {countCart}
+
                 </div>
               </NavLink>
 

@@ -17,7 +17,8 @@ export const handleLogin = createAsyncThunk(
       Cookies.set("token", token, { expires: 7 });
       return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Error in login");
+      const message = error.response?.data?.message || "Error in login";
+      return rejectWithValue(message);
     }
   }
 );
@@ -54,13 +55,12 @@ const AuthSlice = createSlice({
         state.isAuthenticated = true;
         state.user = action.payload;
         Cookies.set("user", JSON.stringify(action.payload), { expires: 7 });
-        console.log(state.user);
+       
         
       })
       .addCase(handleLogin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        showToast("error", action.payload);
       });
   },
 });
