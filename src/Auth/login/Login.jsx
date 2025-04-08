@@ -8,6 +8,8 @@ import PasswordForm from "../../components/helpers/PasswordForm";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogin } from "../../Redux Toolkit/slices/auth";
 import { useNavigate } from "react-router-dom";
+import { getUserWhishList } from "../../Redux Toolkit/slices/WishlistSlice";
+import { getUserCart } from "../../Redux Toolkit/slices/cartSlice";
 
 export default function Login({ setShowModel }) {
   const { loading } = useSelector((state) => state.auth);
@@ -40,6 +42,8 @@ export default function Login({ setShowModel }) {
           try {
             setError(""); 
             await dispatch(handleLogin(values)).unwrap();
+            dispatch(getUserWhishList());
+            dispatch(getUserCart());
             navigate("/");
             setShowModel(null);
           } catch (err) {
@@ -74,8 +78,9 @@ export default function Login({ setShowModel }) {
               condition={touched.password && !!errors.password}
               errorMessage={errors.password}
             />
-             {error && (
-              <div className= "bg-red-200 w-fit mx-auto rounded px-2 text-red-500 text-sm mb-2">{error}</div>
+            <div className="flex justify-between items-center">
+            {error && (
+              <div className= "bg-red-200 w-fit  rounded px-2 text-red-500 text-sm mb-2">{error}</div>
             )}
             <div
               className="md:flex justify-between mb-4 ml-auto w-fit"
@@ -84,6 +89,7 @@ export default function Login({ setShowModel }) {
               <div className="text-sm cursor-pointer mt-2 trans text-gray-500  hover:text-black">
                 Forget password?
               </div>
+            </div>
             </div>
             <div>
               <ButtonForm

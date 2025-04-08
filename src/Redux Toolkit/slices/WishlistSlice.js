@@ -18,7 +18,6 @@ export const addToWhishList = createAsyncThunk(
       };
 
       const { data } = await axios.request(options);
-      showToast("success", "Product added to wishlist");
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Request failed");
@@ -83,7 +82,7 @@ const wishListSlice = createSlice({
       })
       .addCase(addToWhishList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.wishListItems.push(action.payload);
+        state.wishListItems.push(action.payload.data);
         state.count = state.wishListItems.length;
         localStorage.setItem("wishlist", JSON.stringify(state.count));
       })
