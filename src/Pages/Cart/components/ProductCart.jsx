@@ -11,6 +11,8 @@ import { showToast } from "../../../utilities/showToast";
 
 const ProductCart = ({ product, setProducts }) => {
   const dispatch = useDispatch();
+  console.log(product);
+  const {SubCategory} = product;
 
   const [quantity, setQuantity] = useState(product.quantity);
 
@@ -61,7 +63,7 @@ const ProductCart = ({ product, setProducts }) => {
     <div className="border-t border-gray-200 bg-white p-4 md:p-5 md:pb-0">
       <div className="md:flex md:items-center md:justify-between md:gap-6">
         {/* صورة المنتج */}
-        <Link to={`/product/${product._id}`} className="shrink-0 md:order-1">
+        <Link to={`/product/${SubCategory}/${product._id}`} className="shrink-0 md:order-1">
           <img className="h-30 w-20" src={product.image} alt={product.name} />
         </Link>
 

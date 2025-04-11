@@ -1,15 +1,33 @@
-import { useParams } from "react-router-dom";
-import useProduct from "./useProduct";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { addToCart } from "../../Redux Toolkit/slices/cartSlice";
+import { showToast } from "../../utilities/showToast";
+import LoadingPage from "./components/loadingPage/LoadingPage";
 import ProductImages from "./components/ProductImages";
 import ProductInfo from "./components/productInfo/ProductInfo";
-import LoadingPage from "./components/loadingPage/LoadingPage";
 import RelatedProducts from "./components/RelatedProducts";
+import useProduct from "./useProduct";
 
 const ProductPage = () => {
     // const productId = location?.state?.productId;
     const {subcatId, productId} = useParams();
-    console.log(productId);
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const navigate = useNavigate();
+    const handleAddToCart = async (id) => {
+        if (isAuthenticated) {
+            try {
+                await dispatch(addToCart({ id, quantity: 1 })).unwrap();
+                navigate("/products");
+            } catch (error) {
+                
+            }
+            // dispatch(getUserCart());
+        } else {
+            showToast("error", "Please login first");
+        }
+    };
     
     const {product, loading, error, getProductData} = useProduct();
     useEffect(() => { 
@@ -34,7 +52,7 @@ const ProductPage = () => {
                             {/* Product Images */}
                             <ProductImages images={product?.images && product?.image ? [product.image, ...product?.images ] : null} />
                             {/* Product Info */}
-                            <ProductInfo product={product} />
+                            <ProductInfo product={product} handleAddProductToCart={handleAddToCart} />
                         </div>
                         <div className="space-y-1">
                             <h2 className="text-xl font-semibold">Product Description</h2>

@@ -53,10 +53,10 @@ function Cart() {
           <div className="space-y-6">
             {products.length !== 0 && (
               <div className="text-gray-400 space-y-4 hidden md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                <p className="text-sm">PRODUCT</p>
+                <p className="text-sm">Product</p>
                 <div className="md:flex md:items-center md:justify-between md:gap-6 md:space-y-0 ">
-                  <p className="text-sm pr-20">QUALITY</p>
-                  <p className="text-sm pr-5">PRICE</p>
+                  <p className="text-sm pr-20">Quantity</p>
+                  <p className="text-sm pr-5">Price</p>
                 </div>
               </div>
             )}

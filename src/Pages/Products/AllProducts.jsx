@@ -86,7 +86,7 @@ const AllProducts = () => {
                 <h1 className="capitalize max-sm:text-center font-bold text-3xl">Our Products</h1>
                 <div className='flex flex-col-reverse gap-3  sm:flex-row justify-end  items-center'>
                     <div ref={sortContainer} className="relative">
-                        <button onClick={handleOpenSort} className={`px-5  flex items-center gap-1 py-1 border-2 ${openSort ? "bg-black text-white" : "hover:bg-gray-100"} border-black trans  rounded-sm`}>
+                        <button onClick={handleOpenSort} className={`w-[165px] text-center flex items-center justify-center gap-1 py-1 border-2 ${openSort ? "bg-black text-white" : "hover:bg-gray-100"} border-black trans  rounded-sm`}>
                             <TbArrowsSort className='text-lg'/> Sort by
                         </button>
                         { openSort && <SortProducts onChange={handleSortTermChange} term={sortTerm} /> }

@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToWhishList, getUserWhishList } from "../../../../Redux Toolkit/slices/WishlistSlice";
 import { showToast } from "../../../../utilities/showToast";
 import ProductSizes from "./components/ProductSizes";
-const ProductInfo = ({ product }) => {
-    const { name, price, priceAfterDiscount, size, colors, desc, stock } = product;
+const ProductInfo = ({ product, handleAddProductToCart }) => {
+    const { _id, name, price, priceAfterDiscount, size, colors, desc, stock } = product;
     const [addToCart, setAddToCart] = useState("Add to cart")
+    console.log(product);
     
     const [isFav, setIsFav] = useState(false)
     const [opts, setOpts] = useState({
@@ -18,22 +19,25 @@ const ProductInfo = ({ product }) => {
 
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const addToWishList = async (id) => {
-        if(isAuthenticated) {
-            setIsFav(fav => !fav);
-            try {
-                await dispatch(addToWhishList({ id }));
-            } catch (error) {
-                setIsFav(false);
-            }
-            dispatch(getUserWhishList()); 
-        }else{
-            showToast("error","Please login first");
+    const handleAddToWishlist = async () => {
+        if (!isAuthenticated) {
+            showToast("error", "Please login first");
+            return;
         }
-    }
 
+        setIsFav(true);
+
+        try {
+            await dispatch(addToWhishList({ id: _id })).unwrap(); // allow me to catch the errors
+            dispatch(getUserWhishList());
+        } catch (error) {
+            setIsFav(false); // on error make it not favorite in the UI
+            showToast("error", "Failed to add to wishlist");
+        }
+    };
+    
     const updateOpts = (key, value) => { 
         setOpts((prev) => ({
             ...prev,
@@ -51,7 +55,8 @@ const ProductInfo = ({ product }) => {
 
     const handleAddToCart = () => { 
         if (!opts.size) return ;
-        showToast("success", "Added to cart")
+        handleAddProductToCart(_id);
+        // showToast("success", "Added to cart")
     }
 
     return (
@@ -89,7 +94,7 @@ const ProductInfo = ({ product }) => {
                                 role="button"
                                 onClick={() => updateOpts("color", c)}
                                 style={{ backgroundColor: c, width: "25px", height: "25px", borderRadius: "100%" }}
-                                className="trans hover:scale-105 cursor-pointer"
+                                className="trans hover:scale-105 cursor-pointer border"
                             />
                         </div>
                     ))}
@@ -105,13 +110,13 @@ const ProductInfo = ({ product }) => {
                     ?  
                     <p className="text-sm text-gray-700">{stock} items in stock</p>
                     : 
-                    <p className="text-sm text-gray-700">Out of stock</p>
+                    <p className="text-sm  text-red-500 font-semibold">Out of stock</p>
                 }
                 <div className="gap-x-2 w-fit flex items-center ">
-                    <button onClick={handleAddToCart} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} className="bg-black min-w-[170px] text-white  trans hover:opacity-80 py-2">
+                    <button onClick={handleAddToCart} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} className={`bg-black min-w-[170px] text-white  trans hover:opacity-80 py-2 ${stock == 0 ? "opacity-70 pointer-events-none" : ""}`}>
                         {addToCart}
                     </button>
-                    <button onClick={addToWishList} className={` border border-black trans hover:bg-gray-100 h-10 px-3`}>
+                    <button onClick={handleAddToWishlist} className={` border border-black trans hover:bg-gray-100 h-10 px-3`}>
                         {!isFav && <IoIosHeartEmpty className="text-lg" />}
                         {isFav && <IoIosHeart className="text-lg" />}
                     </button>
