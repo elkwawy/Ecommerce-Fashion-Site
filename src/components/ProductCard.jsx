@@ -82,11 +82,11 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
               </p>
             )}
 
-          {/* {stock === 0 && (
-            <div className="absolute left-2 top-2 bg-red-600 text-white font-bold px-3 py-1 shadow-md">
+          {stock === 0 && (
+            <div className="absolute left-2 top-2 bg-red-700 text-white font-bold px-3 py-1 shadow-md">
               <h1>Out of stock</h1>
             </div>
-          )} */}
+          )}
 
           <div
             title="Add to cart"

@@ -184,7 +184,7 @@ const cartSlice = createSlice({
         showToast("success", newMesg || "Item added to cart");
 
 
-        // showToast("success", message || "Item added to cart");
+        showToast("success", message || "Item added to cart");
 
       })
       .addCase(addToCart.rejected, (state, action) => {

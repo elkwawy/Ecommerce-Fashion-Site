@@ -86,6 +86,7 @@ const wishListSlice = createSlice({
         state.wishListItems.push(action.payload.data);
         state.count = state.wishListItems.length;
         localStorage.setItem("wishlist", JSON.stringify(state.count));
+        showToast("success", "Item added to wishlist");
       })
       .addCase(addToWhishList.rejected, (state, action) => {
         state.isError = true;
