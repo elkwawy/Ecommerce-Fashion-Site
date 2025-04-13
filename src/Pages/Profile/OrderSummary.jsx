@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Img } from 'react-image';
 import CustomSkeleton from '../../utilities/CustomSkeleton';
+import EmptySec from './EmptySec';
 
 export default function OrderSummary() {
   const [orders, setOrders] = useState([]);
@@ -112,7 +113,7 @@ export default function OrderSummary() {
         ))
       ) : (
         <div className="flex items-center justify-center">
-          <p className="text-gray-600">No orders found</p>
+         <EmptySec/>
         </div>
       )}
     </div>
