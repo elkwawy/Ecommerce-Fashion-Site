@@ -9,16 +9,37 @@ import ResetCode from "../../../../../Auth/ResetCode/ResetCode";
 import Signin from "../../../../../Auth/signin/Signin";
 import useVisible from "../../../../../Auth/utils/usevisable";
 import DropdowenMenu from "../../DropdowenMenu";
+import { useEffect, useRef } from "react";
 
-const PhoneFeatures = ({ closeMenu }) => {
+const PhoneFeatures = ({ closeMenu}) => {
   const [showModel, setShowModel] = useVisible();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
   const goToPage = (link) => {
     closeMenu();
     navigate(link);
   };
+  
+
+  useEffect(() => {
+    if (showModel !== "dropdowenmenu") return;
+
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setShowModel(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showModel]);
 
   const toggleDropdown = () => {
     if (showModel === null) {
@@ -38,7 +59,7 @@ const PhoneFeatures = ({ closeMenu }) => {
           <img src="/user.png" alt="user" className="w-8 h-8" />
           <div className="relative">
             {showModel === "dropdowenmenu" && (
-              <DropdowenMenu setShowModel={setShowModel} />
+              <DropdowenMenu setShowModel={setShowModel} dropdownRef={dropdownRef}  />
             )}
           </div>
         </div>
