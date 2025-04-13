@@ -11,6 +11,7 @@ import {
 } from "../Redux Toolkit/slices/WishlistSlice";
 import CustomSkeleton from "../utilities/CustomSkeleton";
 import { showToast } from "../utilities/showToast";
+import useVisible from "../Auth/utils/usevisable";
 
 const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
+
+  const [showModel, setShowModel] = useVisible();
 
   const handleAddToWishlist = async (id) => {
     if (isAuthenticated) {
@@ -60,7 +63,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
       onClick={handleNavigate}
       className={`border border-white cursor-pointer hover:border-black  pb-2 product trans xl:w-[275px] 
         `}
-        // ${stock === 0 ? "opacity-50 pointer-events-none" : ""}
+      // ${stock === 0 ? "opacity-50 pointer-events-none" : ""}
     >
       <div className="image-container relative">
         <div className="relative">

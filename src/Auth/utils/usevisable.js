@@ -16,5 +16,5 @@ export default function useVisible() {
     }
   };
 
-  return [showModel, updateModel];
+  return [showModel, updateModel ];
 }
