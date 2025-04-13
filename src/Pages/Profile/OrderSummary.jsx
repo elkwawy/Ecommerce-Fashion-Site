@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { showToast } from '../../utilities/showToast';
-import axios from 'axios';
-import { API } from '../../Api/Api';
+import React, { useEffect, useMemo, useState } from "react";
+import { showToast } from "../../utilities/showToast";
+import axios from "axios";
+import { API } from "../../Api/Api";
 import Cookies from "js-cookie";
-import { getLogedUser } from '../../Redux Toolkit/slices/profileSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Img } from 'react-image';
-import CustomSkeleton from '../../utilities/CustomSkeleton';
-import EmptySec from './EmptySec';
+import { getLogedUser } from "../../Redux Toolkit/slices/profileSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Img } from "react-image";
+import CustomSkeleton from "../../utilities/CustomSkeleton";
+import EmptySec from "./EmptySec";
 
 export default function OrderSummary() {
   const [orders, setOrders] = useState([]);
@@ -46,30 +46,37 @@ export default function OrderSummary() {
 
   return (
     <div className="">
-      <h2 className="text-xl font-semibold text-gray-900">Your Orders</h2>
+      <h2 className="text-2xl font-semibold text-gray-900 mb-4">Your Orders</h2>
 
-      {loadingOrder ?  (
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    {[...Array(4)].map((_, index) => (
-      <div key={index} className="p-4 border border-gray-200 rounded-xl shadow-sm bg-white space-y-3">
-        <CustomSkeleton width="100%" height="397px" />
-        <div className="space-y-2">
-          <CustomSkeleton height="20px" width="80%" />
-          <CustomSkeleton height="20px" width="60%" />
+      {loadingOrder ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, index) => (
+            <div
+              key={index}
+              className="p-4 border border-gray-200 rounded-xl  shadow-sm bg-white space-y-3"
+            >
+              <CustomSkeleton width="100%" height="397px" />
+              <div className="space-y-2">
+                <CustomSkeleton height="20px" width="80%" />
+                <CustomSkeleton height="20px" width="60%" />
+              </div>
+              <div className="flex justify-between gap-2">
+                <CustomSkeleton height="30px" width="45%" />
+                <CustomSkeleton height="30px" width="45%" />
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex justify-between gap-2">
-          <CustomSkeleton height="30px" width="45%" />
-          <CustomSkeleton height="30px" width="45%" />
-        </div>
-      </div>
-    ))}
-  </div>
-): memoizedOrders.length > 0 ? (
+      ) : memoizedOrders.length > 0 ? (
         memoizedOrders.map((order) => (
-          <div className="border border-gray rounded-xl p-2 space-y-4 my-4" key={order._id}>
+          <div
+            className="border border-gray rounded-xl p-2 space-y-4 my-4"
+            key={order._id}
+          >
             <div className="flex flex-col md:flex-row items-center justify-between ">
               <h3 className="font-semibold text-gray-900">
-                Total price <span className="text-gray-500">{order.totalOrderPrice} $</span>
+                Total price{" "}
+                <span className="text-gray-500">{order.totalOrderPrice} $</span>
               </h3>
               <div className="flex items-center max-[400px]:flex-col gap-2 text-center">
                 <p
@@ -113,7 +120,7 @@ export default function OrderSummary() {
         ))
       ) : (
         <div className="flex items-center justify-center">
-         <EmptySec/>
+          <EmptySec />
         </div>
       )}
     </div>

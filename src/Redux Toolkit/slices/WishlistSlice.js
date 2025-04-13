@@ -68,6 +68,7 @@ const wishListSlice = createSlice({
     wishListItems: [],
     count: JSON.parse(localStorage.getItem("wishlist"))?.length || 0,
     isLoading: false,
+    status: "idle",
     isError: false,
     error: null,
   },
@@ -76,45 +77,40 @@ const wishListSlice = createSlice({
     builder
 
       .addCase(addToWhishList.pending, (state) => {
-        state.isLoading = true;
         state.isError = false;
         state.error = null;
       })
       .addCase(addToWhishList.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.wishListItems.push(action.payload.data);
         state.count = state.wishListItems.length;
         localStorage.setItem("wishlist", JSON.stringify(state.count));
       })
       .addCase(addToWhishList.rejected, (state, action) => {
-        state.isLoading = false;
         state.isError = true;
         state.error = action.payload || "Something went wrong";
       })
 
       .addCase(getUserWhishList.pending, (state) => {
-        state.isLoading = true;
+        state.status = "loading";
         state.isError = false;
         state.error = null;
       })
       .addCase(getUserWhishList.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.status = "succeeded";
         state.wishListItems = action.payload?.data || action.payload || [];
         state.count = state.wishListItems.length;
         localStorage.setItem("wishlist", JSON.stringify(state.count));
       })
       .addCase(getUserWhishList.rejected, (state, action) => {
-        state.isLoading = false;
+        state.status = "failed";
         state.isError = true;
         state.error = action.payload || "Something went wrong";
       })
       .addCase(removefromwishlist.pending, (state) => {
-        state.isLoading = false;
         state.isError = false;
         state.error = null;
       })
       .addCase(removefromwishlist.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.wishListItems = state.wishListItems.filter(
           (item) => item._id !== action.meta.arg
         );
@@ -122,7 +118,6 @@ const wishListSlice = createSlice({
         localStorage.setItem("wishlist", JSON.stringify(state.count));
       })
       .addCase(removefromwishlist.rejected, (state, action) => {
-        state.isLoading = false;
         state.isError = true;
         state.error = action.payload || "Something went wrong";
       });

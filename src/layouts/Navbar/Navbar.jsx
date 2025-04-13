@@ -90,23 +90,27 @@ const Navbar = memo(() => {
     setShowCategory(!showCategory);
   };
 
-  // useEffect(() => {
-  //   if (showModel !== "dropdowenmenu") return;
-
-  //   const handleClickOutside = (event) => {
-  //     if (
-  //       dropdownRef.current &&
-  //       !dropdownRef.current.contains(event.target)
-  //     ) {
-  //       setShowModel(null);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [showModel]);
+  useEffect(() => {
+    if (showModel !== "dropdownmenu") return;
+  
+    const handleClickOutside = (event) => {
+      const clickedOnMenuIcon = event.target.id === "menu-icon";
+  
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !clickedOnMenuIcon
+      ) {
+        setShowModel(null);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showModel]);
+  
 
   const toggleDropdown = () => {
     if (showModel === null) {

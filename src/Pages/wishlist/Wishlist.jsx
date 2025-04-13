@@ -7,15 +7,15 @@ import { getUserWhishList } from "../../Redux Toolkit/slices/WishlistSlice";
 import WishlistSkilton from "./WishlistSkilton";
 
 export default function Wishlist() {
-  const { isLoading, wishListItems } = useSelector(
-          (state) => state.wishListSlice
-        );
-        const dispatch =useDispatch()
+  const { isLoading, wishListItems, status } = useSelector(
+    (state) => state.wishListSlice
+  );
+  const dispatch = useDispatch();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-   useEffect(() =>{
-          dispatch(getUserWhishList());
-        }, [dispatch]);
+  useEffect(() => {
+    if (isAuthenticated) dispatch(getUserWhishList());
+  }, [dispatch]);
 
   return (
     <>
@@ -23,14 +23,16 @@ export default function Wishlist() {
         <title>Wishlist</title>
         <meta name="description" content="wishlist page" />
       </Helmet>
-      {isAuthenticated && wishListItems?.length > 0 ? (
-  <WishItems />
-) : !isLoading && wishListItems?.length === 0 ? (
-  <EmptySec />  
-) : (
-  <WishlistSkilton/>
-)}
 
+      {!isAuthenticated ? (
+        <EmptySec />
+      ) : status === "loading" || status === "idle" ? (
+        <WishlistSkilton />
+      ) : wishListItems?.length > 0 ? (
+        <WishItems />
+      ) : (
+        <EmptySec />
+      )}
     </>
   );
 }
