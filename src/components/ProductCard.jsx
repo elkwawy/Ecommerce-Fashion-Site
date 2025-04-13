@@ -14,13 +14,20 @@ import { showToast } from "../utilities/showToast";
 
 const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
-  const { price, slug, priceAfterDiscount,SubCategory, image, name, colors, stock } = product;
+  const {
+    price,
+    slug,
+    priceAfterDiscount,
+    SubCategory,
+    image,
+    name,
+    colors,
+    stock,
+  } = product;
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
-  
-  
   const handleAddToWishlist = async (id) => {
     if (isAuthenticated) {
       await dispatch(addToWhishList({ id }));
@@ -31,8 +38,14 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   };
   const handleAddToCart = async (id) => {
     if (isAuthenticated) {
-      await dispatch(addToCart({ id, quantity: 1 }));
-      // dispatch(getUserCart());
+      const cart = localStorage.getItem("cart");
+      localStorage.setItem("cart", cart + 1);
+      await dispatch(addToCart({ id, quantity: 1 }))
+        .unwrap()
+        .catch((err) => {
+          localStorage.setItem("cart", cart - 1);
+          showToast("error", "Failed to add to cart");
+        });
     } else {
       showToast("error", "Please login first");
     }

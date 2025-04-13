@@ -179,8 +179,13 @@ const cartSlice = createSlice({
           state.count = cartData.cartItems?.length ?? 0;
           localStorage.setItem("cart", state.count);
         }
+
           const newMesg = message ==  "Cart updated successfully" ? "Item added to cart" : message;
         showToast("success", newMesg || "Item added to cart");
+
+
+        // showToast("success", message || "Item added to cart");
+
       })
       .addCase(addToCart.rejected, (state, action) => {
         const message = action.payload?.message || action.payload;

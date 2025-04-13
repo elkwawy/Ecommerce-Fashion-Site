@@ -20,19 +20,22 @@ const ProductCart = ({ product, setProducts }) => {
     () => product.price * product.quantity,
     [product.price, product.quantity, quantity]
   );
+  console.log(product);
+  
 
   const handleIncrement = () => {
-    if (product.quantity === product.stock) {
+    if (quantity === product.stock) {
       showToast("error", "Product is out of stock");
       return;
+    } else {
+      setQuantity((prevQuantity) => prevQuantity + 1);
+      dispatch(updateCartQuantity({ id: product._id, quantity: quantity + 1 }))
+        .unwrap()
+        .catch((error) => {
+          setQuantity((prevQuantity) => prevQuantity - 1);
+          showToast("error", "Failed to update quantity");
+        });
     }
-    setQuantity((prevQuantity) => prevQuantity + 1);
-    dispatch(updateCartQuantity({ id: product._id, quantity: quantity + 1 }))
-      .unwrap()
-      .catch((error) => {
-        setQuantity((prevQuantity) => prevQuantity - 1);
-        showToast("error", "Failed to update quantity");
-      });
   };
 
   const handleDecrement = () => {

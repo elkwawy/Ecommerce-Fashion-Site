@@ -89,6 +89,7 @@ const Navbar = memo(() => {
     setShowCategory(!showCategory);
   };
 
+
   // useEffect(() => {
   //   if (showModel !== "dropdowenmenu") return;
 
@@ -107,6 +108,8 @@ const Navbar = memo(() => {
   //   };
   // }, [showModel]);
   const navigate = useNavigate();
+
+ 
   const toggleDropdown = () => {
     if (showModel === null) {
       setShowModel("dropdowenmenu");

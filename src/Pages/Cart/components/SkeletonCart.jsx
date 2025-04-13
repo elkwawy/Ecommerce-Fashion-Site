@@ -7,7 +7,7 @@ const SkeletonCart = () => {
         <Skeleton width={80} height={120} />
         <div className="flex items-center justify-between md:order-3 md:justify-end">
           <div className="flex items-center border gap-1 border-gray-300 p-1 pb-1.5">
-            <Skeleton width={20} height={20} />
+            <Skeleton  width={20} height={20} />
             <Skeleton width={40} height={20} />
             <Skeleton width={20} height={20} />
           </div>

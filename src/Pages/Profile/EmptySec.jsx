@@ -6,7 +6,7 @@ export default function EmptySec() {
   return (
       <section className="">
          <div className="w-[90%] m-auto">
-           <div className="flex flex-col justify-center items-center text-center min-h-[70vh] w-full">
+           <div className="flex flex-col justify-center items-center text-center min-h-[40vh] w-full">
              <MdOutlineShoppingCart className="text-4xl mb-4" />
              <p className="font-bold">It is empty here</p>
              <p className="text-sm mb-4 font-bold">
