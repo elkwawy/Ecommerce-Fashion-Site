@@ -18,6 +18,7 @@ import { HelmetProvider } from "react-helmet-async";
 
 import Cart from "./Pages/Cart/Cart";
 import Wishlist from "./Pages/wishlist/Wishlist";
+import ScrollToTop from "./components/helpers/ScrollToTop";
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
@@ -74,6 +75,7 @@ function App() {
     <div className="App">
       <HelmetProvider>
       <Toaster />
+        <Navbar />
       <Suspense
         fallback={
           <div className="flex h-screen justify-center w-full items-center">
@@ -81,13 +83,12 @@ function App() {
           </div>
         }
       >
-        <Navbar />
         {RoutesMemoized}
-        {showPopup && <Popup closePopup={closePopup} />}
-        <Footer />
       </Suspense>
+      {showPopup && <Popup closePopup={closePopup} />}
+      <Footer />
       </HelmetProvider>
-     
+      <ScrollToTop />
     </div>
   );
 }

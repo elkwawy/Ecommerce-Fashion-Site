@@ -58,9 +58,9 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   return (
     <div
       onClick={handleNavigate}
-      className={`border border-white cursor-pointer hover:border-black hover:z-40 pb-2 product trans xl:w-[275px] ${
-        stock === 0 ? "opacity-50 pointer-events-none" : ""
-      } `}
+      className={`border border-white cursor-pointer hover:border-black  pb-2 product trans xl:w-[275px] 
+        `}
+        // ${stock === 0 ? "opacity-50 pointer-events-none" : ""}
     >
       <div className="image-container relative">
         <div className="relative">
@@ -79,11 +79,11 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
               </p>
             )}
 
-          {stock === 0 && (
+          {/* {stock === 0 && (
             <div className="absolute left-2 top-2 bg-red-600 text-white font-bold px-3 py-1 shadow-md">
               <h1>Out of stock</h1>
             </div>
-          )}
+          )} */}
 
           <div
             title="Add to cart"

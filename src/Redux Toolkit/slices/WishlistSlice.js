@@ -8,6 +8,8 @@ export const addToWhishList = createAsyncThunk(
   "wishlist/addToWhishList",
   async ({ id }, { rejectWithValue }) => {
     try {
+      console.log(id);
+      
       const options = {
         method: "POST",
         url: `${BASE_URL}/wishlist`,
