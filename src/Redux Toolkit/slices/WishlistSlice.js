@@ -8,8 +8,6 @@ export const addToWhishList = createAsyncThunk(
   "wishlist/addToWhishList",
   async ({ id }, { rejectWithValue }) => {
     try {
-      console.log(id);
-      
       const options = {
         method: "POST",
         url: `${BASE_URL}/wishlist`,
@@ -20,6 +18,8 @@ export const addToWhishList = createAsyncThunk(
       };
 
       const { data } = await axios.request(options);
+      console.log(data);
+      
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Request failed");
@@ -83,10 +83,7 @@ const wishListSlice = createSlice({
         state.error = null;
       })
       .addCase(addToWhishList.fulfilled, (state, action) => {
-        state.wishListItems.push(action.payload.data);
-        state.count = state.wishListItems.length;
-        localStorage.setItem("wishlist", JSON.stringify(state.count));
-        showToast("success", "Item added to wishlist");
+        showToast("success" , "Item added to wishlist");
       })
       .addCase(addToWhishList.rejected, (state, action) => {
         state.isError = true;

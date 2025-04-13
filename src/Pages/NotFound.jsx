@@ -20,7 +20,7 @@ const NotFound = () => {
         </h2>
 
         <p className="text-center w-[50%] xl:w-[70%] text-gray-500 mt-2 ">
-          we’re sorry. the page you requested could no be found <br />
+          we’re sorry. the page you requested couldn't be found <br />
           Please go back to the home page
         </p>
 

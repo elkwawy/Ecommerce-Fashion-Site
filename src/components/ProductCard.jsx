@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { FaRegHeart } from "react-icons/fa";
+import { memo, useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Img } from "react-image";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import {
 import CustomSkeleton from "../utilities/CustomSkeleton";
 import { showToast } from "../utilities/showToast";
 import useVisible from "../Auth/utils/usevisable";
+import Login from "../Auth/login/Login";
 
 const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
@@ -30,13 +31,13 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   const dispatch = useDispatch();
 
   const [showModel, setShowModel] = useVisible();
-
   const handleAddToWishlist = async (id) => {
     if (isAuthenticated) {
       await dispatch(addToWhishList({ id }));
       dispatch(getUserWhishList());
     } else {
       showToast("error", "Please login first");
+      setShowModel("login");
     }
   };
   const handleAddToCart = async (id) => {
@@ -49,8 +50,10 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           localStorage.setItem("cart", cart - 1);
           showToast("error", "Failed to add to cart");
         });
+       
     } else {
       showToast("error", "Please login first");
+      setShowModel("login");
     }
   };
 
@@ -65,6 +68,9 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
         `}
       // ${stock === 0 ? "opacity-50 pointer-events-none" : ""}
     >
+        {showModel === "login" ? (
+                    <Login setShowModel={setShowModel} />
+                  ) : null}
       <div className="image-container relative">
         <div className="relative">
           <Img
@@ -98,8 +104,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           >
             <MdAddShoppingCart className="text-[22px] font-semibold hover:text-[26px] trans" />
           </div>
-
-          <div
+ <div
             title="Add to wishlist"
             onClick={(e) => {
               e.stopPropagation();
@@ -109,6 +114,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           >
             <FaRegHeart className="text-[20px] font-semibold hover:text-[24px] trans" />
           </div>
+          
         </div>
       </div>
 
@@ -150,6 +156,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
       </div>
     </div>
   );
+ 
 });
 
 export default ProductCard;
