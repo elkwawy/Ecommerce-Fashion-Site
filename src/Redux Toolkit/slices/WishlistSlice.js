@@ -6,12 +6,12 @@ import { API, BASE_URL } from "../../Api/Api";
 
 export const addToWhishList = createAsyncThunk(
   "wishlist/addToWhishList",
-  async ({ id }, { rejectWithValue }) => {
+  async ({ id , quantity}, { rejectWithValue }) => {
     try {
       const options = {
         method: "POST",
         url: `${BASE_URL}/wishlist`,
-        data: { productId: id },
+        data: { productId: id, quantity },
         headers: Cookies.get("token")
           ? { authorization: Cookies.get("token") }
           : {},
@@ -68,13 +68,19 @@ const wishListSlice = createSlice({
   name: "wishlist",
   initialState: {
     wishListItems: [],
-    count: JSON.parse(localStorage.getItem("wishlist"))?.length || 0,
+        count:JSON.parse(localStorage.getItem("wishlist")) > 0
+        ? JSON.parse(localStorage.getItem("wishlist")) : 0,
     isLoading: false,
     status: "idle",
     isError: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setValues: (state, action) => {
+      state.count = 0;
+      localStorage.setItem("wishlist", 0);
+    },
+  },
   extraReducers: (builder) => {
     builder
 
@@ -83,8 +89,18 @@ const wishListSlice = createSlice({
         state.error = null;
       })
       .addCase(addToWhishList.fulfilled, (state, action) => {
-        showToast("success" , "Item added to wishlist");
-      })
+        const {data, message } = action.payload;
+       
+        console.log("fulfilled => ", message , data);
+        const wishlistData =  data;
+
+        if (wishlistData) {
+          state.wishListItems = wishlistData || [];
+          state.count = wishlistData?.length ?? 0;
+          localStorage.setItem("wishlist", state.count);
+          showToast("success", message);
+        }
+      }) 
       .addCase(addToWhishList.rejected, (state, action) => {
         state.isError = true;
         state.error = action.payload || "Something went wrong";
@@ -123,5 +139,6 @@ const wishListSlice = createSlice({
       });
   },
 });
-
+export const { setValues } = wishListSlice.actions
 export default wishListSlice.reducer;
+

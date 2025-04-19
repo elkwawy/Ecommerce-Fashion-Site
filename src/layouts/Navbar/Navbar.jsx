@@ -30,7 +30,7 @@ const Navbar = memo(() => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dropdownRef = useRef(null);
 
-  const { count } = useSelector((state) => state.wishListSlice);
+  const { count: countWishlist } = useSelector((state) => state.wishListSlice);
   const { count: countCart } = useSelector((state) => state.cart);
 
   const categoryBtnRef = useRef(null);
@@ -214,7 +214,7 @@ const Navbar = memo(() => {
             >
               <CiHeart size={22} className="cursor-pointer" />
               <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
-                {localStorage.getItem("wishlist") || 0}
+              {localStorage.getItem("wishlist") || 0}
               </div>
             </NavLink>
 

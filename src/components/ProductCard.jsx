@@ -31,15 +31,26 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   const dispatch = useDispatch();
 
   const [showModel, setShowModel] = useVisible();
+ 
+
   const handleAddToWishlist = async (id) => {
     if (isAuthenticated) {
-      await dispatch(addToWhishList({ id }));
-      dispatch(getUserWhishList());
+      const wishlist = localStorage.getItem("wishlist");
+      localStorage.setItem("wishlist", wishlist + 1);
+      await dispatch(addToWhishList({ id,quantity: 1 }))
+      // dispatch(getUserWhishList())
+        .unwrap()
+        .catch((err) => {
+          localStorage.setItem("wishlist", wishlist - 1);
+          showToast("error", "Failed to add to wishlist");
+        });
+       
     } else {
       showToast("error", "Please login first");
       setShowModel("login");
     }
   };
+  
   const handleAddToCart = async (id) => {
     if (isAuthenticated) {
       const cart = localStorage.getItem("cart");
