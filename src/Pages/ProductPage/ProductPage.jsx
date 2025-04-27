@@ -14,6 +14,8 @@ const ProductPage = () => {
     const {subcatId, productId} = useParams();
     const dispatch = useDispatch();
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    
+    
     const navigate = useNavigate();
     const handleAddToCart = async (id) => {
         if (isAuthenticated) {

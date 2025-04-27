@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoIosHeart } from "react-icons/io";
 import { FaStar, FaRegStar } from "react-icons/fa"; 
@@ -16,6 +16,16 @@ const ProductInfo = ({ product, handleAddProductToCart }) => {
         color: colors[0], // Default to the first available color
         size: null, // No size selected initially
     });
+
+    const cartItems  = useSelector((state) => state.cart.cartItems);
+    const [isProductInCart, setIsProductInCart] = useState(false);
+    
+    useEffect(() => { 
+        if (cartItems.length > 0) {
+            const isProductInCart = cartItems.some((item) => item.product === _id);
+            setIsProductInCart(isProductInCart);
+        }
+    }, [cartItems])
 
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
 
@@ -113,8 +123,8 @@ const ProductInfo = ({ product, handleAddProductToCart }) => {
                     <p className="text-sm  text-red-500 font-semibold">Out of stock</p>
                 }
                 <div className="gap-x-2 w-fit flex items-center ">
-                    <button onClick={handleAddToCart} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} className={`bg-black min-w-[170px] text-white  trans hover:opacity-80 py-2 ${stock == 0 ? "opacity-70 pointer-events-none" : ""}`}>
-                        {addToCart}
+                    <button onClick={handleAddToCart} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave} className={`bg-black min-w-[170px] text-white  trans hover:opacity-80 py-2 ${stock == 0 || isProductInCart ? "opacity-70 pointer-events-none" : ""}`}>
+                        {isProductInCart ? "Already in cart" : addToCart}
                     </button>
                     <button onClick={handleAddToWishlist} className={` border border-black trans hover:bg-gray-100 h-10 px-3`}>
                         {!isFav && <IoIosHeartEmpty className="text-lg" />}

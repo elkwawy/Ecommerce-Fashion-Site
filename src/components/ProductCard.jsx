@@ -76,8 +76,8 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           <Img
             src={image}
             alt={name}
-            className="w-full h-[395px] object-fill"
-            loader={<CustomSkeleton width="100%" height="397px" />}
+            className="w-full"
+            loader={<div className="w-full"><CustomSkeleton width="100%" height="397px" /></div>}
           />
           {showDiscount &&
             price &&
