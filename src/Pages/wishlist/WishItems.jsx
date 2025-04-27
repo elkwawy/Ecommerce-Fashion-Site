@@ -7,7 +7,8 @@ import { addToCart } from "../../Redux Toolkit/slices/cartSlice";
 export default function WishItems() {
   const dispatch = useDispatch();
   const { wishListItems } = useSelector((state) => state.wishListSlice);
-
+ console.log(wishListItems);
+ 
   return (
     <section className="pb-8">
       <div className="w-[90%] m-auto">
