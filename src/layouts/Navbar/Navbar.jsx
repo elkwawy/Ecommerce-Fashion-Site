@@ -18,6 +18,7 @@ import Signin from "../../Auth/signin/Signin";
 import ForgetPass from "../../Auth/ForgetPass/ForgetPass";
 import ResetCode from "../../Auth/ResetCode/ResetCode";
 import DropdowenMenu from "./components/DropdowenMenu";
+import { FaRegHeart } from "react-icons/fa6";
 
 const Navbar = memo(() => {
   const [showModel, setShowModel] = useVisible();
@@ -212,7 +213,7 @@ const Navbar = memo(() => {
                 } trans  `
               }
             >
-              <CiHeart size={22} className="cursor-pointer" />
+              <FaRegHeart size={20} className="cursor-pointer" />
               <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
                 {localStorage.getItem("wishlist") || 0}
               </div>

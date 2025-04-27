@@ -14,7 +14,9 @@ export default function Wishlist() {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   useEffect(() => {
-    if (isAuthenticated) dispatch(getUserWhishList());
+    if (status === "idle" && isAuthenticated) {
+      dispatch(getUserWhishList());
+    }
   }, [dispatch]);
 
   return (

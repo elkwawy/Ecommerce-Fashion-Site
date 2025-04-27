@@ -11,14 +11,14 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Category from "./Pages/Cateogries/Category";
 import ProductPage from "./Pages/ProductPage/ProductPage";
 import Profile from "./Pages/Profile/Profile";
-
 import AllProducts from "./Pages/Products/AllProducts";
-
 import { HelmetProvider } from "react-helmet-async";
-
 import Cart from "./Pages/Cart/Cart";
 import Wishlist from "./Pages/wishlist/Wishlist";
 import ScrollToTop from "./components/helpers/ScrollToTop";
+import { getUserWhishList } from "./Redux Toolkit/slices/WishlistSlice";
+import { getUserCart } from "./Redux Toolkit/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = React.lazy(() => import("./Pages/home/Home"));
 const ContactUs = React.lazy(() => import("./Pages/contactUs/ContactUs"));
@@ -28,13 +28,26 @@ const NotFound = React.lazy(() => import("./Pages/NotFound"));
 // const Category = React.lazy(() => import("./Pages/Cateogries/Category"));
 const AboutUS = React.lazy(() => import("./Pages/About US/AboutUS"));
 
-
 function App() {
   const [showPopup, setShowPopup] = useState(false);
-
+  const dispatch = useDispatch();
+  const { status: wishListStatus } = useSelector(
+    (state) => state.wishListSlice
+  );
+  const { status: cartStatus } = useSelector((state) => state.cart);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const closePopup = () => {
     setShowPopup(false);
   };
+
+  useEffect(() => {
+    if (wishListStatus === "idle" && isAuthenticated) {
+      dispatch(getUserWhishList());
+    }
+    if (cartStatus === "idle" && isAuthenticated) {
+      dispatch(getUserCart());
+    }
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,7 +55,6 @@ function App() {
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
-
 
   const { pathname } = useLocation();
   useEffect(() => {
@@ -74,19 +86,19 @@ function App() {
   return (
     <div className="App">
       <HelmetProvider>
-      <Toaster />
+        <Toaster />
         <Navbar />
-      <Suspense
-        fallback={
-          <div className="flex h-screen justify-center w-full items-center">
-            <LoadingSpinner />
-          </div>
-        }
-      >
-        {RoutesMemoized}
-      </Suspense>
-      {showPopup && <Popup closePopup={closePopup} />}
-      <Footer />
+        <Suspense
+          fallback={
+            <div className="flex h-screen justify-center w-full items-center">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          {RoutesMemoized}
+        </Suspense>
+        {showPopup && <Popup closePopup={closePopup} />}
+        <Footer />
       </HelmetProvider>
       <ScrollToTop />
     </div>
