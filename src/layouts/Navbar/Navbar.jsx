@@ -90,7 +90,7 @@ const Navbar = memo(() => {
 
   useEffect(() => {
     if (showModel !== "dropdowenmenu") return;
-
+  
     const handleClickOutside = (event) => {
       if (
         dropdownRef.current &&
@@ -99,18 +99,20 @@ const Navbar = memo(() => {
         setShowModel(null);
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
+  
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [showModel]);
+  
 
-  const toggleDropdown = () => {
-    if (showModel === null) {
-      setShowModel("dropdowenmenu");
-    } else {
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
+    if (showModel === "dropdowenmenu") {
       setShowModel(null);
+    } else {
+      setShowModel("dropdowenmenu");
     }
   };
   return (

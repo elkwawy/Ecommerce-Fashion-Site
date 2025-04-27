@@ -18,7 +18,7 @@ export const addToWhishList = createAsyncThunk(
       };
 
       const { data } = await axios.request(options);
-      console.log(data);
+     
       
       return data;
     } catch (error) {
@@ -57,7 +57,6 @@ export const removefromwishlist = createAsyncThunk(
       };
 
       await axios.request(options);
-      showToast("success", "Item removed successfully");
     } catch (error) {
       showToast("error", "error occurred");
     }
@@ -90,8 +89,6 @@ const wishListSlice = createSlice({
       })
       .addCase(addToWhishList.fulfilled, (state, action) => {
         const {data, message } = action.payload;
-       
-        console.log("fulfilled => ", message , data);
         const wishlistData =  data;
 
         if (wishlistData) {
