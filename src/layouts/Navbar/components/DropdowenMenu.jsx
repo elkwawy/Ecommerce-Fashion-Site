@@ -5,13 +5,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { handleLogout } from "../../../Redux Toolkit/slices/auth";
 import { useDispatch } from "react-redux";
 
-export default function DropdowenMenu({ setShowModel, dropdownRef  }) {
+export default function DropdowenMenu({ setShowModel, dropdownRef ,toggleDropdown,closeMenu }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userCookie = Cookies.get("user");
   const user = userCookie ? JSON.parse(userCookie) : null;
   
- 
+  const goToPage = (link) => {
+    closeMenu();
+    navigate(link);
+    setShowModel(null)
+  };
   
   return (
     <div
@@ -26,7 +30,7 @@ export default function DropdowenMenu({ setShowModel, dropdownRef  }) {
         )}
 
         <Link  to={'/profile'} 
-        onClick={()=> setShowModel(null) }
+        onClick={()=> goToPage('/profile')   }
           
           className="block  hover:bg-gray-100 transition-all duration-300 p-2"
         >

@@ -50,8 +50,11 @@ const PhoneFeatures = ({ closeMenu}) => {
   };
   return (
     <ul className="flex gap-8 items-center sm:hidden">
-      <button onClick={() => goToPage("/wishList")}>
+      <button onClick={() => goToPage("/wishList")} className="relative">
         <IoMdHeartEmpty size={30} className="cursor-pointer" />
+        <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
+              {localStorage.getItem("wishlist") || 0}
+              </div>
       </button>
 
       {isAuthenticated ? (
@@ -59,7 +62,12 @@ const PhoneFeatures = ({ closeMenu}) => {
           <img src="/user.png" alt="user" className="w-8 h-8" />
           <div className="relative">
             {showModel === "dropdowenmenu" && (
-              <DropdowenMenu setShowModel={setShowModel} dropdownRef={dropdownRef}  />
+              <DropdowenMenu 
+              setShowModel={setShowModel} 
+              toggleDropdown={toggleDropdown} 
+              dropdownRef={dropdownRef}  
+              closeMenu={closeMenu}
+              />
             )}
           </div>
         </div>
@@ -73,8 +81,11 @@ const PhoneFeatures = ({ closeMenu}) => {
       {showModel === "forgetPass" && <ForgetPass setShowModel={setShowModel} />}
       {showModel === "resetcode" && <ResetCode setShowModel={setShowModel} />}
 
-      <button onClick={() => goToPage("/cart")}>
+      <button onClick={() => goToPage("/cart")} className="relative">
         <PiShoppingCart size={30} className="cursor-pointer" />
+        <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
+                {localStorage.getItem("cart") || 0}
+              </div>
       </button>
     </ul>
   );

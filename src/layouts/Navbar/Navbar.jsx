@@ -226,6 +226,8 @@ const Navbar = memo(() => {
                     <DropdowenMenu
                       setShowModel={setShowModel}
                       dropdownRef={dropdownRef}
+                      toggleDropdown={toggleDropdown}
+                      closeMenu={toggleShowPhoneMenu}
                     />
                   )}
                 </div>
