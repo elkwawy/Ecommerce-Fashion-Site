@@ -12,7 +12,7 @@ function Cart() {
   const { products, setProducts, loading, totalCartPrice, cartId, status } =
     useCart();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
+  
   const handelClearCart = () => {
     if (products.length === 0) return;
     const saveProducts = [...products];

@@ -29,6 +29,9 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
+  const { cartItems, error, totalCartPrice, status, cartId } = useSelector(
+    (state) => state.cart
+  );
 
   const [showModel, setShowModel] = useVisible();
   const handleAddToWishlist = async (id) => {
@@ -50,7 +53,6 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           localStorage.setItem("cart", cart - 1);
           showToast("error", "Failed to add to cart");
         });
-       
     } else {
       showToast("error", "Please login first");
       setShowModel("login");
@@ -68,9 +70,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
         `}
       // ${stock === 0 ? "opacity-50 pointer-events-none" : ""}
     >
-        {showModel === "login" ? (
-                    <Login setShowModel={setShowModel} />
-                  ) : null}
+      {showModel === "login" ? <Login setShowModel={setShowModel} /> : null}
       <div className="image-container relative">
         <div className="relative">
           <Img
@@ -104,7 +104,7 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           >
             <MdAddShoppingCart className="text-[22px] font-semibold hover:text-[26px] trans" />
           </div>
- <div
+          <div
             title="Add to wishlist"
             onClick={(e) => {
               e.stopPropagation();
@@ -114,7 +114,6 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           >
             <FaRegHeart className="text-[20px] font-semibold hover:text-[24px] trans" />
           </div>
-          
         </div>
       </div>
 
@@ -156,7 +155,6 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
       </div>
     </div>
   );
- 
 });
 
 export default ProductCard;
