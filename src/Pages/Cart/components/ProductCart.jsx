@@ -114,7 +114,7 @@ const ProductCart = ({ product, setProducts }) => {
         {/* اسم المنتج وزر الحذف */}
         <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
           <Link
-            to={`/product/${product._id}`}
+            to={`/product/${SubCategory}/${product._id}`}
             className="text-base font-medium text-gray-900 hover:underline"
           >
             {product.name}
