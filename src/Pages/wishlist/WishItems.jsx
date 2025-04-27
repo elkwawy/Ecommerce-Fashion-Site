@@ -9,6 +9,7 @@ import { showToast } from "../../utilities/showToast";
 export default function WishItems() {
   const dispatch = useDispatch();
   const { wishListItems } = useSelector((state) => state.wishListSlice);
+
   const [products, setProducts] = useState(wishListItems);
 
   const handelDeletFromWishlist = (item) => {
@@ -22,6 +23,7 @@ export default function WishItems() {
         showToast("Failed to delete from wishlist:", error);
       });
   };
+
 
   return (
     <section className="pb-8">

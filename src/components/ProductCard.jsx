@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Img } from "react-image";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import CustomSkeleton from "../utilities/CustomSkeleton";
 import { showToast } from "../utilities/showToast";
 import useVisible from "../Auth/utils/usevisable";
 import Login from "../Auth/login/Login";
+import { FaCartShopping } from "react-icons/fa6";
 
 const ProductCard = memo(({ product, showDiscount = true }) => {
   const navigate = useNavigate();
@@ -29,7 +30,13 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
+  const { cartItems } = useSelector((state) => state.cart);
+  const { wishListItems } = useSelector((state) => state.wishListSlice);
 
+  const productInCart = cartItems.find((item) => item.product === product._id);
+  const productInWishlist = wishListItems.find(
+    (item) => item._id === product._id
+  );
   const [showModel, setShowModel] = useVisible();
  
 
@@ -61,7 +68,6 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
           localStorage.setItem("cart", cart - 1);
           showToast("error", "Failed to add to cart");
         });
-       
     } else {
       showToast("error", "Please login first");
       setShowModel("login");
@@ -79,16 +85,18 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
         `}
       // ${stock === 0 ? "opacity-50 pointer-events-none" : ""}
     >
-        {showModel === "login" ? (
-                    <Login setShowModel={setShowModel} />
-                  ) : null}
+      {showModel === "login" ? <Login setShowModel={setShowModel} /> : null}
       <div className="image-container relative">
         <div className="relative">
           <Img
             src={image}
             alt={name}
-            className="w-full"
-            loader={<CustomSkeleton width="100%" height="397px" />}
+            className="w-full h-[397px] object-fill"
+            loader={
+              <div className="w-full">
+                <CustomSkeleton width="100%" height="397px" />
+              </div>
+            }
           />
           {showDiscount &&
             price &&
@@ -107,25 +115,34 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
 
           <div
             title="Add to cart"
-            className={`absolute left-2 top-2 ${stock === 0 ? "hidden" : ""}`}
+            className={`absolute left-2 top-2.5 ${stock === 0 ? "hidden" : ""}`}
             onClick={(e) => {
               e.stopPropagation();
               handleAddToCart(product._id);
             }}
           >
-            <MdAddShoppingCart className="text-[22px] font-semibold hover:text-[26px] trans" />
+            {productInCart && productInCart.quantity > 0 && (
+              <div className="bg-[#f8f8f8] rounded-full text-center text-xs absolute left-3 px-1.5  -top-[25%]">
+                {productInCart.quantity}
+              </div>
+            )}
+            <FaCartShopping className="text-[25px] font-semibold  trans" />
           </div>
- <div
+          <div
             title="Add to wishlist"
             onClick={(e) => {
               e.stopPropagation();
+              if (productInWishlist) return;
               handleAddToWishlist(product._id);
             }}
             className={`absolute right-2 top-2 ${stock === 0 ? "hidden" : ""}`}
           >
-            <FaRegHeart className="text-[20px] font-semibold hover:text-[24px] trans" />
+            {productInWishlist ? (
+              <FaHeart className="text-[25px] font-semibold  trans" />
+            ) : (
+              <FaRegHeart className="text-[25px] font-semibold  trans" />
+            )}
           </div>
-          
         </div>
       </div>
 
@@ -167,7 +184,6 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
       </div>
     </div>
   );
- 
 });
 
 export default ProductCard;

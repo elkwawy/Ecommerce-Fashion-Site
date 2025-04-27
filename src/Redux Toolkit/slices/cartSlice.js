@@ -43,7 +43,10 @@ export const addToCart = createAsyncThunk(
       };
       const { data } = await axios.request(options);
       console.log(data);
-      if (typeof data === "object" && data.message?.toLowerCase().includes("not enough stock")) {
+      if (
+        typeof data === "object" &&
+        data.message?.toLowerCase().includes("not enough stock")
+      ) {
         return rejectWithValue(data.message);
       }
 
@@ -180,18 +183,16 @@ const cartSlice = createSlice({
           localStorage.setItem("cart", state.count);
         }
 
-          const newMesg = message ==  "Cart updated successfully" ? "Item added to cart" : message;
+        const newMesg =
+          message == "Cart updated successfully"
+            ? "Item added to cart"
+            : message;
         showToast("success", newMesg || "Item added to cart");
-
-
-        showToast("success", message || "Item added to cart");
-
       })
       .addCase(addToCart.rejected, (state, action) => {
         const message = action.payload?.message || action.payload;
         console.log("error => ", action.payload);
-        
-        
+
         state.error = action.payload;
         showToast("error", message || "Something went wrong");
       })

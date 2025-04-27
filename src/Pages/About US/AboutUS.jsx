@@ -1,16 +1,16 @@
 import { Helmet } from "react-helmet-async";
-import aboutUS from "../../assets/images//About US/AboutUS.jpg";
+import aboutUS from "../../assets/images//About US/AboutUS.png";
 import Brands from "./Brands";
 
 const AboutUS = () => {
   return (
     <div className="aboutUs">
-       < Helmet>
-                      <title>About us</title>
-                      <meta name="description" content="About us page" />
-                    </Helmet>
+      <Helmet Helmet>
+        <title>About us</title>
+        <meta name="description" content="About us page" />
+      </Helmet>
       {/* Hero Section */}
-      <div className="relative w-full h-[445px] mb-14">
+      <div className="relative w-full h-[485px] mb-14">
         <img src={aboutUS} className="w-full h-full" alt="" />
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
@@ -44,21 +44,21 @@ const AboutUS = () => {
         <div className="flex flex-col items-center">
           <img src={require("../../assets/icons/aboutUs/about2.png")} alt="" />
           <p className="mt-6 font-[500] text-[28px] text-center">
-            10,000 + <br />
+            20,000 + <br />
             Happy Shoppers
           </p>
         </div>
         <div className="flex flex-col items-center">
           <img src={require("../../assets/icons/aboutUs/about3.png")} alt="" />
           <p className="mt-6 font-[500] text-[28px] text-center">
-            50,000 + <br />
+            10,000 + <br />
             Orders Delivered
           </p>
         </div>
         <div className="flex flex-col items-center">
           <img src={require("../../assets/icons/aboutUs/about4.png")} alt="" />
           <p className="mt-6 font-[500] text-[28px] text-center">
-            5 Years <br />
+            2 Years <br />
             Exprience
           </p>
         </div>

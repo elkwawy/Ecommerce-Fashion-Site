@@ -42,8 +42,6 @@ export default function Login({ setShowModel }) {
           try {
             setError(""); 
             await dispatch(handleLogin(values)).unwrap();
-            dispatch(getUserWhishList());
-            dispatch(getUserCart());
             navigate("/");
             setShowModel(null);
           } catch (err) {

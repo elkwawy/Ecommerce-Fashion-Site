@@ -1,7 +1,7 @@
 import { memo, useEffect, useLayoutEffect, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import LoadingSpinner from "../../../../../utilities/LoadingSpinner";
 
 const WebsitePages = memo(({phoneMenu, closeMenu}) => {
@@ -16,6 +16,17 @@ const WebsitePages = memo(({phoneMenu, closeMenu}) => {
         setCategoriesState(Object.keys(allSubcategories).map(() => false));
         }
     }, [status, allSubcategories]);
+
+    const location = useLocation();
+    useEffect(() => { 
+        if ( location.pathname.includes("men/") || location.pathname.includes("women/") || location.pathname.includes("children/") ) {
+            setShowCategory(prev => prev);
+        }
+        else { 
+            setShowCategory(false);
+            setCategoriesState(Object.keys(allSubcategories).map(() => false));
+        }
+    }, [phoneMenu, location.pathname]);
 
     useEffect(() => {
         // Disable page scroll when PhoneMenu is open
@@ -40,20 +51,21 @@ const WebsitePages = memo(({phoneMenu, closeMenu}) => {
 
     useLayoutEffect(() => {
         if (status === "succeeded" && showCategory) {
-        let newHeight =
-            Object.keys(allSubcategories).length * 28 +
-            (Object.keys(allSubcategories).length - 1) * 8;
-        Object.entries(allSubcategories).forEach(([_, category], index) => {
-            if (categoriesState[index]) {
-            newHeight +=
-                category.subcategories.length * 24 +
-                (category.subcategories.length - 1) * 4;
-            }
-        });
-        setCategoryHeight(newHeight);
+            let newHeight =
+                Object.keys(allSubcategories).length * 28 +
+                (Object.keys(allSubcategories).length - 1) * 8;
+            Object.entries(allSubcategories).forEach(([_, category], index) => {
+                if (categoriesState[index]) {
+                newHeight +=
+                    category.subcategories.length * 24 +
+                    (category.subcategories.length - 1) * 4;
+                }
+            });
+            setCategoryHeight(newHeight);
         } else {
-        setCategoryHeight(0);
+            setCategoryHeight(0);
         }
+
     }, [showCategory, categoriesState, allSubcategories, status]);
 
     const toggleShowCatgeroy = () => {

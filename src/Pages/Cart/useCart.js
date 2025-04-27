@@ -24,7 +24,7 @@ export default function useCart() {
       }
     };
 
-    fetchCart();
+    if (status === "idle") fetchCart();
   }, [dispatch]);
 
   useEffect(() => {
