@@ -31,7 +31,7 @@ const Navbar = memo(() => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dropdownRef = useRef(null);
 
-  const { count } = useSelector((state) => state.wishListSlice);
+  const { count: countWishlist } = useSelector((state) => state.wishListSlice);
   const { count: countCart } = useSelector((state) => state.cart);
 
   const categoryBtnRef = useRef(null);
@@ -91,7 +91,7 @@ const Navbar = memo(() => {
 
   useEffect(() => {
     if (showModel !== "dropdowenmenu") return;
-
+  
     const handleClickOutside = (event) => {
       if (
         dropdownRef.current &&
@@ -100,18 +100,20 @@ const Navbar = memo(() => {
         setShowModel(null);
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
+  
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [showModel]);
+  
 
-  const toggleDropdown = () => {
-    if (showModel === null) {
-      setShowModel("dropdowenmenu");
-    } else {
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
+    if (showModel === "dropdowenmenu") {
       setShowModel(null);
+    } else {
+      setShowModel("dropdowenmenu");
     }
   };
   return (
@@ -215,7 +217,7 @@ const Navbar = memo(() => {
             >
               <FaRegHeart size={20} className="cursor-pointer" />
               <div className="flex items-center justify-center w-4 h-4 absolute -top-1 left-3 rounded-full bg-gray-100">
-                {localStorage.getItem("wishlist") || 0}
+              {localStorage.getItem("wishlist") || 0}
               </div>
             </NavLink>
 
@@ -227,6 +229,8 @@ const Navbar = memo(() => {
                     <DropdowenMenu
                       setShowModel={setShowModel}
                       dropdownRef={dropdownRef}
+                      toggleDropdown={toggleDropdown}
+                      closeMenu={toggleShowPhoneMenu}
                     />
                   )}
                 </div>

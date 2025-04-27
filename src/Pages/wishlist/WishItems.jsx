@@ -3,12 +3,28 @@ import { removefromwishlist } from "../../Redux Toolkit/slices/WishlistSlice";
 import { FaCartPlus, FaHeart } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { addToCart } from "../../Redux Toolkit/slices/cartSlice";
+import { useState } from "react";
+import { showToast } from "../../utilities/showToast";
 
 export default function WishItems() {
   const dispatch = useDispatch();
   const { wishListItems } = useSelector((state) => state.wishListSlice);
- console.log(wishListItems);
- 
+
+  const [products, setProducts] = useState(wishListItems);
+
+  const handelDeletFromWishlist = (item) => {
+    const savedItem = item;
+    setProducts((prev) => prev.filter((prod) => prod._id !== item._id));
+
+    dispatch(removefromwishlist(item._id))
+      .unwrap()
+      .catch((error) => {
+        setProducts((prev) => [savedItem, ...prev]);
+        showToast("Failed to delete from wishlist:", error);
+      });
+  };
+
+
   return (
     <section className="pb-8">
       <div className="w-[90%] m-auto">
@@ -18,8 +34,8 @@ export default function WishItems() {
           </h3>
         </div>
 
-        <div className="grid grid-cols-1 max-[770px]:grid-cols-2 max-[460px]:grid-cols-1  md:grid-cols-3 lg:grid-cols-5 my-6 gap-4">
-          {wishListItems.map((item) => (
+        <div className="grid grid-cols-1 max-[770px]:grid-cols-2 max-[460px]:grid-cols-1  md:grid-cols-3 lg:grid-cols-5 my-6 gap-4 min-h-screen">
+          {products.map((item) => (
             <div className="bg-white" key={item._id}>
               <div className="relative">
                 <div className="absolute top-2 right-2 p-2 w-[40px] h-[40px] bg-white rounded-full flex justify-center items-center">
@@ -38,7 +54,7 @@ export default function WishItems() {
                     </button>
                     <button
                       className="bg-white text-xl rounded py-2 h-[40px] px-3"
-                      onClick={() => dispatch(removefromwishlist(item._id))}
+                      onClick={() => handelDeletFromWishlist(item)}
                     >
                       <RiDeleteBin6Line className="text-2xl text-red-700" />
                     </button>
