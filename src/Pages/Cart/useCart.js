@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { getUserCart } from "../../Redux Toolkit/slices/cartSlice";
 import { API } from "../../Api/Api";
 import axios from "axios";
@@ -9,31 +9,33 @@ export default function useCart() {
   const { cartItems, error, totalCartPrice, status, cartId } = useSelector(
     (state) => state.cart
   );
-  console.log(status);
+
+  console.log(cartItems);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  
   console.log(cartItems);
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        await dispatch(getUserCart()).unwrap();
-      } catch (err) {
-        console.log("Error fetching cart:", err);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCart = async () => {
+  //     try {
+  //       await dispatch(getUserCart()).unwrap();
+  //     } catch (err) {
+  //       console.log("Error fetching cart:", err);
+  //     }
+  //   };
 
-    if (status === "idle") fetchCart();
-  }, [dispatch]);
+  //   if (status === "idle") fetchCart();
+  // }, [dispatch]);
 
+  const fetchedOnceRef = useRef(false);
   useEffect(() => {
     if (!cartItems || cartItems.length === 0) {
       setProducts([]);
       setLoading(false);
       return;
     }
-
     const fetchProducts = async () => {
       // setLoading(true);
       try {
@@ -51,7 +53,11 @@ export default function useCart() {
       }
     };
 
-    fetchProducts();
+    if (!fetchedOnceRef.current) {
+      console.log("Fetching products...");
+      fetchProducts();
+      fetchedOnceRef.current = true;
+    }
   }, [cartItems]);
 
   const memoizedProducts = useMemo(() => products, [products]);

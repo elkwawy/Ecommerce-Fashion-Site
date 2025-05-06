@@ -3,14 +3,34 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import { Img } from "react-image";
 import LoadingSpinner from "./LoadingSpinner";
 import { IoMailOutline } from "react-icons/io5";
+import { showToast } from "./showToast";
 
 const Popup = ({closePopup}) => {
-
+    const [email, setEmail] = useState("")
     useEffect(() => {
         const image = '/popup.webp'
         const img = new Image();
         img.src = image;
     }, []);
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value)
+    }
+
+    const handleEmailSubmit = (e) => {
+        e.preventDefault()
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        if (!isValidEmail) { 
+            showToast("error", "Invalid email")
+        }
+        // send notification 
+
+        else { 
+            showToast("success", "Email sent successfully");
+            closePopup()
+        }
+    }
 
     return (
         <>
@@ -32,12 +52,12 @@ const Popup = ({closePopup}) => {
 
                         
                         <div className="flex flex-col items-center h-fit gap-8 sm:gap-6">
-                            <h2 className="text-2xl font-semibold text-center text-wrap">Get 20% discount shipped to your inbox</h2>
-                            <p className="text-[#8E8E90] text-center text-sm">Subscribe to our newletter and we will ship <span className=" font-bold">20% discount code</span> today</p>
-                            <div className="flex gap-2 w-full items-center">
-                                <input type="email" name="email" maxLength={40} placeholder="Email address..." className=" outline-0 focus:border-[#ddd] trans border-b-[3px] w-full border-black bg-[#f8f8f8]" />
-                                <IoMailOutline className="text-[26px] cursor-pointer hover:scale-105 hover:border-[#ddd] pb-1 border-b-[3px] border-black trans" />
-                            </div>
+                            <h2 className="text-2xl font-semibold text-center text-wrap">Stay in the loop – Straight to your inbox</h2>
+                            <p className="text-[#8E8E90] text-center text-sm">Subscribe to our newsletter and be the first to hear about <span className=" font-bold">new products and exclusive discounts</span>.</p>
+                            <form onSubmit={handleEmailSubmit} className="flex gap-2 w-full items-center">
+                                <input onChange={handleEmailChange}  name="email" maxLength={40} placeholder="Email address..." className=" outline-0 select-none focus:border-[#ddd] trans border-b-[3px] w-full border-black bg-[#f8f8f8]" />
+                                <IoMailOutline onClick={handleEmailSubmit} className="text-[26px] cursor-pointer hover:scale-105 hover:border-[#ddd] pb-1 border-b-[3px] border-black trans" />
+                            </form>
                         </div>
                     </div>
                 </div>
