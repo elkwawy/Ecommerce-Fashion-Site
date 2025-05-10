@@ -15,7 +15,7 @@ export default function useCart() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  console.log(cartItems);
+
 
   // useEffect(() => {
   //   const fetchCart = async () => {
@@ -52,6 +52,7 @@ export default function useCart() {
         setLoading(false);
       }
     };
+
 
     if (!fetchedOnceRef.current) {
       console.log("Fetching products...");

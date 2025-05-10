@@ -6,7 +6,7 @@ import { API, BASE_URL } from "../../Api/Api";
 
 export const addToWhishList = createAsyncThunk(
   "wishlist/addToWhishList",
-  async ({ id , quantity}, { rejectWithValue }) => {
+  async ({ id, quantity }, { rejectWithValue }) => {
     try {
       const options = {
         method: "POST",
@@ -18,8 +18,7 @@ export const addToWhishList = createAsyncThunk(
       };
 
       const { data } = await axios.request(options);
-     
-      
+
       return data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Request failed");
@@ -67,8 +66,7 @@ const wishListSlice = createSlice({
   name: "wishlist",
   initialState: {
     wishListItems: [],
-        count:JSON.parse(localStorage.getItem("wishlist")) > 0
-        ? JSON.parse(localStorage.getItem("wishlist")) : 0,
+    count: 0,
     isLoading: false,
     status: "idle",
     isError: false,
@@ -88,16 +86,15 @@ const wishListSlice = createSlice({
         state.error = null;
       })
       .addCase(addToWhishList.fulfilled, (state, action) => {
-        const {data, message } = action.payload;
-        const wishlistData =  data;
+        const { data, message } = action.payload;
+        const wishlistData = data;
 
         if (wishlistData) {
           state.wishListItems = wishlistData || [];
           state.count = wishlistData?.length ?? 0;
-          localStorage.setItem("wishlist", state.count);
-          showToast("success", message);
+          showToast("success", "Added to wishlist");
         }
-      }) 
+      })
       .addCase(addToWhishList.rejected, (state, action) => {
         state.isError = true;
         state.error = action.payload || "Something went wrong";
@@ -112,7 +109,6 @@ const wishListSlice = createSlice({
         state.status = "succeeded";
         state.wishListItems = action.payload?.data || action.payload || [];
         state.count = state.wishListItems.length;
-        localStorage.setItem("wishlist", JSON.stringify(state.count));
       })
       .addCase(getUserWhishList.rejected, (state, action) => {
         state.status = "failed";
@@ -128,7 +124,6 @@ const wishListSlice = createSlice({
           (item) => item._id !== action.meta.arg
         );
         state.count = state.wishListItems.length;
-        localStorage.setItem("wishlist", JSON.stringify(state.count));
       })
       .addCase(removefromwishlist.rejected, (state, action) => {
         state.isError = true;
@@ -136,6 +131,5 @@ const wishListSlice = createSlice({
       });
   },
 });
-export const { setValues } = wishListSlice.actions
+export const { setValues } = wishListSlice.actions;
 export default wishListSlice.reducer;
-

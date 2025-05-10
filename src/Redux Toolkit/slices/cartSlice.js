@@ -42,13 +42,13 @@ export const addToCart = createAsyncThunk(
         headers: getAuthHeaders(),
       };
       const { data } = await axios.request(options);
-      console.log(data);
-      if (
-        typeof data === "object" &&
-        data.message?.toLowerCase().includes("not enough stock")
-      ) {
-        return rejectWithValue(data.message);
-      }
+      // console.log(data);
+      // if (
+      //   typeof data === "object" &&
+      //   data.message?.toLowerCase().includes("not enough stock")
+      // ) {
+      //   return rejectWithValue(data.message);
+      // }
 
       return data;
     } catch (error) {
@@ -130,17 +130,13 @@ const cartSlice = createSlice({
     cartId: null,
     status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
-    count:
-      JSON.parse(localStorage.getItem("cart")) > 0
-        ? JSON.parse(localStorage.getItem("cart"))
-        : 0,
+    count: 0,
   },
   reducers: {
     setValues: (state, action) => {
       state.cartItems = [];
       state.totalCartPrice = 0;
       state.count = 0;
-      localStorage.setItem("cart", 0);
     },
   },
   extraReducers: (builder) => {
@@ -163,8 +159,6 @@ const cartSlice = createSlice({
           cartId: _id || null,
           count: cartItems.length,
         });
-
-        localStorage.setItem("cart", cartItems.length);
       })
       .addCase(getUserCart.rejected, (state, action) => {
         state.status = "failed";
@@ -180,7 +174,6 @@ const cartSlice = createSlice({
           state.cartItems = cartData.cartItems || [];
           state.totalCartPrice = cartData.totalCartPrice ?? 0;
           state.count = cartData.cartItems?.length ?? 0;
-          localStorage.setItem("cart", state.count);
         }
 
         const newMesg =
@@ -219,7 +212,6 @@ const cartSlice = createSlice({
           state.cartItems = cart.cartItems || [];
           state.totalCartPrice = cart.totalCartPrice ?? 0;
           state.count = cart.cartItems?.length ?? 0;
-          localStorage.setItem("cart", state.count);
         }
 
         // showToast("success", message || "Item removed from cart");
@@ -234,7 +226,6 @@ const cartSlice = createSlice({
           totalCartPrice: 0,
           count: 0,
         });
-        localStorage.setItem("cart", 0);
       })
       .addCase(clearCart.rejected, (state, action) => {
         state.error = action.payload;
