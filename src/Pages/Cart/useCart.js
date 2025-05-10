@@ -9,23 +9,25 @@ export default function useCart() {
   const { cartItems, error, totalCartPrice, status, cartId } = useSelector(
     (state) => state.cart
   );
-  console.log(status);
+
+  console.log(cartItems);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(cartItems);
+  
+  // console.log(cartItems);
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        await dispatch(getUserCart()).unwrap();
-      } catch (err) {
-        console.log("Error fetching cart:", err);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCart = async () => {
+  //     try {
+  //       await dispatch(getUserCart()).unwrap();
+  //     } catch (err) {
+  //       console.log("Error fetching cart:", err);
+  //     }
+  //   };
 
-    if (status === "idle") fetchCart();
-  }, [dispatch]);
+  //   if (status === "idle") fetchCart();
+  // }, [dispatch]);
 
   useEffect(() => {
     if (!cartItems || cartItems.length === 0) {
@@ -52,7 +54,7 @@ export default function useCart() {
     };
 
     fetchProducts();
-  }, [cartItems]);
+  }, []);
 
   const memoizedProducts = useMemo(() => products, [products]);
 

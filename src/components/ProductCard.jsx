@@ -1,10 +1,10 @@
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { FaCartPlus, FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Img } from "react-image";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addToCart } from "../Redux Toolkit/slices/cartSlice";
+import { addToCart, setValues } from "../Redux Toolkit/slices/cartSlice";
 import {
   addToWhishList,
   getUserWhishList,
@@ -30,28 +30,25 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems, count } = useSelector((state) => state.cart);
   const { wishListItems } = useSelector((state) => state.wishListSlice);
 
   const productInCart = cartItems.find((item) => item.product === product._id);
-  const productInWishlist = wishListItems.find(
-    (item) => item._id === product._id
-  );
+
+  const productInWishlist = useMemo(() => {
+    return wishListItems.some((item) => (item._id || item) === product._id);
+  }, [wishListItems, product._id]);
+
+
+  console.log(productInWishlist);
+
+  console.log(wishListItems);
+
   const [showModel, setShowModel] = useVisible();
- 
 
   const handleAddToWishlist = async (id) => {
     if (isAuthenticated) {
-      const wishlist = localStorage.getItem("wishlist");
-      localStorage.setItem("wishlist", wishlist + 1);
-      await dispatch(addToWhishList({ id,quantity: 1 }))
-      // dispatch(getUserWhishList())
-        .unwrap()
-        .catch((err) => {
-          localStorage.setItem("wishlist", wishlist - 1);
-          showToast("error", "Failed to add to wishlist");
-        });
-       
+      await dispatch(addToWhishList({ id }));
     } else {
       showToast("error", "Please login first");
       setShowModel("login");
@@ -60,12 +57,9 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
   
   const handleAddToCart = async (id) => {
     if (isAuthenticated) {
-      const cart = localStorage.getItem("cart");
-      localStorage.setItem("cart", cart + 1);
       await dispatch(addToCart({ id, quantity: 1 }))
         .unwrap()
         .catch((err) => {
-          localStorage.setItem("cart", cart - 1);
           showToast("error", "Failed to add to cart");
         });
     } else {
@@ -138,9 +132,9 @@ const ProductCard = memo(({ product, showDiscount = true }) => {
             className={`absolute right-2 top-2 ${stock === 0 ? "hidden" : ""}`}
           >
             {productInWishlist ? (
-              <FaHeart className="text-[25px] font-semibold  trans" />
+              <FaHeart className="text-[25px]  transition duration-300" />
             ) : (
-              <FaRegHeart className="text-[25px] font-semibold  trans" />
+              <FaRegHeart className="text-[25px] text-gray-500 transition duration-300" />
             )}
           </div>
         </div>
